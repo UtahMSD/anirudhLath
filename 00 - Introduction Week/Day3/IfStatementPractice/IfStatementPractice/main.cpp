@@ -53,13 +53,13 @@ int main(int argc, const char * argv[]) {
     bool isYoungChildren;
 
     // Ask user for their age
-    std::cout << "Kindly enter Y or N based on if it is a weekday or not:\n" << std::endl;
+    std::cout << "Kindly enter Y or N based on if it is a weekday or not:" << std::endl;
     std::cin >> weekday;
 
-    std::cout << "Kindly enter Y or N based on if it is a holiday or not:\n" << std::endl;
+    std::cout << "Kindly enter Y or N based on if it is a holiday or not:" << std::endl;
     std::cin >> holiday;
 
-    std::cout << "Kindly enter Y or N based on if you have children or not:\n" << std::endl;
+    std::cout << "Kindly enter Y or N based on if you have children or not:" << std::endl;
     std::cin >> youngChildren;
 
     // Logic and Output
@@ -69,6 +69,7 @@ int main(int argc, const char * argv[]) {
         isWeekday = false;
     } else {
         std::cout << "Invalid Response! Restart the program!" << std::endl;
+        return 1;
     }
 
     if (holiday == 'Y' or holiday == 'y') {
@@ -77,6 +78,7 @@ int main(int argc, const char * argv[]) {
         isHoliday = false;
     } else {
         std::cout << "Invalid Response! Restart the program!" << std::endl;
+        return 1;
     }
 
     if (youngChildren == 'Y' or youngChildren == 'y') {
@@ -85,13 +87,17 @@ int main(int argc, const char * argv[]) {
         isYoungChildren = false;
     } else {
         std::cout << "Invalid Response! Restart the program!" << std::endl;
+        return 1;
     }
 
-    if (isWeekday or isYoungChildren) {
+    if (isYoungChildren) {
         std::cout << "You cannot sleep in today :(" << std::endl;
-    } else if (isHoliday and not isYoungChildren) {
+    } else if (isHoliday or not isWeekday) {
+        std::cout << "You can sleep in today :)" << std::endl;
+    } else {
         std::cout << "You can sleep in today :)" << std::endl;
     }
+
 
     return 0;
 }
