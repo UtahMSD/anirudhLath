@@ -36,13 +36,8 @@ int main(int argc, const char * argv[]) {
         dd = date.substr(pos1, (pos2 - 3));
     }
     mm = date.substr(0,(pos1 - 1));
-    //cout << pos1 << endl;
-    //cout << pos2 << endl;
-    //cout << date.size() << endl;
-    //cout << yyyy << endl;
-    //cout << dd << endl;
-    //cout << mm << endl;
 
+    // Month assignments and Invalid Month Check
     if (mm == "12") {
         mm = "December";
     } else if (mm == "1" or mm == "01"){
@@ -72,28 +67,33 @@ int main(int argc, const char * argv[]) {
         return 1;
     }
     
+    // Convert day and year to int for error handling
     int d = stoi(dd);
-    //Leap year day check currently missing.
+    int y = stoi(yyyy);
 
-    if ((d == 31 and mm == "January")
-    or (d == 28 and mm == "February")
-    or (d == 31 and mm == "March")
-    or (d == 30 and mm == "April")
-    or (d == 31 and mm == "May")
-    or (d == 30 and mm == "June")
-    or (d == 31 and mm == "July")
-    or (d == 31 and mm == "August")
-    or (d == 30 and mm == "September")
-    or (d == 31 and mm == "October")
-    or (d == 30 and mm == "November")
-    or (d == 31 and mm == "January")) {
-        cout << mm << ' ' << dd << ", " << yyyy << endl;
-    } else {
-        cout << "Invalid day in month, please try again. Program will now exit.\n";
+    // Invalid Day Check
+    if ((d <= 31 and mm == "January")
+    or (d <= 28 and mm == "February")
+    or (d <= 29 and mm == "February" and y % 4 == 0)
+    or (d <= 31 and mm == "March")
+    or (d <= 30 and mm == "April")
+    or (d <= 31 and mm == "May")
+    or (d <= 30 and mm == "June")
+    or (d <= 31 and mm == "July")
+    or (d <= 31 and mm == "August")
+    or (d <= 30 and mm == "September")
+    or (d <= 31 and mm == "October")
+    or (d <= 30 and mm == "November")
+    or (d <= 31 and mm == "January")) {
+        cout << endl << mm << ' ' << dd << ", " << yyyy << endl << endl;
+    } else if (d >= 28 and mm == "February" and y % 4 != 0) {
+        cout << "\nThere can't be more than 28 days in February because " << yyyy << " is not a leap year.\n\n";
         return 1;
     }
-
-    cout << mm << ' ' << dd << ", " << yyyy << endl;
+    else {
+        cout << "\nInvalid day in month, please try again. Program will now exit.\n\n";
+        return 1;
+    }
 
 
     
