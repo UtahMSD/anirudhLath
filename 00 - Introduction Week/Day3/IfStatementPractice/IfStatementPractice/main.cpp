@@ -95,7 +95,7 @@ int main(int argc, const char * argv[]) {
     } else if (isHoliday or not isWeekday) {
         std::cout << "You can sleep in today :)" << std::endl;
     } else {
-        std::cout << "You can sleep in today :)" << std::endl;
+        std::cout << "You cannot sleep in today :)" << std::endl;
     }
 
 
