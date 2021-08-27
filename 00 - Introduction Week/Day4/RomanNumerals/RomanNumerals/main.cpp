@@ -88,7 +88,7 @@ int main(int argc, const char * argv[]) {
         }
     }
     
-    cout << "Roman numberal for the number you have entered is:\n" << roman << endl << endl;
+    cout << "Roman numeral for the number you have entered is:\n" << roman << endl << endl;
     
     return 0;
 }
