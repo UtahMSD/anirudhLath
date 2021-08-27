@@ -1,6 +1,6 @@
 //
 //  main.cpp
-//  DateFormats
+//  MagicDates
 //
 //  Created by Anirudh Lath on 8/26/21.
 //
@@ -10,6 +10,7 @@
 using namespace std;
 
 int main(int argc, const char * argv[]) {
+
     // Variables
     string date = "";
     string mmdd;
@@ -18,13 +19,12 @@ int main(int argc, const char * argv[]) {
     string yyyy;
     int pos1;
     int pos2;
-    int count = 0;
 
     // Input
     cout << "Please enter a date in mm/dd/yyyy format:\n";
     cin >> date;
 
-    // Logic
+    // Logic - String manipulation and extraction (There is room for improving the versatility of the code, but for now I have just hard coded the math according to the assignment requirements.
     pos1 = date.find('/') + 1;
     pos2 = date.find('/', 3) + 1;
     yyyy = date.substr(pos2);
@@ -37,7 +37,20 @@ int main(int argc, const char * argv[]) {
     }
     mm = date.substr(0,(pos1 - 1));
 
-    // Month assignments and Invalid Month Check
+    // Convert string to integers and assign a variable to check for magic date.
+    bool magicDate;
+    int m = stoi(mm);
+    int d = stoi(dd);
+    int yy = stoi(yyyy);
+    int y = stoi(yyyy.substr(2));
+
+
+    // Logic - Magic Date
+    // Month assignments and Invalid Date Check
+    if (yy < 1000 or yy > 9999) {
+        cout << "\nNot a valid date! Please restart the program and try again!\n\n";
+        return 1;
+    }
 
     if (mm == "12") {
         mm = "December";
@@ -68,16 +81,6 @@ int main(int argc, const char * argv[]) {
         return 1;
     }
     
-    // Convert day and year to int for error handling
-    int d = stoi(dd);
-    int y = stoi(yyyy);
-
-    // Invalid Day Check
-    if (y < 1000 or y > 9999) {
-        cout << "\nNot a valid date! Please restart the program and try again!\n\n";
-        return 1;
-    }
-
     if ((d <= 31 and mm == "January")
     or (d <= 28 and mm == "February")
     or (d <= 29 and mm == "February" and y % 4 == 0)
@@ -91,12 +94,15 @@ int main(int argc, const char * argv[]) {
     or (d <= 31 and mm == "October")
     or (d <= 30 and mm == "November")
     or (d <= 31 and mm == "January")) {
-        cout << endl << mm << ' ' << dd << ", " << yyyy << endl << endl;
+        if (m * d == y) {
+            cout << endl << date << " IS a magic date!" << endl << endl;
+        } else {
+            cout << endl << date << " is NOT a magic date!" << endl << endl;
+        }
     } else if (d >= 28 and mm == "February" and y % 4 != 0) {
         cout << "\nThere can't be more than 28 days in February because " << yyyy << " is not a leap year.\n\n";
         return 1;
-    }
-    else {
+    } else {
         cout << "\nInvalid day in month, please try again. Program will now exit.\n\n";
         return 1;
     }
