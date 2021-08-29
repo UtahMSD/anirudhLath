@@ -21,11 +21,13 @@ bool IsVowel(char c) {
     or c == 'i'
     or c == 'o'
     or c == 'u'
+    or c == 'y'
     or c == 'A'
     or c == 'E'
     or c == 'I'
     or c == 'O'
-    or c == 'U');
+    or c == 'U'
+    or c == 'Y');
 }
 
 bool IsConsonant(char c) {
