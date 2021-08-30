@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A91347EA26DD3FE300D99013 /* LetterHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A91347E926DD3FE300D99013 /* LetterHelpers.cpp */; };
+		A91347EE26DD438300D99013 /* WordHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A91347EC26DD438300D99013 /* WordHelpers.cpp */; };
 		A9E89AC426D9614500733014 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9E89AC326D9614500733014 /* main.cpp */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +25,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A91347E826DD3F1900D99013 /* LetterHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LetterHelpers.h; sourceTree = "<group>"; };
+		A91347E926DD3FE300D99013 /* LetterHelpers.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LetterHelpers.cpp; sourceTree = "<group>"; };
+		A91347EC26DD438300D99013 /* WordHelpers.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WordHelpers.cpp; sourceTree = "<group>"; };
+		A91347ED26DD438300D99013 /* WordHelpers.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = WordHelpers.hpp; sourceTree = "<group>"; };
 		A9E89AC026D9614500733014 /* StringAnalyzer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = StringAnalyzer; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9E89AC326D9614500733014 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -58,6 +64,10 @@
 			isa = PBXGroup;
 			children = (
 				A9E89AC326D9614500733014 /* main.cpp */,
+				A91347E826DD3F1900D99013 /* LetterHelpers.h */,
+				A91347E926DD3FE300D99013 /* LetterHelpers.cpp */,
+				A91347EC26DD438300D99013 /* WordHelpers.cpp */,
+				A91347ED26DD438300D99013 /* WordHelpers.hpp */,
 			);
 			path = StringAnalyzer;
 			sourceTree = "<group>";
@@ -118,7 +128,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A91347EE26DD438300D99013 /* WordHelpers.cpp in Sources */,
 				A9E89AC426D9614500733014 /* main.cpp in Sources */,
+				A91347EA26DD3FE300D99013 /* LetterHelpers.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
