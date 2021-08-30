@@ -25,10 +25,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		A91347E826DD3F1900D99013 /* LetterHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LetterHelpers.h; sourceTree = "<group>"; };
 		A91347E926DD3FE300D99013 /* LetterHelpers.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LetterHelpers.cpp; sourceTree = "<group>"; };
 		A91347EC26DD438300D99013 /* WordHelpers.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WordHelpers.cpp; sourceTree = "<group>"; };
 		A91347ED26DD438300D99013 /* WordHelpers.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = WordHelpers.hpp; sourceTree = "<group>"; };
+		A91347EF26DD46EB00D99013 /* LetterHelpers.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LetterHelpers.hpp; sourceTree = "<group>"; };
 		A9E89AC026D9614500733014 /* StringAnalyzer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = StringAnalyzer; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9E89AC326D9614500733014 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -63,8 +63,8 @@
 		A9E89AC226D9614500733014 /* StringAnalyzer */ = {
 			isa = PBXGroup;
 			children = (
+				A91347EF26DD46EB00D99013 /* LetterHelpers.hpp */,
 				A9E89AC326D9614500733014 /* main.cpp */,
-				A91347E826DD3F1900D99013 /* LetterHelpers.h */,
 				A91347E926DD3FE300D99013 /* LetterHelpers.cpp */,
 				A91347EC26DD438300D99013 /* WordHelpers.cpp */,
 				A91347ED26DD438300D99013 /* WordHelpers.hpp */,

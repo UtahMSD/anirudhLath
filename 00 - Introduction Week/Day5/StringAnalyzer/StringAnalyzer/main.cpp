@@ -5,7 +5,7 @@
 //  Created by Anirudh Lath on 8/27/21.
 //
 #include <iostream>
-#include "LetterHelpers.h"
+#include "LetterHelpers.hpp"
 #include "WordHelpers.hpp"
 using namespace std;
 

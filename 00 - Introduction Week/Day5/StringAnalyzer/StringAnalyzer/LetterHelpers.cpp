@@ -6,7 +6,7 @@
 //
 
 #include <stdio.h>
-#include "LetterHelpers.h"
+#include "LetterHelpers.hpp"
 #include <iostream>
 using namespace std;
 
