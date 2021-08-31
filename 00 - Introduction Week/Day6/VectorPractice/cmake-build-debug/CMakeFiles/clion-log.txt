@@ -1,1 +1,0 @@
-CMakeLists.txt not found in /Users/anirudhlath/anirudhLath/00 - Introduction Week/Day6/VectorPractice Select CMakeLists.txt
