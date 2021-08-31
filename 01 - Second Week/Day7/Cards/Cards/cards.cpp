@@ -46,13 +46,15 @@ void PrintDeck(vector<cards> deck){
     for(cards card: deck){
         if (!card.joker) {
             if (card.rank == 11) {
-                cout << "Jack of " << card.house << endl;
+                cout << "Jack of " << card.house << " of color " << card.color << endl;
             } else if (card.rank == 12) {
-                cout << "Queen of " << card.house << endl;
+                cout << "Queen of " << card.house << " of color " << card.color << endl;
             } else if (card.rank == 13) {
-                cout << "King of " << card.house << endl;
+                cout << "King of " << card.house << " of color " << card.color << endl;
+            } else if (card.rank == 1) {
+                cout << "Ace of " << card.house << " of color " << card.color << endl;
             } else {
-                cout << card.rank << " of " << card.house << endl;
+                cout << card.rank << " of " << card.house << " of color " << card.color << endl;
             }
         }
         if (card.joker) {
