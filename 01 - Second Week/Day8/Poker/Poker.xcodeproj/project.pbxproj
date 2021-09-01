@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A954BD6826DED21B0075559C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A954BD6726DED21B0075559C /* main.cpp */; };
+		A954BD9026E03C1D0075559C /* cards.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A954BD8F26E03C1D0075559C /* cards.cpp */; };
+		A954BD9226E03C540075559C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A954BD9126E03C540075559C /* main.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,7 +25,9 @@
 
 /* Begin PBXFileReference section */
 		A954BD6426DED21B0075559C /* Poker */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Poker; sourceTree = BUILT_PRODUCTS_DIR; };
-		A954BD6726DED21B0075559C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		A954BD8E26E03C1D0075559C /* cards.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = cards.hpp; sourceTree = "<group>"; };
+		A954BD8F26E03C1D0075559C /* cards.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cards.cpp; sourceTree = "<group>"; };
+		A954BD9126E03C540075559C /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +60,9 @@
 		A954BD6626DED21B0075559C /* Poker */ = {
 			isa = PBXGroup;
 			children = (
-				A954BD6726DED21B0075559C /* main.cpp */,
+				A954BD9126E03C540075559C /* main.cpp */,
+				A954BD8F26E03C1D0075559C /* cards.cpp */,
+				A954BD8E26E03C1D0075559C /* cards.hpp */,
 			);
 			path = Poker;
 			sourceTree = "<group>";
@@ -118,7 +123,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A954BD6826DED21B0075559C /* main.cpp in Sources */,
+				A954BD9226E03C540075559C /* main.cpp in Sources */,
+				A954BD9026E03C1D0075559C /* cards.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
