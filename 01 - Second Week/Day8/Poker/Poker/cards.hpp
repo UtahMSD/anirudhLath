@@ -22,8 +22,12 @@ struct cards {
 std::vector<cards> CreateDeck(int jokerCount);
 void PrintDeck(std::vector<cards> deck);
 void swapCards(cards & i, cards & j);
-void ShuffleDeck(std::vector<cards> & deck, int & randomSeed);
+void ShuffleDeck(std::vector<cards> & deck);
 std::vector<cards> dealFiveCards(std::vector<cards> deck);
+bool isFlush(std::vector<cards> cardsInHand);
 bool isStraight(std::vector<cards> cardsInHand);
+bool isStraightFlush(std::vector<cards> cardsInHand);
+bool isRoyalFlush(std::vector<cards> cardsInHand);
+bool isFullHouse(std::vector<cards> cardsInHand);
 
 #endif /* cards_hpp */

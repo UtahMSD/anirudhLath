@@ -82,7 +82,7 @@ void swapCards(cards & i, cards & j) {
     i = num;
 }
 
-void ShuffleDeck(vector<cards> & deck, int & randomSeed){ /* Seed added for later improvements */
+void ShuffleDeck(vector<cards> & deck){ /* Seed added for later improvements */
     for(int i = deck.size() - 1; i > 0; i-- ){
         int random = (rand() % (deck.size() - 1));
         int x = i;
@@ -96,41 +96,28 @@ void ShuffleDeck(vector<cards> & deck, int & randomSeed){ /* Seed added for late
 vector<cards> dealFiveCards(vector<cards> deck) {
     vector<cards> cardsInHand;
     for (int i = 0; i < 5; i++) {
-        int x = rand() % (deck.size() - 1);
-        cardsInHand.push_back(deck[x]);
+        //int x = rand() % (deck.size() - 1);
+        cardsInHand.push_back(deck[i]);
     }
     return cardsInHand;
 }
 
 bool isFlush(vector<cards> cardsInHand) {
-    int DiamondsCount = 0;
-    int HeartsCount = 0;
-    int SpadesCount = 0;
-    int ClubsCount = 0;
-    int jokerCount = 0;
-    bool isFlush = false;
+//    int DiamondsCount = 0;
+//    int HeartsCount = 0;
+//    int SpadesCount = 0;
+//    int ClubsCount = 0;
+//    int jokerCount = 0;
+//    bool isFlush = false;
     
-    for(cards card: cardsInHand){
-        if (card.house == "diamonds") {
-            DiamondsCount++;
-        } else if (card.house == "hearts") {
-            HeartsCount++;
-        } else if (card.house == "clubs") {
-            ClubsCount++;
-        } else if (card.house == "spades") {
-            SpadesCount++;
-        } else if (card.joker) {
-            jokerCount++;
+
+    for (int i = 0; i < cardsInHand.size() - 1; i++) {        
+        int r = i + 1;
+        if (cardsInHand[i].house != cardsInHand[r].house) {
+            return false;
         }
     }
-    if (DiamondsCount == (5 - jokerCount)
-        or HeartsCount == (5 - jokerCount)
-        or ClubsCount == (5 - jokerCount)
-        or SpadesCount == (5 - jokerCount))
-    {
-        isFlush = true;
-    }
-    return isFlush;
+    return true;
 }
 
 bool isStraight(vector<cards> cardsInHand) {
@@ -139,15 +126,85 @@ bool isStraight(vector<cards> cardsInHand) {
     for(cards card: cardsInHand){
         numStack.push_back(card.rank);
     }
-
+    
+    sort(numStack.begin(), numStack.end());
+    if(numStack[0] == 1 and numStack[1] == 10){
+        numStack[0] = 14;
+    }
     sort(numStack.begin(), numStack.end());
     
     for(int i = 0; i < numStack.size() - 1; i++){
         int r = i + 1;
         int check = numStack[r] - 1;
-        if(numStack[i] != check and numStack[i] != 0){
+        if(numStack[i] != check){
             return false;
         }
     }
     return true;
+}
+
+bool isStraightFlush(vector<cards> cardsInHand) {
+    vector<int> numStack;
+    
+    for(cards card: cardsInHand){
+        numStack.push_back(card.rank);
+    }
+
+    sort(numStack.begin(), numStack.end());
+    if(numStack[0] == 1 and numStack[1] == 10){
+        numStack[0] = 14;
+    }
+    sort(numStack.begin(), numStack.end());
+    
+    if (isFlush(cardsInHand) and isStraight(cardsInHand)) {
+        return true;
+    }
+    return false;
+}
+
+bool isRoyalFlush(vector<cards> cardsInHand) {
+    vector<int> numStack;
+    
+    for(cards card: cardsInHand){
+        numStack.push_back(card.rank);
+    }
+
+    sort(numStack.begin(), numStack.end());
+    if(numStack[0] == 1 and numStack[1] == 10){
+        numStack[0] = 14;
+    }
+    sort(numStack.begin(), numStack.end());
+    
+    
+    if (isStraightFlush(cardsInHand) and numStack[0] == 10) {
+        return true;
+    }
+    return false;
+}
+
+bool isFullHouse(vector<cards> cardsInHand) {
+    vector<int> numStack;
+    bool threes = false;
+    bool twos = false;
+    
+    for(cards card: cardsInHand){
+        numStack.push_back(card.rank);
+    }
+
+    sort(numStack.begin(), numStack.end());
+    
+    for(int i: numStack){
+        int count = 0;
+        for(int j: numStack) {
+            if (i == j) {
+                count++;
+            }
+        }
+        if (count == 3) {
+            threes = true;
+        } else if (count == 2) {
+            twos = true;
+        }
+    }
+    return threes and twos;
 }
