@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <time.h>
+#include <stdlib.h>
 #include "cards.hpp"
 
 using namespace std;
