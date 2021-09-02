@@ -14,7 +14,7 @@ using namespace std;
 
 int main(int argc, const char * argv[]) {
     
-//    srand(time(NULL));
+    srand(int (time(NULL)));
     
     // Variables
     vector<cards> deckOfCards1 = CreateDeck(0);
@@ -34,6 +34,7 @@ int main(int argc, const char * argv[]) {
     int straightFlushCount = 0;
     int royalFlushCount = 0;
     int fullHouseCount = 0;
+    int numTries = 1000000;
     
     vector<cards> flush = {card1, card6, card3, card4, card5};
     vector<cards> straight = {card1, card2, card3, card4, card5};
@@ -57,12 +58,6 @@ int main(int argc, const char * argv[]) {
         cout << "T2: CreateDeck() with jokers passed!" << endl;
     }
         
-//    // Print Test - Verify Console Output
-//    cout << endl;
-//    PrintDeck(deckOfCards1);
-//    cout << endl;
-//    PrintDeck(deckOfCards2);
-//    cout << endl;
     
     // Test of is*() functions
     if(!isStraight(straight)){
@@ -108,16 +103,6 @@ int main(int argc, const char * argv[]) {
         cout << "T8: All functions passed!" << endl << endl;
     }
     
-//    //Shuffle Test - Verify Console Ouput
-//    //for (int i = 0; i < 20; i++) {
-//    ShuffleDeck(deckOfCards1);
-//    //}
-//    cout << endl;
-//    PrintDeck(deckOfCards1);
-//    cout << endl;
-    
-    int numTries = 800000;
-    
     //    Deal 5 cards - Verify Console Ouput
         for (int i = 0; i < numTries; i++) {
             ShuffleDeck(deckOfCards1);
@@ -139,12 +124,14 @@ int main(int argc, const char * argv[]) {
             }
         }
     
-    cout << "Statistics of 800,000 shuffles:\n";
-    cout << "Fraction of flushes: " << ((flushCount * 1.00000000)/numTries) << endl;
-    cout << "Fraction of straights: " << ((straightCount * 1.00000000)/numTries) << endl;
-    cout << "Fraction of straight flushes: " << ((straightFlushCount * 1.00000000)/numTries) << endl;
-    cout << "Fraction of royal flushes: " << ((royalFlushCount * 1.00000000)/numTries) << endl;
-    cout << "Fraction of full houses: " << ((fullHouseCount * 1.00000000)/numTries) << endl << endl;
+    //Statistics Output
+    cout << "Statistics of " << numTries << " shuffles:\n";
+    cout << "Straights: " << straightCount  << " times, " << ((straightCount * 1.00000000)/numTries) * 100 << "%" << endl;
+    cout << "Flushes: " << flushCount  << " times, " << ((flushCount * 1.00000000)/numTries) * 100 << "%" << endl;
+    cout << "Full houses: " << fullHouseCount  << " times, " << ((fullHouseCount * 1.00000000)/numTries) * 100 << "%" << endl;
+    cout << "Straight flushes: " << straightFlushCount  << " times, " << ((straightFlushCount * 1.00000000)/numTries) * 100 << "%" << endl;
+    cout << "Royal flushes: " << royalFlushCount  << " times, " << ((royalFlushCount * 1.00000000)/numTries) * 100 << "%" << endl << endl;
+    
     cout << "All tests passed!" << endl << endl;
     return 0;
 }

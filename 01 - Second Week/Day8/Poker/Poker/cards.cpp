@@ -8,6 +8,7 @@
 #include "cards.hpp"
 #include <iostream>
 #include <cstdlib>
+#include <time.h>
 
 using namespace std;
 
@@ -21,6 +22,7 @@ vector<cards> CreateDeck(int jokerCount){
     // Populate the deck
     for( string house: houses) {
         card.house = house;
+        card.joker = false;
         if (house == "clubs" or house == "spades") {
             card.color = "black";
         } else {
@@ -47,6 +49,8 @@ vector<cards> CreateDeck(int jokerCount){
 }
 
 void PrintDeck(vector<cards> deck){
+    
+    //Iterate the deck
     for(cards card: deck){
         if (!card.joker) {
             if(card.house == "spades"){
@@ -70,47 +74,36 @@ void PrintDeck(vector<cards> deck){
                 cout << card.rank << " " << card.house << " of color " << card.color << endl;
             }
         }
-        if (card.joker) {
+        //Check for Jokers
+        else if (card.joker) {
             cout << "Joker" << endl;
         }
+        
     }
 }
 
-void swapCards(cards & i, cards & j) {
-    cards num = j;
-    j = i;
-    i = num;
-}
-
-void ShuffleDeck(vector<cards> & deck){ /* Seed added for later improvements */
+void ShuffleDeck(vector<cards> & deck){
+    // For Loop iterate every card and swaps it with a random card.
     for(int i = deck.size() - 1; i > 0; i-- ){
         int random = (rand() % (deck.size() - 1));
         int x = i;
         cards card = deck[i];
         deck[x] = deck[random];
         deck[random] = card;
-//        swapCards(deck[i], deck[rand() % deck.size() - 1]);
     }
 }
 
 vector<cards> dealFiveCards(vector<cards> deck) {
+    //This function deals top 5 cards of a given deck.
     vector<cards> cardsInHand;
     for (int i = 0; i < 5; i++) {
-        //int x = rand() % (deck.size() - 1);
         cardsInHand.push_back(deck[i]);
     }
     return cardsInHand;
 }
 
 bool isFlush(vector<cards> cardsInHand) {
-//    int DiamondsCount = 0;
-//    int HeartsCount = 0;
-//    int SpadesCount = 0;
-//    int ClubsCount = 0;
-//    int jokerCount = 0;
-//    bool isFlush = false;
-    
-
+    // Checks if given deck is flush or not.
     for (int i = 0; i < cardsInHand.size() - 1; i++) {        
         int r = i + 1;
         if (cardsInHand[i].house != cardsInHand[r].house) {
@@ -121,6 +114,7 @@ bool isFlush(vector<cards> cardsInHand) {
 }
 
 bool isStraight(vector<cards> cardsInHand) {
+    // Checks if given deck is straight or not.
     vector<int> numStack;
     
     for(cards card: cardsInHand){
@@ -144,6 +138,7 @@ bool isStraight(vector<cards> cardsInHand) {
 }
 
 bool isStraightFlush(vector<cards> cardsInHand) {
+    // Checks if given deck is straight flush or not.
     vector<int> numStack;
     
     for(cards card: cardsInHand){
@@ -163,6 +158,7 @@ bool isStraightFlush(vector<cards> cardsInHand) {
 }
 
 bool isRoyalFlush(vector<cards> cardsInHand) {
+    // Checks if given deck is royal flush or not.
     vector<int> numStack;
     
     for(cards card: cardsInHand){
@@ -183,6 +179,7 @@ bool isRoyalFlush(vector<cards> cardsInHand) {
 }
 
 bool isFullHouse(vector<cards> cardsInHand) {
+    // Checks if given deck is full house or not.
     vector<int> numStack;
     bool threes = false;
     bool twos = false;
