@@ -102,6 +102,16 @@ vector<cards> dealFiveCards(vector<cards> deck) {
     return cardsInHand;
 }
 
+void sortHand(vector<cards> & deck) {
+    for (int i = 0; i < deck.size(); i++) {
+        for (int x = 0; x < deck.size(); x++) {
+            if(deck[i].rank < deck[x].rank) {
+                swap(deck[i], deck[x]);
+            }
+        }
+    }
+}
+
 bool isFlush(vector<cards> cardsInHand) {
     // Checks if given deck is flush or not.
     for (int i = 0; i < cardsInHand.size() - 1; i++) {        
@@ -113,43 +123,61 @@ bool isFlush(vector<cards> cardsInHand) {
     return true;
 }
 
-bool isStraight(vector<cards> cardsInHand) {
-    // Checks if given deck is straight or not.
-    vector<int> numStack;
-    
-    for(cards card: cardsInHand){
-        numStack.push_back(card.rank);
+bool isStraight(vector<cards> & cardsInHand) {
+    vector<cards> deck = cardsInHand;
+    sortHand(deck);
+    if(deck[0].rank == 1 and deck[1].rank == 10) {
+        deck[0].rank = 14;
     }
+    sortHand(deck);
+    sortHand(cardsInHand);
     
-    sort(numStack.begin(), numStack.end());
-    if(numStack[0] == 1 and numStack[1] == 10){
-        numStack[0] = 14;
-    }
-    sort(numStack.begin(), numStack.end());
-    
-    for(int i = 0; i < numStack.size() - 1; i++){
+    for(int i = 0; i < cardsInHand.size() - 1; i++){
         int r = i + 1;
-        int check = numStack[r] - 1;
-        if(numStack[i] != check){
+        int check = cardsInHand[r].rank - 1;
+        if(cardsInHand[i].rank != check){
             return false;
         }
     }
+    
+    
+    
+    // Checks if given deck is straight or not.
+//    vector<int> numStack;
+//    
+//    for(cards card: cardsInHand){
+//        numStack.push_back(card.rank);
+//    }
+//    
+//    sort(numStack.begin(), numStack.end());
+//    if(numStack[0] == 1 and numStack[1] == 10){
+//        numStack[0] = 14;
+//    }
+//    sort(numStack.begin(), numStack.end());
+//    
+//    for(int i = 0; i < numStack.size() - 1; i++){
+//        int r = i + 1;
+//        int check = numStack[r] - 1;
+//        if(numStack[i] != check){
+//            return false;
+//        }
+//    }
     return true;
 }
 
 bool isStraightFlush(vector<cards> cardsInHand) {
     // Checks if given deck is straight flush or not.
-    vector<int> numStack;
-    
-    for(cards card: cardsInHand){
-        numStack.push_back(card.rank);
-    }
-
-    sort(numStack.begin(), numStack.end());
-    if(numStack[0] == 1 and numStack[1] == 10){
-        numStack[0] = 14;
-    }
-    sort(numStack.begin(), numStack.end());
+//    vector<int> numStack;
+//
+//    for(cards card: cardsInHand){
+//        numStack.push_back(card.rank);
+//    }
+//
+//    sort(numStack.begin(), numStack.end());
+//    if(numStack[0] == 1 and numStack[1] == 10){
+//        numStack[0] = 14;
+//    }
+//    sort(numStack.begin(), numStack.end());
     
     if (isFlush(cardsInHand) and isStraight(cardsInHand)) {
         return true;
@@ -160,19 +188,14 @@ bool isStraightFlush(vector<cards> cardsInHand) {
 bool isRoyalFlush(vector<cards> cardsInHand) {
     // Checks if given deck is royal flush or not.
     vector<int> numStack;
-    
-    for(cards card: cardsInHand){
-        numStack.push_back(card.rank);
-    }
 
-    sort(numStack.begin(), numStack.end());
-    if(numStack[0] == 1 and numStack[1] == 10){
-        numStack[0] = 14;
+    sortHand(cardsInHand);
+    if(cardsInHand[0].rank == 1 and cardsInHand[1].rank == 10) {
+        cardsInHand[0].rank = 14;
     }
-    sort(numStack.begin(), numStack.end());
+    sortHand(cardsInHand);
     
-    
-    if (isStraightFlush(cardsInHand) and numStack[0] == 10) {
+    if (isStraightFlush(cardsInHand) and cardsInHand[0].rank == 10) {
         return true;
     }
     return false;
