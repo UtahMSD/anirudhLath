@@ -111,11 +111,11 @@ book readData(ifstream &infile, string userWord = "") {
     
     for(string word: book1.bookData.words) {
         book1.bookData.totalCharacters += word.size();
-        if (word.size() < shortestWordLength) {
+        if (word.size() < shortestWordLength && isalpha(word[0])) {
             shortestWordLength = word.size();
             book1.bookData.shortestWord = word;
         }
-        if (word.size() > longestWordLength) {
+        if (word.size() > longestWordLength && isalpha(word[0])) {
             longestWordLength = word.size();
             book1.bookData.longestWord = word;
         }
