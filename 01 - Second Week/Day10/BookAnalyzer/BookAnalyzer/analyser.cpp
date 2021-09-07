@@ -37,9 +37,11 @@ int main(int argc, const char * argv[]) {
         exit(1);
     }
     
-    //Logic
+    // Logic
     book testBook = readData(file, userWord);
     printStatistics(testBook);
     
+    // Close the file
+    file.close();
     return 0;
 }

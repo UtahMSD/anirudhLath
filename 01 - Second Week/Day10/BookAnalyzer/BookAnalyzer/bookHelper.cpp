@@ -17,9 +17,9 @@ using namespace std;
 // Created a function to extract string between to given words. Assigned a default value to avoid errors if the next keyword is not found.
 string phraseExtractor(vector<string> data, string start, string end  = "") {
     string phrase;
-    int startIndex;
-    int endIndex;
-    int maxRange = data.size();
+    int startIndex = 0;
+    int endIndex = 0;
+    int maxRange = int(data.size());
     bool startState = false;
     bool endState = false;
     // Date algorithm is different therefore saving that for another bool check.
@@ -27,10 +27,10 @@ string phraseExtractor(vector<string> data, string start, string end  = "") {
         for(int i = 0; i < maxRange; i++) {
             if(data[i] == start) {
                 startIndex = i;
+                endIndex = i;
                 startState = true;
                 maxRange = i + 100;
             }
-            
             if(data[i] == end) {
                 endIndex = i;
                 endState = true;
@@ -99,24 +99,24 @@ book readData(ifstream &infile, string userWord = "") {
     //Prepare book and content data structure.
     book1.bookData.userWord = userWord;
     book1.bookData.words = readToVector(infile);
-    book1.bookData.totalWords = book1.bookData.words.size();
+    book1.bookData.totalWords = int(book1.bookData.words.size());
     book1.title = phraseExtractor(book1.bookData.words, "Title:", "Author:");
     book1.author = phraseExtractor(book1.bookData.words, "Author:", "Release");
     book1.releaseDate = phraseExtractor(book1.bookData.words, "Date:");
     
-    shortestWordLength = book1.bookData.words[0].size();
-    longestWordLength = book1.bookData.words[0].size();
+    shortestWordLength = int(book1.bookData.words[0].size());
+    longestWordLength = int(book1.bookData.words[0].size());
     book1.bookData.shortestWord = book1.bookData.words[0];
     book1.bookData.longestWord = book1.bookData.words[0];
     
     for(string word: book1.bookData.words) {
         book1.bookData.totalCharacters += word.size();
         if (word.size() < shortestWordLength && isalpha(word[0])) {
-            shortestWordLength = word.size();
+            shortestWordLength = int(word.size());
             book1.bookData.shortestWord = word;
         }
         if (word.size() > longestWordLength && isalpha(word[0])) {
-            longestWordLength = word.size();
+            longestWordLength = int(word.size());
             book1.bookData.longestWord = word;
         }
     }
