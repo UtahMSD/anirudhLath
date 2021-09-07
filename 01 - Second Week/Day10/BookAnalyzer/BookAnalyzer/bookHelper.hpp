@@ -14,12 +14,14 @@
 #include <fstream>
 #include <iomanip>
 
+// Search word statistical data
 struct userWordStat {
     int location = 0;
     std::string wordsAround;
     
 };
 
+// Content data of the given book
 struct content {
     std::vector<std::string> words;
     int totalWords = 0;
@@ -31,6 +33,7 @@ struct content {
     
 };
 
+// Structure of the book
 struct book {
     content bookData;
     std::string title;
@@ -39,6 +42,7 @@ struct book {
     
 };
 
+// Definitions that will be used in main() in analyser.cpp
 book readData(std::ifstream &infile, std::string userWord);
 void printStatistics(book book1);
 

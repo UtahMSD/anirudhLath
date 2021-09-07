@@ -14,6 +14,7 @@
 
 using namespace std;
 
+// Created a function to extract string between to given words. Assigned a default value to avoid errors if the next keyword is not found.
 string phraseExtractor(vector<string> data, string start, string end  = "") {
     string phrase;
     int startIndex;
@@ -21,7 +22,7 @@ string phraseExtractor(vector<string> data, string start, string end  = "") {
     int maxRange = data.size();
     bool startState = false;
     bool endState = false;
-    
+    // Date algorithm is different therefore saving that for another bool check.
     if(start != "Date:") {
         for(int i = 0; i < maxRange; i++) {
             if(data[i] == start) {
@@ -39,18 +40,18 @@ string phraseExtractor(vector<string> data, string start, string end  = "") {
             }
         }
         
-        if(startState == true && endState == true) {
+        if(startState == true && endState == true) { //If any of the states are false, "Unknown" will be assigned to the search element.
             for(int i = startIndex + 1; i < endIndex; i++) {
                 if(i != endIndex - 1) {
                     phrase += data[i] + " ";
-                } else {
+                } else { // Don't add space if it is the last word.
                     phrase += data[i];
                 }
             }
         } else {
             phrase = "Unknown";
         }
-    } else {
+    } else { //Date algorithm
         for(int i = 0; i < maxRange; i++) {
             if(data[i] == start) {
                 phrase += data[i+1] + " " + data[i+2] + " " + data[i+3];
@@ -60,6 +61,7 @@ string phraseExtractor(vector<string> data, string start, string end  = "") {
     return phrase;
 }
 
+// Add all words to a vector.
 vector<string> readToVector(ifstream &infile) {
     vector<string> bookData;
     string word;
@@ -69,6 +71,7 @@ vector<string> readToVector(ifstream &infile) {
     return bookData;
 }
 
+// Prepare search word statistics
 void userWordStats(book &book1) {
     string searchWord = book1.bookData.userWord;
     userWordStat stat;
@@ -93,8 +96,7 @@ book readData(ifstream &infile, string userWord = "") {
     int shortestWordLength;
     int longestWordLength;
     
-    //vector<string> bookData = readToVector(infile);
-    
+    //Prepare book and content data structure.
     book1.bookData.userWord = userWord;
     book1.bookData.words = readToVector(infile);
     book1.bookData.totalWords = book1.bookData.words.size();
@@ -118,15 +120,11 @@ book readData(ifstream &infile, string userWord = "") {
             book1.bookData.longestWord = word;
         }
     }
-    userWordStats(book1);
-//    book1.bookData.userWord;
-//    for(userWordStat stat: book1.bookData.userWordStats) {
-//        cout << stat.location << stat.wordsAround << endl;
-//    }
+    userWordStats(book1); // Prepare userWordStat struct and populate book.content.userWordStats
     return book1;
 }
 
-
+// Create a print function for ease of use and clean main() structure.
 void printStatistics(book book1) {
     cout << "Statistics for " << book1.title << " by " << book1.author << ":\n";
     cout << " Number of words: " << book1.bookData.totalWords << endl;
@@ -140,5 +138,4 @@ void printStatistics(book book1) {
         }
         cout << endl;
     }
-    
 }
