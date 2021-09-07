@@ -1,0 +1,23 @@
+Decimal		Binary		Hex
+----------------------------------------
+12		1100		0xC
+63		111111		0x3F
+100		1100100		0x64
+127		1111111		0x7F
+254		11111110		0xFE
+----------------------------------------
+4		100		0x4
+17		10001		0x11
+34		100010		0x22
+192		11000000		0xC0
+255		11111111		0xFF
+----------------------------------------
+10		1010		0xA
+192		11000000		0xC0
+255		11111111		0xFF
+48879		1011000000000000	0xBEEF
+61453		1111000000001101	0xF00D
+
+The maximum number we can write using 8 binary digits is 11111111. The value in decimal is 255 and in hex is 0xFF. The significance of this number is that it can refer to any character on the ASCII table. It refers to a single byte of data.
+
+Five fingers is all I need,
