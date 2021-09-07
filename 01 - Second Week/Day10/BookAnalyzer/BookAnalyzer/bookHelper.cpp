@@ -14,7 +14,7 @@
 
 using namespace std;
 
-string phraseExtractor(vector<string> data, string start, string end) {
+string phraseExtractor(vector<string> data, string start, string end  = "") {
     string phrase;
     int startIndex;
     int endIndex;
@@ -87,7 +87,7 @@ void userWordStats(book &book1) {
 }
 
 
-book readData(ifstream &infile, string userWord) {
+book readData(ifstream &infile, string userWord = "") {
     book book1;
     string word;
     int shortestWordLength;

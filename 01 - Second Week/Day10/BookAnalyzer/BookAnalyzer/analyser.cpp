@@ -18,7 +18,7 @@ int main(int argc, const char * argv[]) {
     
     
     string bookName = "aFableForCritics.txt";
-    string userWord = "";
+    string userWord = "This";
     
     if(argc > 2) {
         bookName = argv[1];
