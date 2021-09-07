@@ -17,7 +17,7 @@ using namespace std;
 int main(int argc, const char * argv[]) {
     
     
-    string bookName = "aFableForCritics.txt";
+    string bookName = "mobydick.txt";
     string userWord = "This";
     
     if(argc > 2) {

@@ -92,6 +92,7 @@ book readData(ifstream &infile, string userWord = "") {
     string word;
     int shortestWordLength;
     int longestWordLength;
+    
     //vector<string> bookData = readToVector(infile);
     
     book1.bookData.userWord = userWord;
@@ -103,6 +104,8 @@ book readData(ifstream &infile, string userWord = "") {
     
     shortestWordLength = book1.bookData.words[0].size();
     longestWordLength = book1.bookData.words[0].size();
+    book1.bookData.shortestWord = book1.bookData.words[0];
+    book1.bookData.longestWord = book1.bookData.words[0];
     
     for(string word: book1.bookData.words) {
         book1.bookData.totalCharacters += word.size();

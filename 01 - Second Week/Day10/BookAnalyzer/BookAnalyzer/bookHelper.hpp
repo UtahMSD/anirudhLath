@@ -15,15 +15,15 @@
 #include <iomanip>
 
 struct userWordStat {
-    int location;
+    int location = 0;
     std::string wordsAround;
     
 };
 
 struct content {
     std::vector<std::string> words;
-    int totalWords;
-    int totalCharacters;
+    int totalWords = 0;
+    int totalCharacters = 0;
     std::string userWord;
     std::string shortestWord;
     std::string longestWord;
