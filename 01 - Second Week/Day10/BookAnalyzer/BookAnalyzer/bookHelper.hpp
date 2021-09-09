@@ -21,6 +21,12 @@ struct userWordStat {
     
 };
 
+// Search proper noun statistical data
+struct properNounStat {
+    int location = 0;
+    std::string wordsAround;
+};
+
 // Content data of the given book
 struct content {
     std::vector<std::string> words;
@@ -30,6 +36,7 @@ struct content {
     std::string shortestWord;
     std::string longestWord;
     std::vector<userWordStat> userWordStats;
+    std::vector<properNounStat> properNounStats;
     
 };
 
@@ -45,5 +52,6 @@ struct book {
 // Definitions that will be used in main() in analyser.cpp
 book readData(std::ifstream &infile, std::string userWord);
 void printStatistics(book book1);
+void encodeData(std::ofstream& myStream, book &book1, int encodeKey);
 
 #endif /* bookHelper_hpp */

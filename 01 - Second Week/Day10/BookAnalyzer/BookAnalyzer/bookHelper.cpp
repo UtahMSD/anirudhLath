@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <fstream>
 #include <iomanip>
+#include <cmath>
 
 using namespace std;
 
@@ -89,6 +90,84 @@ void userWordStats(book &book1) {
     }
 }
 
+void properNounStats(book &book1) {
+    properNounStat stat;
+    int charCount = 0;
+    for(int i = 0; i < book1.bookData.words.size(); i++) {
+        charCount += book1.bookData.words[i].size();
+        if(book1.bookData.words[i][0] > 64 and
+           book1.bookData.words[i][0] < 91 and
+           book1.bookData.words[i][1] > 96 and
+           book1.bookData.words[i][1] < 123)
+        {
+            if( book1.bookData.words[i - 1][book1.bookData.words[i - 1].size() - 1] != '.' and
+                book1.bookData.words[i - 1][book1.bookData.words[i - 1].size() - 1] != '!' and
+                book1.bookData.words[i - 1][book1.bookData.words[i - 1].size() - 1] != '?') {
+                stat.wordsAround = book1.bookData.words[i-1] + " " + book1.bookData.words[i] + " " + book1.bookData.words[i+1];
+                charCount -= book1.bookData.words[i].size();
+                stat.location = (charCount * 100) / book1.bookData.totalCharacters;
+                charCount += book1.bookData.words[i].size();
+                book1.bookData.properNounStats.push_back(stat);
+            }
+        }
+    }
+}
+
+bool IsDecimalWord( const string & word ) {
+    for(char c: word) {
+        if(!isdigit(c)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+string intToBinaryString(int num) {
+    string result;
+    bool negative = false;
+    
+    if (num < 0) {
+        negative = true;
+    }
+    
+    while(num != 0) {
+        if(num % 2 == 0) {
+            result.insert(result.begin(), '0');
+        } else {
+            result.insert(result.begin(), '1');
+        }
+        num /= 2;
+    }
+    
+    if(negative) {
+        result.insert(result.begin(), '-');
+    }
+    return result;
+}
+
+string EncodeWord( const string & word, int encodeKey) {
+    string encodedWord;
+    if(!IsDecimalWord(word)) {
+        for(char c: word) {
+            if(isupper(c)) {
+                char newChar = ((c + encodeKey) % 91);
+                encodedWord.push_back(newChar);
+            } else if (islower(c)) {
+                char newChar = ((c + encodeKey) % 123);
+                encodedWord.push_back(newChar);
+            } else if (isdigit(c)) {
+                char newChar = ((c + encodeKey) % 58);
+                encodedWord.push_back(newChar);
+            } else {
+                encodedWord.push_back(c);
+            }
+        }
+    } else {
+        encodedWord = intToBinaryString(stoi(word));
+    }
+    return encodedWord;
+}
+
 
 book readData(ifstream &infile, string userWord = "") {
     book book1;
@@ -121,7 +200,15 @@ book readData(ifstream &infile, string userWord = "") {
         }
     }
     userWordStats(book1); // Prepare userWordStat struct and populate book.content.userWordStats
+    properNounStats(book1);
     return book1;
+}
+
+void encodeData(ofstream& myStream, book &book1, int encodeKey){
+    for(string word: book1.bookData.words) {
+        myStream << EncodeWord(word, encodeKey) << " ";
+    }
+    myStream.close();
 }
 
 // Create a print function for ease of use and clean main() structure.
@@ -134,6 +221,13 @@ void printStatistics(book book1) {
     if (book1.bookData.userWord != "") {
         cout << "The word " << '"' << book1.bookData.userWord << '"' << " appears " << book1.bookData.userWordStats.size() << " times:\n";
         for (userWordStat stat: book1.bookData.userWordStats) {
+            cout << " at " << stat.location << "%: " << '"' << stat.wordsAround << '"' << endl;
+        }
+        cout << endl;
+    }
+    if (book1.bookData.properNounStats.size() > 0) {
+        cout << "There are " << book1.bookData.properNounStats.size() << " proper nouns in this book:\n";
+        for (properNounStat stat: book1.bookData.properNounStats) {
             cout << " at " << stat.location << "%: " << '"' << stat.wordsAround << '"' << endl;
         }
         cout << endl;
