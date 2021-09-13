@@ -44,17 +44,8 @@ using namespace std;
  */
 bool GetBit( uint32_t input, int b )
 {
-    vector<int> binary = {};
-    for (int i = 0 ; i < 32; i++) {
-        int bit = input % 2;
-        binary.push_back(bit);
-        input /= 2;
-    }
-    
-    if (binary[b] == 1) {
-        return true;
-    }
-  return false;
+    int i = input >> b;
+    return (i & 0x1) == 1;
 }
 
 
@@ -90,15 +81,16 @@ bool IsNegative( int input )
  */
 int NumBitsSet( uint32_t input )
 {
-    int count = 0;
-    for (int i = 0 ; i < 32; i++) {
-        int bit = input % 2;
-        input /= 2;
-        if (bit == 1) {
-            count++;
+    int i = input;
+        int count = 0;
+        int index = 0;
+        while (index < 32){
+            if(GetBit( i, index)){
+                count++;
+            }
+            index++;
         }
-    }
-  return count;
+        return count;
 }
 
 
@@ -120,32 +112,21 @@ int NumBitsSet( uint32_t input )
  */
 unsigned char GetByte( uint32_t input, int b )
 {
-    vector<int> binary = {};
-    int bitSize = (b + 1) * 8;
-    int startIndex = 0;
-    for (int i = 0 ; i < 32; i++) {
-        int bit = input % 2;
-        binary.push_back(bit);
-        input /= 2;
-    }
-    
-    if(bitSize == 16) {
-        startIndex = 8;
-    } else if (bitSize == 24) {
-        startIndex = 16;
-    } else if (bitSize == 32) {
-        startIndex = 24;
-    }
-    
-    int sum = 0;
-    int count = 0;
-    
-    for (int i = startIndex ; i < bitSize; i++) {
-        sum += binary[i] * pow(2, count);
-        count++;
-    }
-    char u_result = sum;
-  return u_result;
+    int i = input;
+        if( b == 0){
+            i = i & 0xff;
+        }
+        else if( b == 1){
+            i = (i & 0xff00) >> 8;
+        }
+        else if( b == 2){
+            i = (i & 0xff0000) >> 16;
+        }
+        else if( b == 3){
+            i = i >> 24;
+        }
+        unsigned char c = i;     // why char unsigned?
+        return c;
 }
 
 
@@ -169,41 +150,32 @@ unsigned char GetByte( uint32_t input, int b )
  */
 uint32_t SetByte( uint32_t input, uint8_t value, int b )
 {
-    vector<int> binary = {};
-    vector<int> binary8 = {};
-    int bitSize = (b + 1) * 8;
-    int startIndex = 0;
-    for (int i = 0 ; i < 32; i++) {
-        int bit = input % 2;
-        binary.push_back(bit);
-        input /= 2;
-    }
-    
-    for (int i = 0 ; i < 8; i++) {
-        int bit = value % 2;
-        binary8.push_back(bit);
-        value /= 2;
-    }
-    
-    if(bitSize == 16) {
-        startIndex = 8;
-    } else if (bitSize == 24) {
-        startIndex = 16;
-    } else if (bitSize == 32) {
-        startIndex = 24;
-    }
-    
-    u_int32_t sum = 0;
-    int count = 0;
-    
-    for (int i = startIndex ; i < bitSize; i++) {
-        binary[i] = binary8[count];
-        count++;
-    }
-    for (int i = 0; i < 32; i++) {
-        sum += binary[i] * pow(2, i);
-    }
-    return sum;
+    uint32_t i = input;
+        int j;
+        if( b == 0){
+            i = i & 0xffffff00;
+            i = i | value;
+        }
+        else if( b == 1){
+            j = i & 0xff;
+            i = (i & 0xffff0000) >> 8;
+            i = (i | value) << 8;
+            i = i | j;
+            
+        }
+        else if( b == 2){
+            j = i & 0xffff;
+            i = (i & 0xff000000) >> 16;
+            i = (i | value) << 16;
+            i = i | j;
+        }
+        else if( b == 3){
+            j = i & 0xffffff;
+            i = i >> 24 << 8;
+            i = (i | value) << 24;
+            i = i | j;
+        }
+        return i;
 }
 
 
@@ -230,7 +202,14 @@ uint32_t SetByte( uint32_t input, uint8_t value, int b )
  */
 int Negate( int input )
 {
-  return ~input + 1;
+    input = ~input;
+        int pos = 1;
+        while ( pos & input ){
+            input = input ^ pos;
+            pos = pos << 1;
+        }
+        input = input ^ pos;
+        return input;
 }
 
 
@@ -240,8 +219,14 @@ int Negate( int input )
  * Increment
  * This function should return x + 1 but should only make use of bitwise operators and == or !=
 */
-int Increment( uint32_t x ){
-  return (-(~x));
+int Increment( uint32_t input ){
+    int pos = 1;
+    while ( pos & input ){
+        input = input ^ pos;
+        pos = pos << 1;
+    }
+    input = input ^ pos;
+    return input;
 }
 
 
@@ -260,6 +245,7 @@ int Increment( uint32_t x ){
 /*
  * Compare two 32-bit values
  */
+
 void Test32Bit( int a, int b, const string & message )
 {
   if( a != b ) {
@@ -273,6 +259,7 @@ void Test32Bit( int a, int b, const string & message )
 /*
  * Compare two 8-bit values
  */
+
 void Test8Bit( unsigned char a, unsigned char b, const string & message )
 {
   if( a != b ) {
@@ -286,6 +273,7 @@ void Test8Bit( unsigned char a, unsigned char b, const string & message )
 /*
  * Compare two boolean values
  */
+
 void TestBool( bool a, bool b, const string & message )
 {
   if( a != b ) {
