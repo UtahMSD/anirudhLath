@@ -69,4 +69,6 @@ void growVector( vector &myVec ) {
     for(int i = 0; i < myVec.size; i++) {
         index[i] = myVec.index[i];
     }
+    myVec.index = nullptr;
+    myVec.index = index;
 }
