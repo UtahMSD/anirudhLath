@@ -46,6 +46,7 @@ int main(int argc, const char * argv[]) {
             && get(testVector2, i) != i
             && get(testVector2, i) != i ) {
             std::cout << "T3: get() failed!!!\n";
+            exit(1);
         }
     }
     std::cout << "T3: get() passed!\n";
@@ -53,11 +54,34 @@ int main(int argc, const char * argv[]) {
     // T4: set Test
     for (int i = 150; i > 0; i--) {
         set(testVector, i - 1, 150 - i);
-        set(testVector, i - 1, 150 - i);
-        set(testVector, i - 1, 150 - i);
+        set(testVector2, i - 1, 150 - i);
+        set(testVector3, i - 1, 150 - i);
+        if (   get(testVector, i - 1) != 150 - i
+            && get(testVector2, i - 1) != 150 - i
+            && get(testVector3, i - 1) != 150 - i) {
+            std::cout << "T4: set() failed!!!\n";
+            exit(1);
+        }
     }
+    std::cout << "T4: set() passed!\n";
+    
+    // T5: growVector Test
+    int vec1 = testVector.capacity;
+    int vec2 = testVector2.capacity;
+    int vec3 = testVector3.capacity;
+    growVector(testVector);
+    growVector(testVector2);
+    growVector(testVector3);
+    
+    if (   testVector.capacity != vec1 * 2
+        && testVector2.capacity != vec2 * 2
+        && testVector3.capacity != vec3 * 2) {
+        std::cout << "T5: growVector() failed!!!\n";
+        exit(1);
+    }
+    std::cout << "T5: growVector() passed!\n";
 
-    // T: pushBack Test
+    // T6: pushBack Test
     for(int i = 0; i < 150; i++) {
         popBack(testVector);
         popBack(testVector2);
@@ -65,48 +89,30 @@ int main(int argc, const char * argv[]) {
         if (testVector.size != 150 - i - 1 && testVector.index[i] != 0
             && testVector2.size != 150 - i - 1 && testVector2.index[i] != 0
             && testVector3.size != 150 - i - 1 && testVector3.index[i] != 0) {
-            std::cout << "T: popBack() failed!!!\n";
+            std::cout << "T6: popBack() failed!!!\n";
             exit(1);
         }
     }
-    std::cout << "T: popBack() passed!\n";
+    std::cout << "T6: popBack() passed!\n";
     
-//    pushBack(testVector, 5);
-//    pushBack(testVector, 4);
-//    pushBack(testVector, 3);
-//    pushBack(testVector, 2);
-//    pushBack(testVector, 1);
+    // T7: freeVector Test
+    int *myvec1 = testVector.index;
+    int *myvec2 = testVector2.index;
+    int *myvec3 = testVector3.index;
     
-    for (int i = 0; i < testVector.size; i++) {
-        std::cout << testVector.index[i] << " ";
+    freeVector(testVector);
+    freeVector(testVector2);
+    freeVector(testVector3);
+    
+    if (   testVector.index == myvec1
+        && testVector2.index == myvec2
+        && testVector3.index == myvec3) {
+        std::cout << "T7: freeVector() failed!!!\n";
+        exit(1);
     }
+    std::cout << "T7: freeVector() passed!\n\n";
     
-    std::cout << "| Size: " << testVector.size << " | Capacity: " << testVector.capacity << " | Address: " << testVector.index << std::endl;
-    
-    popBack(testVector);
-    
-    for (int i = 0; i < testVector.size; i++) {
-        std::cout << testVector.index[i] << " ";
-    }
-    
-    std::cout << "| Size: " << testVector.size << " | Capacity: " << testVector.capacity << " | Address: " << testVector.index << std::endl;
-    
-//    freeVector(testVector);
-//
-//    for (int i = 0; i < testVector.size; i++) {
-//        std::cout << testVector.index[i] << " ";
-//    }
-//
-//    std::cout << "| Size: " << testVector.size << " | Capacity: " << testVector.capacity << " | Address: " << testVector.index << std::endl;
-    
-    
-    std::cout << "get() at index 2: " << get(testVector, 3) << std::endl;
-    set(testVector, 3, 6);
-    std::cout << "set() at index 4: " << *(testVector.index + 4) << std::endl;
-    
-    for (int i = 0; i < testVector.size; i++) {
-        std::cout << testVector.index[i] << " ";
-    }
+    std::cout << "*** ALL TESTS PASSED! ***\n\n";
     
     return 0;
 }
