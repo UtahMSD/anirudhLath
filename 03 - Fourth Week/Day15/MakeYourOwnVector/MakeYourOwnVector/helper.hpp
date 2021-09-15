@@ -10,18 +10,32 @@
 
 #include <stdio.h>
 
-struct vector {
+class myvector {
+private:
+    
+    // Variables
     int* index;
     int capacity;
     int size;
+    
+public:
+    
+    // Constructor
+    myvector();
+    myvector( int initialCapacity );
+    
+    // Public Methods
+    void growVector();
+    void freeVector();
+    int getSize() const;
+    int* getAddress() const;
+    int getCapacity() const;
+    int getIndex(int i) const;
+    void pushBack(int num);
+    void popBack();
+    int get(int i) const;
+    void set(int i, int newValue);
+    
 };
-
-vector makeVector( int initialCapacity );
-void freeVector(vector &MyVec);
-void pushBack(vector &myVec, int num);
-void popBack(vector &myVec);
-int get(vector myVec, int index);
-void set(vector &myVec, int index, int newValue);
-void growVector( vector &myVec );
 
 #endif /* helper_hpp */

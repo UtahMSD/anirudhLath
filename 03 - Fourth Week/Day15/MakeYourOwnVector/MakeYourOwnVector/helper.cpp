@@ -9,35 +9,53 @@
 #include <iostream>
 #include <stdlib.h>
 
-vector makeVector( int initialCapacity ) {
-    vector vector1;
-    vector1.capacity = initialCapacity;
-    vector1.size = 0;
-    vector1.index = new int[initialCapacity];
-    
-    return vector1;
+myvector::myvector(){
+    capacity = 10;
+    size = 0;
+    index = new int[10];
 }
 
-void freeVector(vector &MyVec) {
-    //delete [] MyVec.index;
-    MyVec.index = nullptr;
+myvector::myvector( int initialCapacity ) {
+    capacity = initialCapacity;
+    size = 0;
+    index = new int[initialCapacity];
 }
 
-void pushBack(vector &myVec, int num) {
-    if (myVec.size < myVec.capacity) {
-        myVec.index[myVec.size] = num;
+int myvector::getSize() const {
+    return size;
+}
+
+int* myvector::getAddress() const {
+    return index;
+}
+
+int myvector::getCapacity() const {
+    return capacity;
+}
+
+int myvector::getIndex(int i) const {
+    return index[i];
+}
+
+void myvector::freeVector() {
+    index = nullptr;
+}
+
+void myvector::pushBack(int num) {
+    if (size < capacity) {
+        index[size] = num;
     } else {
-        growVector(myVec);
-        myVec.index[myVec.size] = num;
+        growVector();
+        index[size] = num;
     }
     
-    myVec.size++;
+    size++;
 }
 
-void popBack(vector &myVec) {
-    if (myVec.size > 0) {
-        myVec.size--;
-        myVec.index[myVec.size] = NULL;
+void myvector::popBack() {
+    if (size > 0) {
+        size--;
+        index[size] = NULL;
     } else {
         std::cout << "There are no elements in this vector to pop." << std::endl;
         exit(1);
@@ -46,29 +64,29 @@ void popBack(vector &myVec) {
 
 }
 
-int get(vector myVec, int index) {
-    if (index >= myVec.size) {
+int myvector::get(int i) const {
+    if (i >= size) {
         std::cout << "The index you have entered is out of range." << std::endl;
         exit(1);
     }
-    return myVec.index[index];
+    return index[i];
 }
 
-void set(vector &myVec, int index, int newValue) {
-    if (index < myVec.size) {
-        *(myVec.index + index) = newValue;
+void myvector::set(int i, int newValue) {
+    if (i < size) {
+        *(index + i) = newValue;
     } else {
         std::cout << "The index you have entered is out of range. Please try again with a valid index." << std::endl;
         exit(1);
     }
 }
 
-void growVector( vector &myVec ) {
-    myVec.capacity *= 2;
-    int * index = new int[myVec.capacity];
-    for(int i = 0; i < myVec.size; i++) {
-        index[i] = myVec.index[i];
+void myvector::growVector() {
+    capacity *= 2;
+    int * ind = new int[capacity];
+    for(int i = 0; i < size; i++) {
+        ind[i] = index[i];
     }
-    myVec.index = nullptr;
-    myVec.index = index;
+    index = nullptr;
+    index = ind;
 }
