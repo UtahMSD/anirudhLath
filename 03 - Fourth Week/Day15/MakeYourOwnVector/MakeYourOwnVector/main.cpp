@@ -25,10 +25,10 @@ int main(int argc, const char * argv[]) {
         std::cout << "T1: makeVector() failed!!!\n";
         exit(1);
     }
-    std::cout << "Statistics of each vector:\n";
-    std::cout << "testVector  ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
-    std::cout << "testVector2 ===> Size = " << testVector2.getSize() << " | Capacity: " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
-    std::cout << "testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
+    std::cout << " Statistics of each vector:\n";
+    std::cout << " testVector  ===> Size = " << testVector.getSize() << " | Capacity:   " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
+    std::cout << " testVector2 ===> Size = " << testVector2.getSize() << " | Capacity:  " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
+    std::cout << " testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
     
     // T2: pushBack Test
     for(int i = 0; i < 150; i++) {
@@ -43,11 +43,11 @@ int main(int argc, const char * argv[]) {
         }
     }
     std::cout << "T2: pushBack() passed!\n";
-    std::cout << "Statistics of each vector:\n";
-    std::cout << "*** NOTICE THE ADDRESS CHANGED DUE TO growVector() ***\n";
-    std::cout << "testVector  ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
-    std::cout << "testVector2 ===> Size = " << testVector2.getSize() << " | Capacity: " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
-    std::cout << "testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
+    std::cout << " Statistics of each vector:\n";
+    std::cout << " *** NOTICE THE ADDRESS CHANGED DUE TO growVector() ***\n";
+    std::cout << " testVector  ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
+    std::cout << " testVector2 ===> Size = " << testVector2.getSize() << " | Capacity: " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
+    std::cout << " testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
 
     
     // T3: get Test
@@ -60,10 +60,10 @@ int main(int argc, const char * argv[]) {
         }
     }
     std::cout << "T3: get() passed!\n";
-    std::cout << "Statistics of each vector:\n";
-    std::cout << "testVector  ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
-    std::cout << "testVector2 ===> Size = " << testVector2.getSize() << " | Capacity: " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
-    std::cout << "testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
+    std::cout << " Statistics of each vector:\n";
+    std::cout << " testVector  ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
+    std::cout << " testVector2 ===> Size = " << testVector2.getSize() << " | Capacity: " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
+    std::cout << " testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
     
     // T4: set Test
     for (int i = 150; i > 0; i--) {
@@ -78,10 +78,10 @@ int main(int argc, const char * argv[]) {
         }
     }
     std::cout << "T4: set() passed!\n";
-    std::cout << "Statistics of each vector:\n";
-    std::cout << "testVector  ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
-    std::cout << "testVector2 ===> Size = " << testVector2.getSize() << " | Capacity: " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
-    std::cout << "testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
+    std::cout << " Statistics of each vector:\n";
+    std::cout << " testVector  ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
+    std::cout << " testVector2 ===> Size = " << testVector2.getSize() << " | Capacity: " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
+    std::cout << " testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
     
     // T5: growVector Test
     int vec1 = testVector.getCapacity();
@@ -98,10 +98,10 @@ int main(int argc, const char * argv[]) {
         exit(1);
     }
     std::cout << "T5: growVector() passed!\n";
-    std::cout << "Statistics of each vector:\n";
-    std::cout << "testVector  ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
-    std::cout << "testVector2 ===> Size = " << testVector2.getSize() << " | Capacity: " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
-    std::cout << "testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
+    std::cout << " Statistics of each vector:\n";
+    std::cout << " testVector  ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
+    std::cout << " testVector2 ===> Size = " << testVector2.getSize() << " | Capacity: " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
+    std::cout << " testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
 
     // T6: pushBack Test
     for(int i = 0; i < 150; i++) {
@@ -116,10 +116,10 @@ int main(int argc, const char * argv[]) {
         }
     }
     std::cout << "T6: popBack() passed!\n";
-    std::cout << "Statistics of each vector:\n";
-    std::cout << "testVector  ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
-    std::cout << "testVector2 ===> Size = " << testVector2.getSize() << " | Capacity: " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
-    std::cout << "testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
+    std::cout << " Statistics of each vector:\n";
+    std::cout << " testVector  ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
+    std::cout << " testVector2 ===> Size = " << testVector2.getSize() << " | Capacity: " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
+    std::cout << " testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
     
     // T7: freeVector Test
     int *myvec1 = testVector.getAddress();
@@ -136,14 +136,14 @@ int main(int argc, const char * argv[]) {
         std::cout << "T7: freeVector() failed!!!\n";
         exit(1);
     }
-    std::cout << "T7: freeVector() passed!\n\n";
+    std::cout << "T7: freeVector() passed!\n";
     
-    std::cout << "Statistics of each vector:\n";
-    std::cout << "testVector  ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
-    std::cout << "testVector2 ===> Size = " << testVector2.getSize() << " | Capacity: " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
-    std::cout << "testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
+    std::cout << " Statistics of each vector:\n";
+    std::cout << " testVector  ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
+    std::cout << " testVector2 ===> Size = " << testVector2.getSize() << " | Capacity: " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
+    std::cout << " testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
     
-    std::cout << "*** ALL TESTS PASSED! ***\n\n";
+    std::cout << "[******************** ALL TESTS PASSED! ********************]\n\n";
     
     return 0;
 }
