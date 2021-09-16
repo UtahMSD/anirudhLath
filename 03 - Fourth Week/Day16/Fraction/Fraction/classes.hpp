@@ -36,7 +36,24 @@ public:
     
     Fraction reciprocal(); // Returns a new fraction that is the reciprocal of this fraction.
     std::string toString(); // Returns a string representing this fraction. The string should have the format: "N/D", where N is the numerator, and D is the denominator. This method should always print the reduced form of the fraction. If the fraction is negative, the sign should be displayed on the numerator, e.g., "-1/2" not "1/-2".
-    double toDouble(); // Returns a (double precision) floating point number that is the approximate value of this fraction, printed as a real number.
+    double toDouble() const; // Returns a (double precision) floating point number that is the approximate value of this fraction, printed as a real number.
+    
+    /// Operations Overload
+    Fraction operator+(const Fraction& rhs);
+    Fraction& operator+=( const Fraction& rhs);
+    Fraction operator-(const Fraction& rhs);
+    Fraction& operator-=( const Fraction& rhs);
+    Fraction operator*(const Fraction& rhs);
+    Fraction& operator*=( const Fraction& rhs);
+    Fraction operator/(const Fraction& rhs);
+    Fraction& operator/=( const Fraction& rhs);
+    bool operator==(const Fraction& rhs);
+    bool operator!=( const Fraction& rhs);
+    bool operator<(const Fraction& rhs);
+    bool operator>( const Fraction& rhs);
+    bool operator<=(const Fraction& rhs);
+    bool operator>=( const Fraction& rhs);
+    
 };
 
 #endif /* classes_hpp */

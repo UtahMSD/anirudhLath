@@ -216,6 +216,15 @@ void TestPlus()
     result = f4.toString();
     Test( "Addition of non-reduced", "13/6", result );
     
+    Fraction f5 = f1 + f2;
+    result = f5.toString();
+    Test( "operator+ overload", "17/12", result );
+    
+    f1 += f2;
+    result = f1.toString();
+    Test( "operator+= overload", "17/12", result );
+    
+    
 }
 
 /*
@@ -234,6 +243,14 @@ void TestMinus()
     Fraction f4 = f3.minus(f2);
     result = f4.toString();
     Test( "Subtraction of non-reduced", "-5/6", result );
+    
+    Fraction f5 = f1 - f2;
+    result = f5.toString();
+    Test( "operator- overload", "-1/12", result );
+    
+    f1 -= f2;
+    result = f1.toString();
+    Test( "operator-= overload", "-1/12", result );
     
 }
 
@@ -254,6 +271,14 @@ void TestMultiply()
     result = f4.toString();
     Test( "Multiplication of non-reduced", "3/8", result );
     
+    Fraction f5 = f1 * f2;
+    result = f5.toString();
+    Test( "operator* overload", "1/2", result );
+    
+    f1 *= f2;
+    result = f1.toString();
+    Test( "operator*= overload", "1/2", result );
+    
 }
 
 void TestDivide()
@@ -270,6 +295,31 @@ void TestDivide()
     result = f4.toString();
     Test( "Division of non-reduced", "32/27", result );
     
+    Fraction f5 = f1 / f2;
+    result = f5.toString();
+    Test( "operator/ overload", "8/9", result );
+    
+    f1 /= f2;
+    result = f1.toString();
+    Test( "operator/= overload", "8/9", result );
+    
+}
+
+void TestBool()
+{
+  std::string result = "";
+  Fraction f1(4, 6);
+  Fraction f2(3, 4);
+    Fraction f10(4, 6);
+    
+    cout << "Test: Bool operator overload test\n";
+    
+    if (f1 > f2 or f1 >= f2 or f2 < f1 or f2 <= f1
+        or f1 == f2 or f1 != f10) {
+        cout << "    FAILED\n";
+    } else if (f2 > f1 and f1 >= f10 and f1 < f2 and f10 <= f1 and f1 == f10 and f1 != f2) {
+        cout << "    PASSED\n";
+    }
 }
 
 void TestToDouble()
@@ -323,13 +373,11 @@ int main()
   TestReciprocal();
   TestToDouble();
   TestPlus();
-    
-
   Test("Approximating pi", 3.141592, ComputePi());
-    // There is some issue when k is higher than 2. The pi function doesn't work. But all helpers are working perfectly fine, I don't understand where it doesn't work.
-
     TestMinus();
     TestMultiply();
     TestDivide();
-
+    TestBool();
+    
+    // The 3 functions are not needed as we are not destroying any objects here in the operation overloads. We are just referencing and changing the member variables.
 }

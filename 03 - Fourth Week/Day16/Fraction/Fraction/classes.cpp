@@ -68,17 +68,21 @@ Fraction Fraction::minus(Fraction rhs){
 
 Fraction Fraction::times(Fraction rhs){
     Fraction result;
+    rhs.resolve();
     result.numerator = (long) numerator * (long)rhs.numerator;
     result.denominator = (long) denominator * (long)rhs.denominator;
+    result.resolve();
     result.resolve();
     return result;
 } // Returns a new fraction that is the result of this fraction multiplied by the right hand side (rhs) fraction.
 
 Fraction Fraction::dividedBy(Fraction rhs){
     Fraction result;
+    rhs.resolve();
     result.numerator = (long) numerator * (long) rhs.denominator;
     result.denominator = (long) denominator * (long) rhs.numerator;
     result.resolve();
+    result.reduce();
     return result;
 } // Returns a new fraction that is the result of this fraction divided by the right hand side (rhs) fraction.
 
@@ -119,8 +123,105 @@ std::string Fraction::toString(){
     return result;
 } // Returns a string representing this fraction. The string should have the format: "N/D", where N is the numerator, and D is the denominator. This method should always print the reduced form of the fraction. If the fraction is negative, the sign should be displayed on the numerator, e.g., "-1/2" not "1/-2".
 
-double Fraction::toDouble(){
+double Fraction::toDouble() const{
     double result = (long) numerator * 1.0000000000 / (long) denominator * 1.0000000000;
     
     return result;
 } // Returns a (double precision) floating point number that is the approximate value of this fraction, printed as a real number.
+
+Fraction Fraction::operator+(const Fraction& rhs) {
+    Fraction f1 = plus(rhs);
+    return f1;
+}
+
+Fraction& Fraction::operator+=( const Fraction& rhs){
+    Fraction f1 = plus(rhs);
+    numerator = f1.numerator;
+    denominator = f1.denominator;
+    return *this;
+}
+
+Fraction Fraction::operator-(const Fraction& rhs) {
+    Fraction f1 = minus(rhs);
+    return f1;
+}
+
+Fraction& Fraction::operator-=( const Fraction& rhs){
+    Fraction f1 = minus(rhs);
+    numerator = f1.numerator;
+    denominator = f1.denominator;
+    return *this;
+}
+
+Fraction Fraction::operator*(const Fraction& rhs) {
+    Fraction f1 = times(rhs);
+    return f1;
+}
+
+Fraction& Fraction::operator*=( const Fraction& rhs) {
+    Fraction f1 = times(rhs);
+    numerator = f1.numerator;
+    denominator = f1.denominator;
+    return *this;
+}
+
+Fraction Fraction::operator/(const Fraction& rhs) {
+    Fraction f1 = dividedBy(rhs);
+    return f1;
+}
+Fraction& Fraction::operator/=( const Fraction& rhs){
+    Fraction f1 = dividedBy(rhs);
+    numerator = f1.numerator;
+    denominator = f1.denominator;
+    return *this;
+}
+
+bool Fraction::operator==(const Fraction& rhs) {
+    if(numerator == rhs.numerator && denominator == rhs.denominator) {
+        return true;
+    }
+    return false;
+}
+bool Fraction::operator!=( const Fraction& rhs) {
+    if(numerator == rhs.numerator && denominator == rhs.denominator) {
+        return false;
+    }
+    return true;
+}
+bool Fraction::operator<(const Fraction& rhs) {
+    double thisDouble = toDouble();
+    double rhsDouble = rhs.toDouble();
+    
+    if(thisDouble < rhsDouble) {
+        return true;
+    }
+    return false;
+}
+
+bool Fraction::operator>( const Fraction& rhs) {
+    double thisDouble = toDouble();
+    double rhsDouble = rhs.toDouble();
+    
+    if(thisDouble > rhsDouble) {
+        return true;
+    }
+    return false;
+}
+bool Fraction::operator<=(const Fraction& rhs) {
+    double thisDouble = toDouble();
+    double rhsDouble = rhs.toDouble();
+    
+    if(thisDouble <= rhsDouble) {
+        return true;
+    }
+    return false;
+}
+bool Fraction::operator>=( const Fraction& rhs) {
+    double thisDouble = toDouble();
+    double rhsDouble = rhs.toDouble();
+    
+    if(thisDouble >= rhsDouble) {
+        return true;
+    }
+    return false;
+}
