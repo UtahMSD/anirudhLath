@@ -48,17 +48,21 @@ Fraction::Fraction(long n, long d){
 
 Fraction Fraction::plus(Fraction rhs){
     Fraction result;
+    rhs.resolve();
     result.numerator = (long)(numerator * rhs.denominator) + (long)(rhs.numerator * denominator);
     result.denominator = (long) denominator * (long)rhs.denominator;
     result.resolve();
+    result.reduce();
     return result;
 } // Returns a new fraction that is the result of the right hand side (rhs) fraction added to this fraction.
 
 Fraction Fraction::minus(Fraction rhs){
     Fraction result;
+    rhs.resolve();
     result.numerator = (long)(numerator * (long) rhs.denominator) - (rhs.numerator * denominator);
     result.denominator = (long) denominator * (long)rhs.denominator;
     result.resolve();
+    result.reduce();
     return result;
 } // Returns a new fraction that is the result of the right hand side (rhs) fraction subtracted from this fraction.
 

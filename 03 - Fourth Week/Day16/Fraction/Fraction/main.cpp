@@ -294,7 +294,7 @@ double ComputePi()
   // Note that even with long (64-bit) numbers,
   // the intermediate numbers required for fraction addition
   // become too large to represent if we go above k=4.
-  for( long k = 0; k < 3; k++ )
+  for( long k = 0; k < 4; k++ )
   {
     Fraction multiplier( 1, pow(16, k) );
     Fraction firstTerm(  4, 8*k + 1 );
