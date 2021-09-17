@@ -23,10 +23,12 @@ public:
     // Constructor
     myvector();
     myvector( int initialCapacity );
+    myvector(const myvector & vec);
+    
+    
     
     // Public Methods
     void growVector();
-    void freeVector();
     int getSize() const;
     int* getAddress() const;
     int getCapacity() const;
@@ -35,6 +37,14 @@ public:
     void popBack();
     int get(int i) const;
     void set(int i, int newValue);
+    
+    // Destructor
+    ~myvector();
+    
+    // Operation overload
+    myvector& operator=(const myvector & rhs);
+    int operator[](int i) const;
+    int & operator[](int i);
     
 };
 

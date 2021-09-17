@@ -42,6 +42,7 @@ int main(int argc, const char * argv[]) {
             exit(1);
         }
     }
+    
     std::cout << "T2: pushBack() passed!\n";
     std::cout << " Statistics of each vector:\n";
     std::cout << " *** NOTICE THE ADDRESS CHANGED DUE TO growVector() ***\n";
@@ -49,8 +50,38 @@ int main(int argc, const char * argv[]) {
     std::cout << " testVector2 ===> Size = " << testVector2.getSize() << " | Capacity: " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
     std::cout << " testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
 
+    // Test
     
-    // T3: get Test
+    myvector testCopy(testVector);
+    
+    for(int i = 0; i < 150; i++) {
+        if(testCopy[i] != testVector[i] and testCopy.getSize() != testVector.getSize() and testCopy.getCapacity() != testVector.getCapacity()) {
+            std::cout << "T9: Copy Constructor failed!!!\n\n";
+        }
+    }
+    std::cout << "T9: Copy Constructor passed!!!\n\n";
+
+    
+    myvector testOperator;
+    testOperator = testVector;
+    
+    testVector[10] = 1000;
+    //std::cout << "Testing operator testVector[10] = 1000 ==> " << testVector[10] << std::endl;
+    if (testVector[10] != 1000) {
+        std::cout << "T10: Operation Overload '[]' failed!!!\n\n";
+    }
+    std::cout << "T10: Operation Overload '[]' passed!\n\n";
+    
+    for(int i = 0; i < 150; i++) {
+        if(testOperator[i] != testVector[i] and testOperator.getSize() != testVector.getSize() and testOperator.getCapacity() != testVector.getCapacity()) {
+            std::cout << "T11: Operation Overload '=' failed!!!\n\n";
+        }
+    }
+    std::cout << "T11: Operation Overload '=' passed!\n\n";
+    testVector[10] = 10;
+   
+    
+//     T3: get Test
     for (int i = 0; i < 150; i++) {
         if (testVector.get(i) != i
             && testVector2.get(i) != i
@@ -59,6 +90,7 @@ int main(int argc, const char * argv[]) {
             exit(1);
         }
     }
+    
     std::cout << "T3: get() passed!\n";
     std::cout << " Statistics of each vector:\n";
     std::cout << " testVector  ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
@@ -121,29 +153,35 @@ int main(int argc, const char * argv[]) {
     std::cout << " testVector2 ===> Size = " << testVector2.getSize() << " | Capacity: " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
     std::cout << " testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
     
-    // T7: freeVector Test
+    // T7: Destructor Test
     int *myvec1 = testVector.getAddress();
     int *myvec2 = testVector2.getAddress();
     int *myvec3 = testVector3.getAddress();
     
-    testVector.freeVector();
-    testVector2.freeVector();
-    testVector3.freeVector();
+    myvector vec4(testVector);
+    
+    testVector.~myvector();
+    testVector2.~myvector();
+    testVector3.~myvector();
     
     if (   testVector.getAddress() == myvec1
         && testVector2.getAddress() == myvec2
         && testVector3.getAddress() == myvec3) {
-        std::cout << "T7: freeVector() failed!!!\n";
+        std::cout << "T7: ~myvector() failed!!!\n";
         exit(1);
     }
-    std::cout << "T7: freeVector() passed!\n";
+    std::cout << "T7: ~myvector() passed!\n";
     
     std::cout << " Statistics of each vector:\n";
     std::cout << " testVector  ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
     std::cout << " testVector2 ===> Size = " << testVector2.getSize() << " | Capacity: " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
     std::cout << " testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
     
+    
+    
     std::cout << "[******************** ALL TESTS PASSED! ********************]\n\n";
+    
+    
     
     return 0;
 }
