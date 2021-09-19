@@ -21,14 +21,19 @@ myvector::myvector( int initialCapacity ) {
     index = new int[initialCapacity];
 } // Constructor with initial capacity param
 
-myvector::myvector(const myvector & rhs) {    
-    int * newData = new int[rhs.capacity];
+myvector::myvector(const myvector & rhs) {
+    int * newData = new int[rhs.capacity]; // Create own memory allocation
     for(int i = 0; i < rhs.size; i++) {
         newData[i] = rhs.index[i];
     }
     capacity = rhs.capacity;
     size = rhs.size;
     index = newData;
+    
+    if(index == rhs.index) {
+        std::cout << "Memory reallocation warning. Please check the code." << std::endl;
+        exit(1); // If this and rhs are pointing to the same address in memory, notify the user about it. Simple error check.
+    }
 } // Copy Constructor
 
 myvector::~myvector() {
@@ -106,6 +111,12 @@ void myvector::growVector() {
 }
 
 myvector& myvector::operator=(const myvector & rhs) {
+    
+    // Reassignment memory leak protection
+    if (this == &rhs) {
+        return *this;
+    }
+    
     int * newData = new int[rhs.capacity];
     for(int i = 0; i < rhs.size; i++) {
         newData[i] = rhs.index[i];
@@ -114,6 +125,11 @@ myvector& myvector::operator=(const myvector & rhs) {
     size = rhs.size;
     delete [] index;
     index = newData;
+    
+    if(index == rhs.index) {
+        std::cout << "Memory reallocation warning. Please check the code." << std::endl;
+        exit(1); // If this and rhs are pointing to the same address in memory, notify the user about it. Simple error check.
+    }
     
     return *this;
 }

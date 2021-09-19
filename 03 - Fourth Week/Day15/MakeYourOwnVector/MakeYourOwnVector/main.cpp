@@ -9,13 +9,7 @@
 
 
 
-int main(int argc, const char * argv[]) {
-    
-    // T1: Make Vector Test
-    myvector testVector(4);
-    myvector testVector2(10);
-    myvector testVector3(129);
-    
+void makeVectorTest(const myvector &testVector, const myvector &testVector2, const myvector &testVector3) {
     if (testVector.getCapacity() == 4 && testVector.getSize() == 0
         && testVector2.getCapacity() == 10 && testVector2.getSize() == 0
         && testVector3.getCapacity() == 129 && testVector3.getSize() == 0)
@@ -29,8 +23,9 @@ int main(int argc, const char * argv[]) {
     std::cout << " testVector  ===> Size = " << testVector.getSize() << " | Capacity:   " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
     std::cout << " testVector2 ===> Size = " << testVector2.getSize() << " | Capacity:  " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
     std::cout << " testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
-    
-    // T2: pushBack Test
+}
+
+static void pushBackTest(myvector &testVector, myvector &testVector2, myvector &testVector3) {
     for(int i = 0; i < 150; i++) {
         testVector.pushBack(i);
         testVector2.pushBack(i);
@@ -49,39 +44,59 @@ int main(int argc, const char * argv[]) {
     std::cout << " testVector  ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
     std::cout << " testVector2 ===> Size = " << testVector2.getSize() << " | Capacity: " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
     std::cout << " testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
+}
 
-    // Test
-    
+static void CopyConstructorTest(myvector &testVector) {
     myvector testCopy(testVector);
     
     for(int i = 0; i < 150; i++) {
-        if(testCopy[i] != testVector[i] and testCopy.getSize() != testVector.getSize() and testCopy.getCapacity() != testVector.getCapacity()) {
+        if(testCopy[i] != testVector[i] or testCopy.getSize() != testVector.getSize() or testCopy.getCapacity() != testVector.getCapacity() or testCopy.getAddress() == testVector.getAddress()) {
             std::cout << "T9: Copy Constructor failed!!!\n\n";
+            exit(1);
         }
     }
-    std::cout << "T9: Copy Constructor passed!!!\n\n";
-
     
+    std::cout << "T9: Copy Constructor passed!!!\n";
+    std::cout << " Statistics of each vector:\n";
+    std::cout << " *** NOTICE THE ADDRESS CHANGED ***\n";
+    std::cout << " testVector  ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
+    std::cout << " testCopy    ===> Size = " << testCopy.getSize() << " | Capacity: " << testCopy.getCapacity() << " | Address: " << testCopy.getAddress() << "\n\n";
+}
+
+static void OperationOverloadTest(myvector &testVector) {
     myvector testOperator;
     testOperator = testVector;
+    int beforeValue = testVector[10];
     
     testVector[10] = 1000;
     //std::cout << "Testing operator testVector[10] = 1000 ==> " << testVector[10] << std::endl;
     if (testVector[10] != 1000) {
-        std::cout << "T10: Operation Overload '[]' failed!!!\n\n";
+        std::cout << "T10: Operation Overload '[]' failed!!!\n";
+        exit(1);
     }
-    std::cout << "T10: Operation Overload '[]' passed!\n\n";
+    std::cout << "T10: Operation Overload '[]' passed!\n";
+    std::cout << "testVector[10] before assignment was: " << beforeValue << std::endl;
+    std::cout << "testVector[10] before assignment is:  " << testVector[10] << "\n";
+    std::cout << "testOperator[10] value after assign:  " <<testOperator[10] << "\n";
+    testVector[10] = 10;
+    std::cout << " *** TestVector[10] reverted to a value of " << beforeValue << " ***\n\n";
     
     for(int i = 0; i < 150; i++) {
-        if(testOperator[i] != testVector[i] and testOperator.getSize() != testVector.getSize() and testOperator.getCapacity() != testVector.getCapacity()) {
-            std::cout << "T11: Operation Overload '=' failed!!!\n\n";
+        if(testOperator[i] != testVector[i] or testOperator.getSize() != testVector.getSize() or testOperator.getCapacity() != testVector.getCapacity() or testOperator.getAddress() == testVector.getAddress()) {
+            std::cout << "T11: Operation Overload '=' failed!!!\n";
+            exit(1);
         }
     }
-    std::cout << "T11: Operation Overload '=' passed!\n\n";
-    testVector[10] = 10;
-   
+    std::cout << "T11: Operation Overload '=' passed!\n";
     
-//     T3: get Test
+    std::cout << " Statistics of each vector:\n";
+    std::cout << " *** NOTICE THE ADDRESS CHANGED ***\n";
+    std::cout << " testVector   ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
+    std::cout << " testOperator ===> Size = " << testOperator.getSize() << " | Capacity: " << testOperator.getCapacity() << " | Address: " << testOperator.getAddress() << "\n\n";
+    
+}
+
+static void getTest(const myvector &testVector, const myvector &testVector2, const myvector &testVector3) {
     for (int i = 0; i < 150; i++) {
         if (testVector.get(i) != i
             && testVector2.get(i) != i
@@ -96,8 +111,9 @@ int main(int argc, const char * argv[]) {
     std::cout << " testVector  ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
     std::cout << " testVector2 ===> Size = " << testVector2.getSize() << " | Capacity: " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
     std::cout << " testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
-    
-    // T4: set Test
+}
+
+static void setTest(myvector &testVector, myvector &testVector2, myvector &testVector3) {
     for (int i = 150; i > 0; i--) {
         testVector.set(i - 1, 150 - i);
         testVector2.set(i - 1, 150 - i);
@@ -114,8 +130,9 @@ int main(int argc, const char * argv[]) {
     std::cout << " testVector  ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
     std::cout << " testVector2 ===> Size = " << testVector2.getSize() << " | Capacity: " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
     std::cout << " testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
-    
-    // T5: growVector Test
+}
+
+static void growVectorTest(myvector &testVector, myvector &testVector2, myvector &testVector3) {
     int vec1 = testVector.getCapacity();
     int vec2 = testVector2.getCapacity();
     int vec3 = testVector3.getCapacity();
@@ -134,8 +151,9 @@ int main(int argc, const char * argv[]) {
     std::cout << " testVector  ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
     std::cout << " testVector2 ===> Size = " << testVector2.getSize() << " | Capacity: " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
     std::cout << " testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
+}
 
-    // T6: pushBack Test
+static void pushBackTests(myvector &testVector, myvector &testVector2, myvector &testVector3) {
     for(int i = 0; i < 150; i++) {
         testVector.popBack();
         testVector2.popBack();
@@ -148,12 +166,13 @@ int main(int argc, const char * argv[]) {
         }
     }
     std::cout << "T6: popBack() passed!\n";
-    std::cout << " Statistics of each vector:\n";
+    std::cout << " Statistics of each; vector:\n";
     std::cout << " testVector  ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
     std::cout << " testVector2 ===> Size = " << testVector2.getSize() << " | Capacity: " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
     std::cout << " testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
-    
-    // T7: Destructor Test
+}
+
+static void DestructorTest(myvector &testVector, myvector &testVector2, myvector &testVector3) {
     int *myvec1 = testVector.getAddress();
     int *myvec2 = testVector2.getAddress();
     int *myvec3 = testVector3.getAddress();
@@ -176,6 +195,42 @@ int main(int argc, const char * argv[]) {
     std::cout << " testVector  ===> Size = " << testVector.getSize() << " | Capacity: " << testVector.getCapacity() << " | Address: " << testVector.getAddress() << "\n";
     std::cout << " testVector2 ===> Size = " << testVector2.getSize() << " | Capacity: " << testVector2.getCapacity() << " | Address: " << testVector2.getAddress() << "\n";
     std::cout << " testVector3 ===> Size = " << testVector3.getSize() << " | Capacity: " << testVector3.getCapacity() << " | Address: " << testVector3.getAddress() << "\n\n";
+}
+
+
+
+int main(int argc, const char * argv[]) {
+    
+    myvector testVector(4);
+    myvector testVector2(10);
+    myvector testVector3(129);
+    
+    // T1: Make Vector Test
+    makeVectorTest(testVector, testVector2, testVector3);
+    
+    // T2: pushBack Test
+    pushBackTest(testVector, testVector2, testVector3);
+
+    // T9: Copy Constructor Test
+    CopyConstructorTest(testVector);
+
+    // T10, T11: Operation Overload Test
+    OperationOverloadTest(testVector);
+   
+    // T3: get Test
+    getTest(testVector, testVector2, testVector3);
+    
+    // T4: set Test
+    setTest(testVector, testVector2, testVector3);
+    
+    // T5: growVector Test
+    growVectorTest(testVector, testVector2, testVector3);
+
+    // T6: pushBack Test
+    pushBackTests(testVector, testVector2, testVector3);
+    
+    // T7: Destructor Test
+    DestructorTest(testVector, testVector2, testVector3);
     
     
     
