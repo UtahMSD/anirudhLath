@@ -83,7 +83,7 @@ static void OperationOverloadTest(myvector<T> &testVector) {
     std::cout << "T10: Operation Overload '[]' passed!\n";
     std::cout << "testVector[10] before assignment was: " << beforeValue << std::endl;
     std::cout << "testVector[10] before assignment is:  " << testVector[10] << "\n";
-    std::cout << "testOperator[10] value after assign:  " <<testOperator[10] << "\n";
+    std::cout << "testOperator[10] value after assign:  " << testOperator[10] << "\n";
     testVector[10] = 10; // Reassign the value to 10 so that it doesn't break the other tests.
     std::cout << " *** TestVector[10] reverted to a value of " << beforeValue << " ***\n\n";
 
