@@ -40,6 +40,10 @@ public:
     void popBack();
     T get(int i) const;
     void set(int i, T newValue);
+    T* begin();
+    T* begin() const;
+    T* end();
+    T* end() const;
     
     // Destructor
     ~myvector();
@@ -278,6 +282,26 @@ bool myvector<T>::operator<(myvector<T> rhs) {
         exit(1);
     }
     return true;
+}
+
+template <typename T>
+T* myvector<T>::begin() {
+    return index;
+}
+
+template <typename T>
+T* myvector<T>::begin() const {
+    return index;
+}
+
+template <typename T>
+T* myvector<T>::end() {
+    return index + (size - 1);
+}
+
+template <typename T>
+T* myvector<T>::end() const {
+    return index + (size - 1);
 }
 
 #endif /* helper_hpp */

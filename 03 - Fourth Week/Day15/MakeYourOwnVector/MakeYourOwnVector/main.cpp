@@ -6,6 +6,9 @@
 //
 #include "helper.hpp"
 #include <iostream>
+#include <algorithm>
+#include <numeric>
+
 
 
 
@@ -295,6 +298,8 @@ int main(int argc, const char * argv[]) {
     myvector<int> intVector(4);
     myvector<double> doubleVector(4);
     myvector<char> strVector(4);
+    myvector<int> stlVector;
+    
 
 
 
@@ -330,7 +335,36 @@ int main(int argc, const char * argv[]) {
 
     // T13: Boolean Operator Overload Test
     booleanOperatorOverloadTest(intVector);
-
+    
+    // T14: STL
+    
+    stlVector.pushBack(5);
+    stlVector.pushBack(-1);
+    stlVector.pushBack(32);
+    stlVector.pushBack(3);
+    stlVector.pushBack(100);
+    stlVector.pushBack(9);
+    
+    std::cout << "Working with STL:\n";
+    std::cout << "Print out the elements in your vector with a for each loop:                                      { ";
+    std::for_each(stlVector.begin(), stlVector.end(),[](int i){ std::cout << i << " ";});
+    std::cout << "}\n";
+    
+    std::sort(stlVector.begin(), stlVector.end());
+    std::cout << "Print out the elements in your sorted vector with a for each loop:                               { ";
+    std::for_each(stlVector.begin(), stlVector.end(),[](int i){ std::cout << i << " ";});
+    std::cout << "}\n"
+    ;
+    int *minElement = std::min_element(stlVector.begin(), stlVector.end());
+    std::cout << "Find the minimum element:                                                                        " << *minElement << "\n";
+    
+    int init = 0;
+    int sum = std::accumulate(stlVector.begin(), stlVector.end(), init);
+    std::cout << "Find the sum:                                                                                    " << sum << "\n";
+    
+    std::count_if(stlVector.begin(), stlVector.end(),[](int i) {return i % 2 == 0;});
+    int count = std::count_if(stlVector.begin(), stlVector.end(),[](int i) {return i % 2 == 0;});
+    std::cout << "Find the number of even numbers:                                                                 " << count << "\n";
 
     std::cout << "[******************** ALL TESTS PASSED! ********************]\n\n";
 
