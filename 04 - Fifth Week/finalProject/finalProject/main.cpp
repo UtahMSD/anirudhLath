@@ -9,27 +9,42 @@
 #include <math.h>
 #include "circleClass.hpp"
 #include <time.h>
+#include "ship.hpp"
+#include <iostream>
+#include "asteroid.hpp"
+
+using namespace std;
 
 int main()
 {
     srand((int) time(NULL));
     
     // Create the main program window.
-    int windowWidth = 800;
-    int windowHeight = 600;
+    int windowWidth = 1080;
+    int windowHeight = 1920;
     
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "My window");
     
     // Create a shape to draw
-//    sf::CircleShape myCircle(50.f);
-//
-//    myCircle.setFillColor(sf::Color(100, 250, 50)); // set the shape color to green
+    ship theShip;
+    theShip.initialize(window);
+    int bulletX = 0;
+    int bulletY = 0;
+    bulletX = theShip.positionx() + 45;
+    bulletY = theShip.positiony();
+    bullet bullets(bulletX, bulletY, window);
+    asteroid asteroid1;
+    asteroid1.initialize(window);
+    asteroid asteroid2;
+    asteroid1.initialize(window);
+    asteroid asteroid3;
+    asteroid1.initialize(window);
     
-    circle circle1;
-    circles vectorCircles; // Still in development, bugs in it.
+    bool game = false;
     
-    float angle = 0.0;
+    int frameCount = 0;
     
+    window.setFramerateLimit(60);
     // Run the program as long as the main window is open.
     while (window.isOpen())
     {
@@ -41,28 +56,48 @@ int main()
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
+            
+            
         }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
+            game = true;
+        }
+        
+        if (game) {
+            theShip.interact();
+            if (bullets.checkCollisionWindow()) {
+                bulletX = theShip.positionx() + 45;
+                bulletY = theShip.positiony();
+                bullets.setBulletLocation(bulletX, bulletY);
+            } else {
+                bulletY -= 50;
+                bullets.setBulletLocation(bulletX, bulletY);
+            }
+            if(asteroid1.checkCollision(bullets)) {
+                asteroid1.reinit();
+            } else {
+                asteroid1.update();
+            }
+            
+            
+        }
+        
+        frameCount++;
+        if (frameCount > 100) {
+            asteroid2.draw(window);
+        }
+        
+        if (frameCount > 300) {
+            //asteroid3.draw();
+        }
+        
+        
         
         // clear the window with black color
         window.clear(sf::Color::Black);
-        
-        int x = 100 + cos( angle ) * 100;
-        int y = 100 + sin( angle ) * 100;
-        angle += 0.001;
-        circle1.setPosition(x, y);
-        window.draw(circle1.getCircle());
-        //window.draw(circle1.getCircle());
-//        vectorCircles.getCircles(1).getCircle().setPosition(x, y);
-//        window.draw( vectorCircles.getCircles(1).getCircle());
-//        std::cout << vectorCircles.getCircles(1).xPos << ", " << vectorCircles.getCircles(1).yPos << "\n";
-//        for(int i = 0; i < vectorCircles.getCount(); i++) {
-//            vectorCircles.getCircles(i).setPosition(x, y);
-//            window.draw( vectorCircles.getCircles(i).getCircle());
-//        }
-        
-        //vectorCircles.draw(window);
-        //window.draw(vectorCircles.getCircle(i))
-        // end the current frame
+        theShip.draw();
+        bullets.draw();
+        asteroid1.draw(window);
         window.display();
     }
     

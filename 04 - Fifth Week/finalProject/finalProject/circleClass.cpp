@@ -71,7 +71,7 @@ circle::circle(float userRadius, int x, int y) {
     
 }                                                           // Constructor with radius and position
 
-void circle::draw(RenderWindow win) {
+void circle::draw(RenderWindow & win) {
     win.draw(myCircle);
 }                                                           // Draw Method
 
@@ -107,7 +107,7 @@ circles::circles(float maxRadius, int n, bool randomOrNot) {
     }
 }                                                           // Constructor that allows the user to generate n numbers of circles with a random radius between 0 to maxRadius
 
-void circles::draw(RenderWindow win) {
+void circles::draw(RenderWindow & win) {
     for(int i = 0; i < count; i++) {
         win.draw(myCircles[i].getCircle());
     }

@@ -33,7 +33,7 @@ public:
     circle(float userRadius, int x, int y); // Constructor with radius and position
     
     // Member Methods
-    void draw(sf::RenderWindow win); // BUGGED: Draw Method
+    void draw(sf::RenderWindow & win); // BUGGED: Draw Method
     void setColor(int r, int g, int b); // Sets a color
     sf::CircleShape getCircle() const { return myCircle; } // Get the circle variable from the class circle.
     void setPosition(int x, int y) { xPos = x; yPos = y; myCircle.setPosition(xPos, yPos); } // Sets position of the circle.
@@ -56,7 +56,7 @@ public:
     circles(float maxRadius, int n, bool randomOrNot); // Constructor that allows the user to generate n numbers of circles with a random radius between 0 to maxRadius
     
     //Member Methods
-    void draw(sf::RenderWindow win); // Draws all the circles
+    void draw(sf::RenderWindow & win); // Draws all the circles
     circle getCircles(int index){ return myCircles[index]; } // Get the circle variable from the class circle.
     int getCount() const {return count;} // Returns count of the circles.
     void setPosition(int x, int y, int index); // Sets position of each circle.
