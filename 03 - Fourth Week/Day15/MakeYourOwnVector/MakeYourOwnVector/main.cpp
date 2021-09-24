@@ -362,8 +362,8 @@ int main(int argc, const char * argv[]) {
     int sum = std::accumulate(stlVector.begin(), stlVector.end(), init);
     std::cout << "Find the sum:                                                                                    " << sum << "\n";
     
-    std::count_if(stlVector.begin(), stlVector.end(),[](int i) {return i % 2 == 0;});
-    int count = std::count_if(stlVector.begin(), stlVector.end(),[](int i) {return i % 2 == 0;});
+    std::count_if(stlVector.begin(), stlVector.end(),[](int i) { return i % 2 == 0; });
+    int count = std::count_if(stlVector.begin(), stlVector.end(), [](int i) { return i % 2 == 0; });
     std::cout << "Find the number of even numbers:                                                                 " << count << "\n";
 
     std::cout << "[******************** ALL TESTS PASSED! ********************]\n\n";

@@ -7,11 +7,10 @@
 
 #include <SFML/Graphics.hpp>
 #include <math.h>
-#include "circleClass.hpp"
+#include "helper.hpp"
 #include <time.h>
-#include "ship.hpp"
 #include <iostream>
-#include "asteroid.hpp"
+
 
 using namespace std;
 
@@ -20,31 +19,16 @@ int main()
     srand((int) time(NULL));
     
     // Create the main program window.
-    int windowWidth = 1920;
-    int windowHeight = 1920;
+    int windowWidth = 2000;
+    int windowHeight = 1000;
     
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Space Visualizer");
     
     // Create a shape to draw
-    ship theShip;
-    theShip.initialize(window);
-    int bulletX = 0;
-    int bulletY = 0;
-    
-    bulletX = theShip.positionx() + 45;
-    bulletY = theShip.positiony();
-    asteroid asteroid1;
-    asteroid1.initialize(window);
-    asteroid asteroid2;
-    asteroid2.initialize(window);
-    asteroid asteroid3;
-    asteroid3.initialize(window);
-    asteroid asteroid4;
-    asteroid4.initialize(window);
-    asteroid asteroid5;
-    asteroid5.initialize(window);
-    asteroid asteroid6;
-    asteroid6.initialize(window);
+    ship theShip(window);
+    vector<bullet> bullets;
+    vector<asteroid> asteroids;
+    int frameCount = 0;
     bool game = false;
 
 
@@ -53,7 +37,8 @@ int main()
     // Run the program as long as the main window is open.
     while (window.isOpen())
     {
-        bullet bullets(bulletX, bulletY, window);
+        frameCount++;
+        window.clear(sf::Color::Black);
         // Check all the window's events that were triggered since the last iteration of the loop
         sf::Event event;
         while (window.pollEvent(event))
@@ -62,79 +47,62 @@ int main()
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
-            
-            
         }
+        
+        
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
             game = true;
         }
         
-        if (game) {
-            
-            theShip.interact();
-            if (bullets.checkCollisionWindow() or
-                asteroid1.checkCollision(bullets, window) or
-                asteroid2.checkCollision(bullets, window) or
-                asteroid3.checkCollision(bullets, window) or
-                asteroid4.checkCollision(bullets, window) or
-                asteroid5.checkCollision(bullets, window) or
-                asteroid6.checkCollision(bullets, window))
-            {
-                bulletX = theShip.positionx() + 45;
-                bulletY = theShip.positiony();
-                bullets.setBulletLocation(bulletX, bulletY);
-            } else {
-                bulletY -= 25;
-                bullets.setBulletLocation(bulletX, bulletY);
-            }
-            
-            // Asteroid Collisions
-            if(asteroid1.checkCollision(bullets, window)) {
-                asteroid1.reinit(window);
-            } else {
-                asteroid1.update();
-            }
-            if(asteroid2.checkCollision(bullets, window)) {
-                asteroid2.reinit(window);
-            } else {
-                asteroid2.update();
-            }
-            if(asteroid3.checkCollision(bullets, window)) {
-                asteroid3.reinit(window);
-            } else {
-                asteroid3.update();
-            }
-            if(asteroid4.checkCollision(bullets, window)) {
-                asteroid4.reinit(window);
-            } else {
-                asteroid4.update();
-            }
-            if(asteroid5.checkCollision(bullets, window)) {
-                asteroid5.reinit(window);
-            } else {
-                asteroid5.update();
-            }
-            if(asteroid6.checkCollision(bullets, window)) {
-                asteroid6.reinit(window);
-            } else {
-                asteroid6.update();
-            }
-            
-            
-            
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) and bullets.size() < 10 and frameCount % 3 == 0) {
+            bullet theBullet(theShip);
+            bullets.push_back(theBullet);
         }
         
+        if (rand() % 10 == 0) {
+            asteroid theAsteroid(window);
+            asteroids.push_back(theAsteroid);
+        }
         
-        // clear the window with black color
-        window.clear(sf::Color::Black);
-        theShip.draw();
-        bullets.draw();
-        asteroid1.draw(window);
-        asteroid2.draw(window);
-        asteroid3.draw(window);
-        asteroid4.draw(window);
-        asteroid5.draw(window);
-        asteroid6.draw(window);
+        if (game) {
+            theShip.interact(window);
+            theShip.draw(window);
+            for(int i = 0; i < asteroids.size(); i++) {//bullet & b: bullets){
+                asteroids[i].update();
+                asteroids[i].draw(window);
+            }
+            for(int i = 0; i < bullets.size(); i++) {
+                bullets[i].interact(window);
+                bullets[i].draw(window);
+                if (!bullets[i].checkCollisionWindow(window)) {
+                } else {
+                    bullets.erase(bullets.begin() + i);
+                }
+            }
+            
+//            for(asteroid i: asteroids) {
+//                i.draw(window);
+//            }
+//            for(bullet i: bullets) {
+//                i.draw(window);
+//            }
+            
+
+            for(int i = 0; i < bullets.size(); i++) {
+                for (int j = 0; j < asteroids.size(); j++) {
+                    if (checkCollision(asteroids[j], bullets[i])) {
+                        bullets.erase(bullets.begin() + i);
+                        asteroids.erase(asteroids.begin() + j);
+                        break;
+                    }
+                }
+            }
+            
+                
+            
+        
+        }
+        
         window.display();
     }
     

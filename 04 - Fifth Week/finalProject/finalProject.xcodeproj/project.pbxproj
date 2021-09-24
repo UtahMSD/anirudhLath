@@ -8,10 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A9BDA5EF26F97AB700F36CFB /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9BDA5EE26F97AB700F36CFB /* main.cpp */; };
-		A9BDA5F826F97EF700F36CFB /* circleClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9BDA5F626F97EF700F36CFB /* circleClass.cpp */; };
-		A9E9133726FD2A1000D5C4EE /* ship.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9E9133526FD2A1000D5C4EE /* ship.cpp */; };
-		A9E9133A26FD425A00D5C4EE /* bullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9E9133826FD425A00D5C4EE /* bullet.cpp */; };
-		A9E9133D26FD610B00D5C4EE /* asteroid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9E9133B26FD610B00D5C4EE /* asteroid.cpp */; };
+		A9E9134026FDA82200D5C4EE /* helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9E9133E26FDA82200D5C4EE /* helper.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -30,14 +27,9 @@
 		A9BDA5EB26F97AB700F36CFB /* finalProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = finalProject; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9BDA5EE26F97AB700F36CFB /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		A9BDA5F526F97B9C00F36CFB /* finalProject.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = finalProject.entitlements; sourceTree = "<group>"; };
-		A9BDA5F626F97EF700F36CFB /* circleClass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = circleClass.cpp; sourceTree = "<group>"; };
 		A9BDA5F726F97EF700F36CFB /* circleClass.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = circleClass.hpp; sourceTree = "<group>"; };
-		A9E9133526FD2A1000D5C4EE /* ship.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ship.cpp; sourceTree = "<group>"; };
-		A9E9133626FD2A1000D5C4EE /* ship.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ship.hpp; sourceTree = "<group>"; };
-		A9E9133826FD425A00D5C4EE /* bullet.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = bullet.cpp; sourceTree = "<group>"; };
-		A9E9133926FD425A00D5C4EE /* bullet.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = bullet.hpp; sourceTree = "<group>"; };
-		A9E9133B26FD610B00D5C4EE /* asteroid.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = asteroid.cpp; sourceTree = "<group>"; };
-		A9E9133C26FD610B00D5C4EE /* asteroid.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = asteroid.hpp; sourceTree = "<group>"; };
+		A9E9133E26FDA82200D5C4EE /* helper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = helper.cpp; sourceTree = "<group>"; };
+		A9E9133F26FDA82200D5C4EE /* helper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = helper.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,13 +64,8 @@
 			children = (
 				A9BDA5F526F97B9C00F36CFB /* finalProject.entitlements */,
 				A9BDA5EE26F97AB700F36CFB /* main.cpp */,
-				A9E9133526FD2A1000D5C4EE /* ship.cpp */,
-				A9E9133B26FD610B00D5C4EE /* asteroid.cpp */,
-				A9E9133C26FD610B00D5C4EE /* asteroid.hpp */,
-				A9E9133626FD2A1000D5C4EE /* ship.hpp */,
-				A9BDA5F626F97EF700F36CFB /* circleClass.cpp */,
-				A9E9133826FD425A00D5C4EE /* bullet.cpp */,
-				A9E9133926FD425A00D5C4EE /* bullet.hpp */,
+				A9E9133E26FDA82200D5C4EE /* helper.cpp */,
+				A9E9133F26FDA82200D5C4EE /* helper.hpp */,
 				A9BDA5F726F97EF700F36CFB /* circleClass.hpp */,
 			);
 			path = finalProject;
@@ -140,11 +127,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A9E9133D26FD610B00D5C4EE /* asteroid.cpp in Sources */,
-				A9BDA5F826F97EF700F36CFB /* circleClass.cpp in Sources */,
 				A9BDA5EF26F97AB700F36CFB /* main.cpp in Sources */,
-				A9E9133726FD2A1000D5C4EE /* ship.cpp in Sources */,
-				A9E9133A26FD425A00D5C4EE /* bullet.cpp in Sources */,
+				A9E9134026FDA82200D5C4EE /* helper.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

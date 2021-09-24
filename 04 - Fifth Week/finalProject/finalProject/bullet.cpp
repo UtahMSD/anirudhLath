@@ -60,3 +60,5 @@ void bullet::reinit(int & bulletX, int & bulletY) {
     this -> setBulletLocation(bulletX, bulletY);
 }
 
+//shoot
+//
