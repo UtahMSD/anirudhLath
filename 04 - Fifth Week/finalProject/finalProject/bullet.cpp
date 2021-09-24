@@ -43,7 +43,7 @@ sf::RectangleShape bullet::getShape() {
     return theBullet;
 }
 
-void bullet::setBulletLocation(int xpos, int ypos) {
+void bullet::setBulletLocation(const int & xpos, const int & ypos) {
     x = xpos;
     y = ypos;
     theBullet.setPosition(x, y);
@@ -54,5 +54,9 @@ bool bullet::checkCollisionWindow() {
             y >= window -> getSize().y or
             x <= 0 or
             y <= 0);
+}
+
+void bullet::reinit(int & bulletX, int & bulletY) {
+    this -> setBulletLocation(bulletX, bulletY);
 }
 

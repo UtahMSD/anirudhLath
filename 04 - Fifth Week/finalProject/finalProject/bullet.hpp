@@ -31,10 +31,11 @@ public:
     void interact();
     void draw();
     sf::RectangleShape getShape();
-    void setBulletLocation(int xpos, int ypos);
+    void setBulletLocation(const int & xpos, const int & ypos);
     bool checkCollisionWindow();
     int xposition() const { return x;}
     int yposition() const { return y;}
+    void reinit(int & bulletX, int & bulletY);
     
     
 };

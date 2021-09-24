@@ -27,15 +27,15 @@ private:
     int ymax;
     int dx;
     int dy;
-    sf::RenderWindow * window;
+    //sf::RenderWindow * window;
     
 public:
     asteroid();
     void initialize(sf::RenderWindow & win);
     void draw(sf::RenderWindow & win);
     void update();
-    bool checkCollision(bullet theBullet);
-    void reinit();
+    bool checkCollision(bullet theBullet, sf::RenderWindow & win);
+    void reinit(sf::RenderWindow & win);
 };
 
 
