@@ -27,7 +27,6 @@
 		A9BDA5EB26F97AB700F36CFB /* finalProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = finalProject; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9BDA5EE26F97AB700F36CFB /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		A9BDA5F526F97B9C00F36CFB /* finalProject.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = finalProject.entitlements; sourceTree = "<group>"; };
-		A9BDA5F726F97EF700F36CFB /* circleClass.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = circleClass.hpp; sourceTree = "<group>"; };
 		A9E9133E26FDA82200D5C4EE /* helper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = helper.cpp; sourceTree = "<group>"; };
 		A9E9133F26FDA82200D5C4EE /* helper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = helper.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -66,7 +65,6 @@
 				A9BDA5EE26F97AB700F36CFB /* main.cpp */,
 				A9E9133E26FDA82200D5C4EE /* helper.cpp */,
 				A9E9133F26FDA82200D5C4EE /* helper.hpp */,
-				A9BDA5F726F97EF700F36CFB /* circleClass.hpp */,
 			);
 			path = finalProject;
 			sourceTree = "<group>";
@@ -256,7 +254,10 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				HEADER_SEARCH_PATHS = /opt/homebrew/include;
 				LD_QUOTE_LINKER_ARGUMENTS_FOR_COMPILER_DRIVER = YES;
-				LIBRARY_SEARCH_PATHS = /opt/homebrew/lib;
+				LIBRARY_SEARCH_PATHS = (
+					/opt/homebrew/lib,
+					/opt/homebrew/Cellar/sfml/2.5.1_1/include/SFML/Graphics,
+				);
 				OTHER_LDFLAGS = (
 					"-lsfml-graphics",
 					"-lsfml-system",
@@ -277,7 +278,10 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				HEADER_SEARCH_PATHS = /opt/homebrew/include;
 				LD_QUOTE_LINKER_ARGUMENTS_FOR_COMPILER_DRIVER = YES;
-				LIBRARY_SEARCH_PATHS = /opt/homebrew/lib;
+				LIBRARY_SEARCH_PATHS = (
+					/opt/homebrew/lib,
+					/opt/homebrew/Cellar/sfml/2.5.1_1/include/SFML/Graphics,
+				);
 				OTHER_LDFLAGS = (
 					"-lsfml-graphics",
 					"-lsfml-system",
