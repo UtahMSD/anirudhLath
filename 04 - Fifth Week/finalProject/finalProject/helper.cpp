@@ -63,7 +63,7 @@ sf::CircleShape ship::getShape() {
 
 /// BULLET
 
-bullet::bullet(ship theShip) {
+bullet::bullet(const ship & theShip) {
     
     sf::RectangleShape temp(sf::Vector2f(10.f,10.f));
     theBullet = temp;
@@ -148,12 +148,9 @@ void asteroid::update() {
 } // Move the asteroids down
 
 void asteroid::destructColor(sf::RenderWindow & win) {
-    vector<int> color = {0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0};
-    for (int i: color) {
-        green = i;
-        theAsteroid.setFillColor(sf::Color(red, blue, green));
-        draw(win);
-    }
+    green = 0;
+    theAsteroid.setFillColor(sf::Color(red, green, blue));
+    draw(win);
     theAsteroid.setFillColor(sf::Color(0, 0, 0));
     
 }
@@ -166,7 +163,7 @@ bool checkCollision(asteroid &theAsteroid, bullet &theBullet) {
 } // Check collision between the asteroid and the bullet.
 
 bool checkCollision(asteroid &theAsteroid, ship &theShip) {
-    if (theAsteroid.ymax >= theShip.y and
+    if ((theAsteroid.ymax >= theShip.y and theAsteroid.y <= theShip.y) and
         (theAsteroid.x <= theShip.x and theAsteroid.xmax >= theShip.xmax)) {
         return true;
     }

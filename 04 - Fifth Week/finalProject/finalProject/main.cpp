@@ -84,12 +84,12 @@ int main()
             game = true;
         } // Don't start the game until the user hits Enter.
         
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) and bullets.size() < 10 and frameCount % 3 == 0) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) and bullets.size() < 10 and frameCount % 3 == 0 and game) {
             bullet theBullet(theShip);
             bullets.push_back(theBullet);
         } // If Space is pressed add a bullet to vector bullets.
         
-        if (rand() % 10 == 0) {
+        if ((rand() % 12 == 0 and game) or asteroids.size() < 7 ) {
             asteroid theAsteroid(window);
             asteroids.push_back(theAsteroid);
         } // Add asteroids randomly.
@@ -144,7 +144,7 @@ int main()
                 }
             }
             window.draw(score);
-            score.setFillColor(sf::Color::Green);
+            score.setFillColor(sf::Color::Red);
         }
         
         

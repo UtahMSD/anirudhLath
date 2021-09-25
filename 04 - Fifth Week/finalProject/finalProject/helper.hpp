@@ -74,7 +74,7 @@ public:
     int xmax;
     int ymax;
     
-    bullet(ship theShip); // Constructor
+    bullet(const ship & theShip); // Constructor
     
     //Main functions
     void interact(sf::RenderWindow & win);
