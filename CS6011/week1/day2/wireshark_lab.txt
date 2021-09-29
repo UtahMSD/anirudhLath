@@ -1,2 +1,18 @@
-1. I am sending icmp signals to my partner.
-2. Thet didn't make any sense.
+1. 	I am sending icmp signals to my partner.
+
+2. 	Source address: 192.168.50.208
+	Destination address: 192.68.50.159
+
+3. 	Yes, every byte of hex is resulting in a character from the ASCII table. There were some	characters that weren't on the ASCII table.
+
+4. 	Partner and Personal ping time was 10ms on average.
+	Ping to google was 30ms on average.
+	Ping to louvre.fe was 150ms on average.
+	They are directly correlated to the distance between the host and the target. The higher the ping the greater the distance.
+
+5. 	Yes, there were many different things under tcp.port==80 filter. Mostly it was HTTP data, but I also saw Application Data, TLSv1.2 data etc. It was all encrypted so cannot really make sense of what the data was saying.
+
+6. 	Curl command produced data which was not exactly fully encrypted. I was able to see some data such as the domain name of the curl target.
+
+7. 	All the data is encrypted for public safety. So everything on wireshark appears encrypted. There could be different levels of encryption such as browser or router.
+
