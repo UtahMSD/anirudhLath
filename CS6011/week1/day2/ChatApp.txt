@@ -1,0 +1,34 @@
+// MAIN CHAT APP FEATURE BRAINSTORM
+Chat App
+	Camera
+		Video
+		Photo
+	Chat
+		Share Integration
+	Maps
+		
+	Bluetooth Chat
+	Encryption
+	Trips
+		Add people
+		Share location automatically
+		Export icloud shared albums
+		Location based picture albums for that trip
+
+// NETWORK ARCH
+Network
+	Server
+	Client
+	Peer to peer?
+
+
+// CONTROL FLOW
+Flow of data
+	User login
+		App checks the database
+			Login
+				App present the chat app main page
+			Incorrect Login
+				Offer to register
+				Offer to reset password
+				Dont let the user access the main-page until the user successfully logs on.
