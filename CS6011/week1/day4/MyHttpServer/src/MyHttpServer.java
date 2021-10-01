@@ -27,7 +27,7 @@ public class MyHttpServer {
 
             Map<String, String> detail = new HashMap<>();
 
-            for (int i = 0; i < 5; i++) { // Only read the first five lines because the last one cause the program to stop working.
+            for (int i = 0; i < 7; i++) { // Only read the first seven lines based Safari's HTTP Header Request.
 //                String line = scanner.nextLine();
 //                System.out.println(line);
                 String header = scanner.next();
@@ -57,6 +57,7 @@ public class MyHttpServer {
             String responseStatusCode;
             if (!response.exists()) {
                 responseStatusCode = "404 Bad Request";
+                response = new File("index.html");
             } else {
                 responseStatusCode = "200 OK";
             }
