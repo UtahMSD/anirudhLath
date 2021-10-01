@@ -39,7 +39,7 @@ public class Rainfall {
             rainData.year = fileReader.nextInt();
             rainData.rainScale = fileReader.nextFloat();
             city.rainDatas.add(rainData);
-            //System.out.println(rainData.month + " " + rainData.year + " " + rainData.rainScale);
+            System.out.println(rainData.month + " " + rainData.year + " " + rainData.rainScale);
         }
         return city;
     }
