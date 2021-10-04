@@ -2,69 +2,83 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.Buffer;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.io.*;
 
 public class MyHttpServer {
-    public static void main(String[] args) throws IOException {
-        ServerSocket server_socket = new ServerSocket(2121);
-        while (true) {
-            Socket s = server_socket.accept();
-            InputStream input = s.getInputStream();
-            InputStreamReader inputReader = new InputStreamReader(input);
-            Scanner scanner = new Scanner(inputReader);
+    static ServerSocket server_socket;
+    static Socket s;
 
-            String method = scanner.next();
-            String file = scanner.next();
-            String protocol = scanner.next();
+    static InputStream input;
+    static InputStreamReader inputReader;
 
-            System.out.println("REQUEST");
-            System.out.println(method + " " + file + " " + protocol);
+    static Scanner scanner;
+    static String method;
+    static String file;
+    static String protocol;
+    static Map<String, String> detail;
+    static String header;
+    static String desc;
 
-            Map<String, String> detail = new HashMap<>();
+    static OutputStream output;
+    static PrintWriter responder;
 
+    static File response;
+    static String responseStatusCode;
+
+    static HTTPRequest request;
+    static HTTPResponse answer;
+
+    public MyHttpServer() throws IOException {
+        server_socket = new ServerSocket(8080);
+        Socket s = server_socket.accept();
+    }
+
+    public static class HTTPRequest {
+        public HTTPRequest() throws IOException {
+            input = s.getInputStream();
+            inputReader = new InputStreamReader(input);
+            scanner = new Scanner(inputReader);
+            method = scanner.next();
+            file = scanner.next();
+            protocol = scanner.next();
+            file = file.substring(1);
+
+            detail = new HashMap<>();
             for (int i = 0; i < 7; i++) { // Only read the first seven lines based Safari's HTTP Header Request.
-//                String line = scanner.nextLine();
-//                System.out.println(line);
-                String header = scanner.next();
-                String desc = scanner.nextLine();
+                header = scanner.next();
+                desc = scanner.nextLine();
                 detail.put(header, desc);
                 System.out.println(header + " " + desc);
             }
-            System.out.println("Loop exit");
 
-            OutputStream output = s.getOutputStream();
-            PrintWriter responder = new PrintWriter(output);
+            System.out.println("REQUEST");
+            System.out.println(method + " " + file + " " + protocol);
+        }
+    }
 
-            file = file.substring(1);
-
+    public static class HTTPResponse {
+        public HTTPResponse() throws IOException {
             File response = new File(file);
-
-
-
             if (file.equals("")) {
                 response = new File("index.html");
-            } else {
-
-                System.out.println(file);
-                response = new File(file);
             }
+            System.out.println(file);
 
-            String responseStatusCode;
+            response = new File(file);
             if (!response.exists()) {
                 responseStatusCode = "404 Bad Request";
                 response = new File("index.html");
+                throw new FileNotFoundException("File not found. 404 Bad Request.");
             } else {
                 responseStatusCode = "200 OK";
             }
 
-            responder.write(protocol + " " + responseStatusCode + "\r\n" );
+            responder.write(protocol + " " + responseStatusCode + "\r\n");
 
-            for (Map.Entry<String , String> entry : detail.entrySet()) {
+            for (Map.Entry<String, String> entry : detail.entrySet()) {
                 responder.println(entry.getKey() + " " + entry.getValue());
             }
 
@@ -74,9 +88,19 @@ public class MyHttpServer {
             while (scanner.hasNextLine()) {
                 responder.println(scanner.nextLine());
             }
+
             responder.flush();
             output.flush();
             s.close();
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        MyHttpServer server = new MyHttpServer();
+        while (true) {
+
+            request = new HTTPRequest();
+            answer = new HTTPResponse();
         }
     }
 }
