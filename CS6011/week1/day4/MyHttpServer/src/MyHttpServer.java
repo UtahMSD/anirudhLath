@@ -33,7 +33,6 @@ public class MyHttpServer {
 
     public MyHttpServer() throws IOException {
         server_socket = new ServerSocket(8080);
-        Socket s = server_socket.accept();
     }
 
     public static class HTTPRequest {
@@ -45,7 +44,7 @@ public class MyHttpServer {
             file = scanner.next();
             protocol = scanner.next();
             file = file.substring(1);
-
+            System.out.println(method + " " + file + " " + protocol);
             detail = new HashMap<>();
             for (int i = 0; i < 7; i++) { // Only read the first seven lines based Safari's HTTP Header Request.
                 header = scanner.next();
@@ -53,25 +52,23 @@ public class MyHttpServer {
                 detail.put(header, desc);
                 System.out.println(header + " " + desc);
             }
-
-            System.out.println("REQUEST");
-            System.out.println(method + " " + file + " " + protocol);
+            System.out.println(protocol + "\n");
         }
     }
 
     public static class HTTPResponse {
         public HTTPResponse() throws IOException {
-            File response = new File(file);
+            output = s.getOutputStream();
+            response = new File(file);
+            responder = new PrintWriter(output);
+
             if (file.equals("")) {
                 response = new File("index.html");
             }
-            System.out.println(file);
 
-            response = new File(file);
             if (!response.exists()) {
                 responseStatusCode = "404 Bad Request";
-                response = new File("index.html");
-                throw new FileNotFoundException("File not found. 404 Bad Request.");
+                throw new FileNotFoundException( "404: Bad Request!");
             } else {
                 responseStatusCode = "200 OK";
             }
@@ -98,9 +95,23 @@ public class MyHttpServer {
     public static void main(String[] args) throws IOException {
         MyHttpServer server = new MyHttpServer();
         while (true) {
+            try {
+                s = server_socket.accept();
+                request = new HTTPRequest();
+                answer = new HTTPResponse();
+            } catch (FileNotFoundException fnf) {
+                System.out.println("404 File not Found! Bad Request!");
+                file = "404.html";
+                answer = new HTTPResponse();
+            } catch (IOException ioe) {
+                System.out.println("IOException!");
+            } catch (Exception e) {
+                System.out.println("This is confusing!");
+            }
 
-            request = new HTTPRequest();
-            answer = new HTTPResponse();
+
+
+
         }
     }
 }

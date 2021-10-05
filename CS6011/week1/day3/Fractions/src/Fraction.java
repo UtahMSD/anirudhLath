@@ -88,7 +88,7 @@ class Fraction {
         result.numerator = numerator * rhs.numerator;
         result.denominator = denominator * rhs.denominator;
         result.resolve();
-        result.resolve();
+        result.reduce();
         return result;
     }
 
