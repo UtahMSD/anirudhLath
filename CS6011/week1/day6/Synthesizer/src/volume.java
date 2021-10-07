@@ -1,7 +1,7 @@
 public class volume implements AudioComponent {
 
     AudioClip inputClip = null;
-    double volume = 1.0;
+    double volume;
 
     @Override
     public AudioClip getClip() {
@@ -25,6 +25,9 @@ public class volume implements AudioComponent {
     public void connectInput(AudioComponent input) {
         if (hasInput()) {
             inputClip = input.getClip();
+        } else {
+            System.out.println("This class does not accept inputs.");
+            System.exit(-1);
         }
     }
 
