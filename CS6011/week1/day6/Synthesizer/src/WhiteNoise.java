@@ -1,19 +1,16 @@
 import java.util.ArrayList;
+import java.util.Random;
 
-public class SineWave implements AudioComponent {
-
-    int frequency;
+public class WhiteNoise implements AudioComponent{
     ArrayList<AudioClip> inputClips = new ArrayList<>();
+    Random random = new Random();
 
 
     @Override
     public AudioClip getClip() {
         AudioClip clip = new AudioClip();
         for (int i = 0; i < clip.samplesArray.length; i++) {
-            clip.setSample(i,
-                    (short) (Short.MAX_VALUE * Math.sin(2 * Math.PI * frequency * i / AudioClip.sampleRate))); //
-            // Configured for a sine wave of int frequency, the highest possible amplitude.
-
+            clip.setSample(i, (short) (Short.MIN_VALUE + random.nextInt(Short.MAX_VALUE * 2)));
         }
         return clip;
     }
@@ -34,7 +31,4 @@ public class SineWave implements AudioComponent {
         }
     }
 
-    public SineWave(int f) {
-        frequency = f;
-    }
 }

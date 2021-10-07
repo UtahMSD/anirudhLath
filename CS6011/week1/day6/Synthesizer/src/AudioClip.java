@@ -61,7 +61,7 @@ public class AudioClip {
         samplesArray = new short[TOTAL_SAMPLES];
 
         for (int i = 0; i < samplesArray.length; i++) {
-            samplesArray[i] = (short) (-32768 + random.nextInt(32768 + 32768));
+            samplesArray[i] = (short) (Short.MIN_VALUE + random.nextInt(Short.MAX_VALUE * 2));
         }
     }
 }
