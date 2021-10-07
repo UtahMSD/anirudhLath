@@ -6,7 +6,8 @@ public class MAIN {
             Player.sounds.add(new WhiteNoise());
             Player.sounds.add(new SquareWave(500));
             Player.sounds.add(new SineWave(200));
-            Player.filters.add(new volume(0.5));
+            Player.filters.add(new volume(1));
+            //Player.filters.add(new Reverb(0.2, 11170));
             player.play(0);
         } catch (NullPointerException | LineUnavailableException n) {
             System.out.println(n.getMessage());

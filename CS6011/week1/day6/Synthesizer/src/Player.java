@@ -26,10 +26,14 @@ public class Player {
     }
 
     private void update() {
-        for (AudioComponent filter : filters) {
-            for (AudioComponent sound : sounds) {
-                filter.connectInput(sound);
-                mixer.connectInput(filter);
+        for (AudioComponent sound : sounds) {
+            if (filters.size() > 0) {
+                for (AudioComponent filter : filters) {
+                    filter.connectInput(sound);
+                    mixer.connectInput(filter);
+                }
+            } else {
+                mixer.connectInput(sound);
             }
         }
         clip = mixer.getClip();

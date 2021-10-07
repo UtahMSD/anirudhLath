@@ -15,7 +15,7 @@ public class AudioClip {
 
     public void setSample(int index, short value) {
         samplesArray[index] = value;
-        convertSamplestoBytes();
+        convertSampletoByte(index);
     }
 
     public byte[] getData() {
@@ -44,6 +44,13 @@ public class AudioClip {
         }
     }
 
+    public void convertSampletoByte(int i) {
+        byte low = (byte) (samplesArray[i] & 0xff);
+        byte high = (byte) ((samplesArray[i] >>> 8) & 0xff);
+        bytesArray[i * 2] = low;
+        bytesArray[(i * 2) + 1] = high;
+    }
+
     public AudioClip() {
         Random random = new Random();
         for (int i = 0; i < samplesArray.length; i++) {
@@ -60,8 +67,8 @@ public class AudioClip {
         bytesArray = new byte[TOTAL_SAMPLES * 2];
         samplesArray = new short[TOTAL_SAMPLES];
 
-        for (int i = 0; i < samplesArray.length; i++) {
-            samplesArray[i] = (short) (Short.MIN_VALUE + random.nextInt(Short.MAX_VALUE * 2));
-        }
+//        for (int i = 0; i < samplesArray.length; i++) {
+//            samplesArray[i] = (short) (Short.MIN_VALUE + random.nextInt(Short.MAX_VALUE * 2));
+//        }
     }
 }
