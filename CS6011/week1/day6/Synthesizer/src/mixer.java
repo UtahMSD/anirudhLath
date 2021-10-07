@@ -1,7 +1,4 @@
-import javax.sound.midi.Soundbank;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class mixer implements AudioComponent {
 

@@ -11,8 +11,8 @@ public class MAIN {
             //Player.filters.add(new volume(1));
             //Player.filters.add(new Reverb(0.2, 11170));
             //player.play(0);
-            //Player.sounds.add(new LinearRamp(50, 2000));
-            //Player.filters.add(new VFSineWave());
+//            Player.sounds.add(new LinearRamp(50, 2000));
+//            Player.filters.add(new VFSineWave());
             Application.launch(SynthGUI.class);
         } catch (NullPointerException | LineUnavailableException n) {
             System.out.println(n.getMessage());

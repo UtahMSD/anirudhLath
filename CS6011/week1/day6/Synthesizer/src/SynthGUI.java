@@ -1,13 +1,10 @@
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import javax.sound.sampled.LineUnavailableException;
@@ -23,7 +20,7 @@ public class SynthGUI extends Application {
      * </p>
      *
      * @param primaryStage the primary stage for this application, onto which the application scene can be set.
-     *                     Applications may create other stages, if needed, but they will not be primary stages.
+     * Applications may create other stages, if needed, but they will not be primary stages.
      * @throws Exception if something goes wrong
      */
 
@@ -31,7 +28,11 @@ public class SynthGUI extends Application {
     int sineWaveFrequency_;
     int sineWaveCount_ = 0;
     ArrayList<Integer> sineWaveIndices = new ArrayList<>();
-
+    int squareWaveFrequency_;
+    int squareWaveCount_ = 0;
+    ArrayList<Integer> squareWaveIndices = new ArrayList<>();
+    int whiteNoiseCount_ = 0;
+    ArrayList<Integer> whiteNoiseIndices = new ArrayList<>();
 
 
     public SynthGUI() throws LineUnavailableException {
@@ -45,8 +46,9 @@ public class SynthGUI extends Application {
         root.setHgap(10);
         root.setVgap(10);
         root.setAlignment(Pos.CENTER);
-        //StackPane root = new StackPane();
 
+////////////////// SINE WAVE ///////////////////////////////////////////////////////////////////////////////////////////
+        /// ROW 0
         // Sine wave label
         Label sineWaveLabel = new Label();
         sineWaveLabel.setText("Sine Wave Generator: ");
@@ -73,6 +75,7 @@ public class SynthGUI extends Application {
             sineWaveIndices.add(Player.sounds.size());
             sineWaveCounter.setText("Sine Wave Count: " + sineWaveCount_);
         });
+        createSineWave.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         root.add(createSineWave, 2, 0, 1, 1);
 
         // Delete Sine Wave Button
@@ -90,11 +93,112 @@ public class SynthGUI extends Application {
 
             sineWaveCounter.setText("Sine Wave Count: " + sineWaveCount_);
         });
+        deleteSineWave.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         root.add(deleteSineWave, 1, 3, 1, 1);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+////////////////// SQUARE WAVE /////////////////////////////////////////////////////////////////////////////////////////
+        /// ROW 1
+        // Square wave label
+        Label squareWaveLabel = new Label();
+        squareWaveLabel.setText("Square Wave Generator: ");
+        root.add(squareWaveLabel, 0, 1, 1, 1);
 
+        // Frequency Text Field
+        TextField squareWaveFrequencyField = new TextField();
+        squareWaveFrequencyField.setPromptText("Enter a frequency... integers only!");
+        root.add(squareWaveFrequencyField, 1, 1, 1, 1);
 
+        // Square wave label
+        Label squareWaveCounter = new Label();
+        squareWaveCounter.setText("Square Wave Count: " + squareWaveCount_);
+        root.add(squareWaveCounter, 2, 4, 1, 1);
 
+        // Create Square Wave Button
+        Button createSquareWave = new Button();
+        createSquareWave.setText("Create Square Wave");
+        createSquareWave.setOnAction(event -> {
+            squareWaveFrequency_ = Integer.parseInt(squareWaveFrequencyField.getText());
+            Player.sounds.add(new SquareWave(squareWaveFrequency_));
+            Player.update();
+            squareWaveCount_++;
+            squareWaveIndices.add(Player.sounds.size());
+            squareWaveCounter.setText("Square Wave Count: " + squareWaveCount_);
+        });
+        createSquareWave.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        root.add(createSquareWave, 2, 1, 1, 1);
+
+        // Delete Square Wave Button
+        Button deleteSquareWave = new Button();
+        deleteSquareWave.setText("Delete Previous Square Wave");
+        deleteSquareWave.setOnAction(event -> {
+            for (int i = Player.sounds.size() - 1; i >= 0; i--) {
+                if (Player.sounds.get(i) instanceof SquareWave) {
+                    Player.sounds.remove(i);
+                    System.out.println("Deleted at index " + i);
+                    squareWaveCount_--;
+                    break;
+                }
+            }
+
+            squareWaveCounter.setText("Square Wave Count: " + squareWaveCount_);
+        });
+        deleteSquareWave.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        root.add(deleteSquareWave, 1, 4, 1, 1);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////// WHITE NOISE /////////////////////////////////////////////////////////////////////////////////////////
+        /// ROW 2
+        // White wave label
+        Label whiteNoiseLabel = new Label();
+        whiteNoiseLabel.setText("White Noise Generator: ");
+        root.add(whiteNoiseLabel, 0, 2, 1, 1);
+
+        // Frequency Text Field
+        TextField whiteNoiseFrequencyField = new TextField();
+        whiteNoiseFrequencyField.setPromptText("Enter a frequency... integers only!");
+        whiteNoiseFrequencyField.setVisible(false);
+        root.add(whiteNoiseFrequencyField, 1, 2, 1, 1);
+
+        // White wave label
+        Label whiteNoiseCounter = new Label();
+        whiteNoiseCounter.setText("White Noise Count: " + whiteNoiseCount_);
+        root.add(whiteNoiseCounter, 2, 5, 1, 1);
+
+        // Create White Noise Button
+        Button createWhiteNoise = new Button();
+        createWhiteNoise.setText("Create White Noise");
+        createWhiteNoise.setOnAction(event -> {
+            Player.sounds.add(new WhiteNoise());
+            Player.update();
+            whiteNoiseCount_++;
+            whiteNoiseIndices.add(Player.sounds.size());
+            whiteNoiseCounter.setText("White Noise Count: " + whiteNoiseCount_);
+        });
+        createWhiteNoise.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        root.add(createWhiteNoise, 2, 2, 1, 1);
+
+        // Delete White Noise Button
+        Button deleteWhiteNoise = new Button();
+        deleteWhiteNoise.setText("Delete Previous White Noise");
+        deleteWhiteNoise.setOnAction(event -> {
+            for (int i = Player.sounds.size() - 1; i >= 0; i--) {
+                if (Player.sounds.get(i) instanceof WhiteNoise) {
+                    Player.sounds.remove(i);
+                    System.out.println("Deleted at index " + i);
+                    whiteNoiseCount_--;
+                    break;
+                }
+            }
+
+            whiteNoiseCounter.setText("White Noise Count: " + whiteNoiseCount_);
+        });
+        deleteWhiteNoise.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        root.add(deleteWhiteNoise, 1, 5, 1, 1);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////// Player Controls /////////////////////////////////////////////////////////////////////////////////////
+        /// ROW 3
         // Play Button
         Button play = new Button();
         play.setText("Play");
@@ -113,9 +217,8 @@ public class SynthGUI extends Application {
 
         });
         play.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        root.add(play, 1, 1, 1, 1);
-
-
+        root.add(play, 1, 3, 1, 1);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         primaryStage.setScene(new Scene(root, 500, 250));
         primaryStage.show();
