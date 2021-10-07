@@ -1,16 +1,14 @@
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.*;
 import java.util.ArrayList;
 
 public class Player {
-    private static Clip c;
+    public static Clip c;
     public static ArrayList<AudioComponent> sounds;
     public static ArrayList<AudioComponent> filters;
     private static AudioComponent mixer;
-    private static AudioClip clip;
-    private static AudioFormat format;
+    public static AudioClip clip;
+    public static AudioFormat format;
+    public static int soundCount_ = 0;
 
     private AudioFormat format16 = new AudioFormat(44100, 16, 1, true, false);
     private AudioFormat format24 = new AudioFormat(44100, 24, 1, true, false);
@@ -25,7 +23,8 @@ public class Player {
         format = format16;
     }
 
-    private void update() {
+    public static void update() {
+        mixer = new mixer();
         for (AudioComponent sound : sounds) {
             if (filters.size() > 0) {
                 for (AudioComponent filter : filters) {
@@ -39,15 +38,22 @@ public class Player {
         clip = mixer.getClip();
     }
 
-    public void play(int loop) throws LineUnavailableException {
-        update();
+    public static void play(int loop) throws LineUnavailableException {
+        //update();
         c.open(format, clip.getData(), 0, clip.getData().length);
         System.out.println("Playing...");
         c.start();
-        c.loop(loop + 1);
-        while (c.getFramePosition() < AudioClip.TOTAL_SAMPLES || c.isActive() || c.isRunning()) {
-        }
-        System.out.println("Done playing " + (loop + 1) + " times.");
+        c.loop(loop);
+//        while (c.getFramePosition() < AudioClip.TOTAL_SAMPLES || c.isActive() || c.isRunning()) {
+//        }
+//        System.out.println("Done playing " + (loop + 1) + " times.");
+//        c.close();
+    }
+
+    public static void replay(int loop) throws LineUnavailableException {
+        c.stop();
         c.close();
+        //update();
+        play(loop);
     }
 }

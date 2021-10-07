@@ -1,6 +1,7 @@
 import javax.sound.midi.Soundbank;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class mixer implements AudioComponent {
 
@@ -9,22 +10,29 @@ public class mixer implements AudioComponent {
     @Override
     public AudioClip getClip() {
         AudioClip result = new AudioClip();
+        int[] samples = new int[result.samplesArray.length];
         for (int i = 0; i < inputClips.size(); i++) {
             if (inputClips.get(i) == null) {
                 throw new NullPointerException("Please connect the input to the source and rerun the program.");
             } else {
-                System.out.println("Mixing track " + (i + 1) + "...");
-                if (i == 0) {
-                    for (int j = 0; j < inputClips.get(i).samplesArray.length; j++) {
-                        result.setSample(j, (short) (inputClips.get(i).samplesArray[j] / inputClips.size()));
-                    }
-                } else {
-                    for (int j = 0; j < inputClips.get(i).samplesArray.length; j++) {
-                        result.setSample(j, (short) ((result.samplesArray[j] + inputClips.get(i).samplesArray[j]) / inputClips.size()));
+                System.out.println("Processing track " + (i + 1) + "...");
+                for (int j = 0; j < result.samplesArray.length; j++) {
+                    if (i < 1) {
+                        samples[j] = inputClips.get(i).getSample(j);
+                    } else {
+                        samples[j] += inputClips.get(i).getSample(j);
                     }
                 }
             }
         }
+        for (int i = 0; i < result.samplesArray.length; i++) {
+            if (i < 100) {
+                //System.out.println(result.getSample(i) + " / " + inputClips.size() + " = " + (result.getSample(i) / inputClips.size()) );
+                //System.out.println(result.getSample(i));
+            }
+            result.setSample(i, ((short) (samples[i] / inputClips.size())));
+        }
+
         System.out.println("Final track ready!");
         return result;
     }

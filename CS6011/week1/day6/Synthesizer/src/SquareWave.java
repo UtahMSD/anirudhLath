@@ -15,7 +15,7 @@ public class SquareWave implements AudioComponent {
                 // and multiplied 2 to the frequency to compensate for the %2.
                 clip.setSample(i, Short.MAX_VALUE);
             } else {
-                clip.setSample(i, (short) (Short.MAX_VALUE * -1));
+                clip.setSample(i, Short.MIN_VALUE);
             }
         }
         return clip;
