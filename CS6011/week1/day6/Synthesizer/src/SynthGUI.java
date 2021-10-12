@@ -24,6 +24,7 @@ public class SynthGUI extends Application {
      * @throws Exception if something goes wrong
      */
 
+    // Member Variables
     Player player = new Player();
     int sineWaveFrequency_;
     int sineWaveCount_ = 0;
@@ -62,7 +63,7 @@ public class SynthGUI extends Application {
         // Sine wave label
         Label sineWaveCounter = new Label();
         sineWaveCounter.setText("Sine Wave Count: " + sineWaveCount_);
-        root.add(sineWaveCounter, 2, 3, 1, 1);
+        root.add(sineWaveCounter, 2, 4, 1, 1);
 
         // Create Sine Wave Button
         Button createSineWave = new Button();
@@ -94,7 +95,7 @@ public class SynthGUI extends Application {
             sineWaveCounter.setText("Sine Wave Count: " + sineWaveCount_);
         });
         deleteSineWave.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        root.add(deleteSineWave, 1, 3, 1, 1);
+        root.add(deleteSineWave, 1, 4, 1, 1);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////// SQUARE WAVE /////////////////////////////////////////////////////////////////////////////////////////
@@ -112,7 +113,7 @@ public class SynthGUI extends Application {
         // Square wave label
         Label squareWaveCounter = new Label();
         squareWaveCounter.setText("Square Wave Count: " + squareWaveCount_);
-        root.add(squareWaveCounter, 2, 4, 1, 1);
+        root.add(squareWaveCounter, 2, 5, 1, 1);
 
         // Create Square Wave Button
         Button createSquareWave = new Button();
@@ -144,7 +145,7 @@ public class SynthGUI extends Application {
             squareWaveCounter.setText("Square Wave Count: " + squareWaveCount_);
         });
         deleteSquareWave.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        root.add(deleteSquareWave, 1, 4, 1, 1);
+        root.add(deleteSquareWave, 1, 5, 1, 1);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////// WHITE NOISE /////////////////////////////////////////////////////////////////////////////////////////
@@ -163,7 +164,7 @@ public class SynthGUI extends Application {
         // White wave label
         Label whiteNoiseCounter = new Label();
         whiteNoiseCounter.setText("White Noise Count: " + whiteNoiseCount_);
-        root.add(whiteNoiseCounter, 2, 5, 1, 1);
+        root.add(whiteNoiseCounter, 2, 6, 1, 1);
 
         // Create White Noise Button
         Button createWhiteNoise = new Button();
@@ -194,7 +195,7 @@ public class SynthGUI extends Application {
             whiteNoiseCounter.setText("White Noise Count: " + whiteNoiseCount_);
         });
         deleteWhiteNoise.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        root.add(deleteWhiteNoise, 1, 5, 1, 1);
+        root.add(deleteWhiteNoise, 1, 6, 1, 1);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////// Player Controls /////////////////////////////////////////////////////////////////////////////////////
@@ -220,7 +221,7 @@ public class SynthGUI extends Application {
         root.add(play, 1, 3, 1, 1);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        primaryStage.setScene(new Scene(root, 500, 250));
+        primaryStage.setScene(new Scene(root, 500, 300));
         primaryStage.show();
     }
 }
