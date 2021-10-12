@@ -24,8 +24,8 @@ public class SynthGUI extends Application {
      * @throws Exception if something goes wrong
      */
 
-    // Member Variables
-    Player player = new Player();
+// Member Variables
+     Player player = new Player();
     int sineWaveFrequency_;
     int sineWaveCount_ = 0;
     ArrayList<Integer> sineWaveIndices = new ArrayList<>();
@@ -35,12 +35,12 @@ public class SynthGUI extends Application {
     int whiteNoiseCount_ = 0;
     ArrayList<Integer> whiteNoiseIndices = new ArrayList<>();
 
-
+// LineUnavailableException
     public SynthGUI() throws LineUnavailableException {
     }
 
-
-    @Override
+// Main GUI loop
+   @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Synthesizer");
         GridPane root = new GridPane();
