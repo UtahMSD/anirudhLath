@@ -4,6 +4,7 @@ public class SquareWave implements AudioComponent {
 
     int frequency;
     ArrayList<AudioClip> inputClips = new ArrayList<>();
+    public static String label_ = "Square Wave";
 
     @Override
     public AudioClip getClip() {
@@ -35,6 +36,16 @@ public class SquareWave implements AudioComponent {
             System.out.println("This class does not accept inputs.");
             System.exit(-1);
         }
+    }
+
+    @Override
+    public String getLabel() {
+        return label_;
+    }
+
+    @Override
+    public boolean hasFrequency() {
+        return true;
     }
 
     public SquareWave(int freq) {

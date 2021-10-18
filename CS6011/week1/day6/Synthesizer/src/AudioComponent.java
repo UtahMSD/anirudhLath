@@ -7,4 +7,8 @@ public interface AudioComponent {
     // this interface, this method will just store a reference to the AudioComponent parameter. If the component
     // doesn't accept inputs, you can assert(false) in here.]
 
+    String getLabel(); // get the label for this audio component
+
+    boolean hasFrequency(); // does the audio component take frequency
+
 }

@@ -2,6 +2,7 @@ public class HighPassFilter implements AudioComponent{
  // <<<<<<<<<<< UNDER CONSTRUCTION >>>>>>>>>> //
     AudioClip inputClip = null;
     double frequency;
+    public static String label_ = "High Pass Filter";
 
     @Override
     public AudioClip getClip() {
@@ -30,6 +31,16 @@ public class HighPassFilter implements AudioComponent{
             System.out.println("This class does not accept inputs.");
             System.exit(-1);
         }
+    }
+
+    @Override
+    public String getLabel() {
+        return label_;
+    }
+
+    @Override
+    public boolean hasFrequency() {
+        return false;
     }
 
     public HighPassFilter(int cutoff) {

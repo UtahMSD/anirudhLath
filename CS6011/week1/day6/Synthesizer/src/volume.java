@@ -2,6 +2,7 @@ public class volume implements AudioComponent {
 
     AudioClip inputClip = null;
     double volume;
+    public static String label_ = "Volume";
 
     @Override
     public AudioClip getClip() {
@@ -29,6 +30,16 @@ public class volume implements AudioComponent {
             System.out.println("This class does not accept inputs.");
             System.exit(-1);
         }
+    }
+
+    @Override
+    public String getLabel() {
+        return label_;
+    }
+
+    @Override
+    public boolean hasFrequency() {
+        return false;
     }
 
     public volume(double amp) {

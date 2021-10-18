@@ -4,6 +4,7 @@ import java.util.Random;
 public class WhiteNoise implements AudioComponent{
     ArrayList<AudioClip> inputClips = new ArrayList<>();
     Random random = new Random();
+    public static String label_ = "White Noise";
 
 
     @Override
@@ -29,6 +30,16 @@ public class WhiteNoise implements AudioComponent{
             System.out.println("This class does not accept inputs.");
             System.exit(-1);
         }
+    }
+
+    @Override
+    public String getLabel() {
+        return label_;
+    }
+
+    @Override
+    public boolean hasFrequency() {
+        return false;
     }
 
 }

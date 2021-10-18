@@ -4,6 +4,7 @@ public class SineWave implements AudioComponent {
 
     int frequency;
     ArrayList<AudioClip> inputClips = new ArrayList<>();
+    public static String label_ = "Sine Wave";
 
 
     @Override
@@ -32,6 +33,16 @@ public class SineWave implements AudioComponent {
             System.out.println("This class does not accept inputs.");
             System.exit(-1);
         }
+    }
+
+    @Override
+    public String getLabel() {
+        return label_;
+    }
+
+    @Override
+    public boolean hasFrequency() {
+        return true;
     }
 
     public SineWave(int f) {

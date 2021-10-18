@@ -3,6 +3,7 @@ public class Reverb implements AudioComponent{
     AudioClip inputClip = null;
     double scale;
     int delay;
+    public static String label_ = "Reverb";
 
     @Override
     public AudioClip getClip() {
@@ -37,6 +38,16 @@ public class Reverb implements AudioComponent{
             System.out.println("This class does not accept inputs.");
             System.exit(-1);
         }
+    }
+
+    @Override
+    public String getLabel() {
+        return label_;
+    }
+
+    @Override
+    public boolean hasFrequency() {
+        return false;
     }
 
     public Reverb(double s, int d) {

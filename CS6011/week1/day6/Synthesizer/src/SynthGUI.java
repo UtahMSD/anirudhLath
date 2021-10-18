@@ -1,31 +1,24 @@
+// Import Libraries
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.stage.Stage;
-
 import javax.sound.sampled.LineUnavailableException;
 import java.util.ArrayList;
 
 public class SynthGUI extends Application {
-    /**
-     * The main entry point for all JavaFX applications. The start method is called after the init method has returned,
-     * and after the system is ready for the application to begin running.
-     *
-     * <p>
-     * NOTE: This method is called on the JavaFX Application Thread.
-     * </p>
-     *
-     * @param primaryStage the primary stage for this application, onto which the application scene can be set.
-     * Applications may create other stages, if needed, but they will not be primary stages.
-     * @throws Exception if something goes wrong
-     */
 
 // Member Variables
-     Player player = new Player();
+    Player player = new Player();
     int sineWaveFrequency_;
     int sineWaveCount_ = 0;
     ArrayList<Integer> sineWaveIndices = new ArrayList<>();
@@ -35,35 +28,119 @@ public class SynthGUI extends Application {
     int whiteNoiseCount_ = 0;
     ArrayList<Integer> whiteNoiseIndices = new ArrayList<>();
 
-// LineUnavailableException
+    BorderPane grandParent = new BorderPane();
+    AnchorPane parent = new AnchorPane();
+    VBox leftSide = new VBox();
+    VBox rightSide = new VBox();
+    HBox topSide = new HBox();
+    HBox bottomSide = new HBox();
+
+    // LineUnavailableException
     public SynthGUI() throws LineUnavailableException {
     }
 
-// Main GUI loop
-   @Override
+    // Main GUI loop
+    @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Synthesizer");
-        GridPane root = new GridPane();
-        root.setHgap(10);
-        root.setVgap(10);
-        root.setAlignment(Pos.CENTER);
+
+
+
+        // Top Side - Media Controls
+        topSide.setStyle("-fx-background-color: lightblue;");
+        Button play = new Button("Play");
+        play.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        topSide.setAlignment(Pos.CENTER);
+        topSide.setPadding(new Insets(5,5,5,5));
+        topSide.setSpacing(10);
+        topSide.getChildren().add(play);
+        grandParent.setTop(topSide);
+
+        // Left Side - Filters
+        leftSide.setStyle("-fx-background-color: lightblue");
+        Label createFilter = new Label("Create Filters");
+        leftSide.setAlignment(Pos.TOP_CENTER);
+        Button createVolumeFilter = new Button("Create Volume");
+        createVolumeFilter.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        leftSide.setPadding(new Insets(5,5,5,5));
+        leftSide.setSpacing(10);
+        leftSide.getChildren().add(createFilter);
+        leftSide.getChildren().add(createVolumeFilter);
+        grandParent.setLeft(leftSide);
+
+        // Center Side - Canvas
+        parent.setStyle("-fx-background-color: lightgreen;");
+        parent.setPadding(new Insets(5,5,5,5));
+        grandParent.setCenter(parent);
+
+
+        // Right Side - Sounds
+        rightSide.setStyle("-fx-background-color: lightblue;");
+        Label createSound = new Label("Create Sounds");
+        rightSide.setAlignment(Pos.TOP_CENTER);
+        Button createSineWave = new Button("Create Sine Wave");
+        createSineWave.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        Button createSquareWave = new Button("Create Square Wave");
+        createSquareWave.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        Button createWhiteNoise = new Button("Create White Noise");
+        createWhiteNoise.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        rightSide.setPadding(new Insets(5,5,5,5));
+        rightSide.setSpacing(10);
+        rightSide.getChildren().add(createSound);
+        rightSide.getChildren().add(createSineWave);
+        rightSide.getChildren().add(createSquareWave);
+        rightSide.getChildren().add(createWhiteNoise);
+        grandParent.setRight(rightSide);
+
+        // Bottom Side - Node Controls
+        bottomSide.setStyle("-fx-background-color: lightblue;");
+        Button deleteNode = new Button("Delete Node");
+        deleteNode.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        bottomSide.setAlignment(Pos.CENTER);
+        bottomSide.setPadding(new Insets(5,5,5,5));
+        bottomSide.setSpacing(10);
+        bottomSide.getChildren().add(deleteNode);
+        grandParent.setBottom(bottomSide);
+
+        // Buttons Event Handling
+        createSineWave.setOnAction(e -> createSineWaveNode());
+        createSquareWave.setOnAction(e -> createSquareWaveNode());
+        createWhiteNoise.setOnAction(e -> createWhiteNoiseNode());
+        createVolumeFilter.setOnAction(e -> createVolumeNode());
+
+
+
+
+
+       /* parent.setVisible(true);
+        parent.setStyle("-fx-color: #a0b981; -fx-opacity: .2;");
+        //root.setHgap(10);
+        //root.setVgap(10);
+        //root.setAlignment(Pos.CENTER);
+        
+        parent.setMinSize(200,200);
+
+
+        grandParent.setLeft(leftSide);
+        grandParent.setCenter(parent);
+        //grandParent.setRight(root);
 
 ////////////////// SINE WAVE ///////////////////////////////////////////////////////////////////////////////////////////
         /// ROW 0
         // Sine wave label
         Label sineWaveLabel = new Label();
         sineWaveLabel.setText("Sine Wave Generator: ");
-        root.add(sineWaveLabel, 0, 0, 1, 1);
+        leftSide.getChildren().add(sineWaveLabel);
 
         // Frequency Text Field
         TextField frequencyField = new TextField();
         frequencyField.setPromptText("Enter a frequency... integers only!");
-        root.add(frequencyField, 1, 0, 1, 1);
+        leftSide.getChildren().add(frequencyField);
 
         // Sine wave label
         Label sineWaveCounter = new Label();
         sineWaveCounter.setText("Sine Wave Count: " + sineWaveCount_);
-        root.add(sineWaveCounter, 2, 4, 1, 1);
+        leftSide.getChildren().add(sineWaveCounter);
 
         // Create Sine Wave Button
         Button createSineWave = new Button();
@@ -77,7 +154,7 @@ public class SynthGUI extends Application {
             sineWaveCounter.setText("Sine Wave Count: " + sineWaveCount_);
         });
         createSineWave.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        root.add(createSineWave, 2, 0, 1, 1);
+        leftSide.getChildren().add(createSineWave);
 
         // Delete Sine Wave Button
         Button deleteSineWave = new Button();
@@ -95,8 +172,9 @@ public class SynthGUI extends Application {
             sineWaveCounter.setText("Sine Wave Count: " + sineWaveCount_);
         });
         deleteSineWave.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        root.add(deleteSineWave, 1, 4, 1, 1);
+        leftSide.getChildren().add(deleteSineWave);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*//*
 
 ////////////////// SQUARE WAVE /////////////////////////////////////////////////////////////////////////////////////////
         /// ROW 1
@@ -220,8 +298,33 @@ public class SynthGUI extends Application {
         play.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         root.add(play, 1, 3, 1, 1);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*//*
+*/
 
-        primaryStage.setScene(new Scene(root, 500, 300));
+        primaryStage.setScene(new Scene(grandParent, 1000, 500));
         primaryStage.show();
     }
+
+    private void createVolumeNode() {
+        volume Volume = new volume(1);
+        AudioComponentWidget node = new AudioComponentWidget(parent, Volume);
+
+    }
+
+    private void createWhiteNoiseNode() {
+        AudioComponentWidget node = new AudioComponentWidget(parent, new WhiteNoise());
+
+    }
+
+    private void createSquareWaveNode() {
+        AudioComponentWidget node = new AudioComponentWidget(parent, new SquareWave(250));
+    }
+
+    private void createSineWaveNode() {
+        AudioComponent sineWave = new SineWave(440);
+        AudioComponentWidget node = new AudioComponentWidget(parent, sineWave);
+        System.out.println(node);
+    }
+
+
 }

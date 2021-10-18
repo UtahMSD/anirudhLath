@@ -4,6 +4,7 @@ public class LinearRamp implements AudioComponent {
     ArrayList<AudioClip> inputClips = new ArrayList<>();
     float start_;
     float stop_;
+    public static String label_ = "Linear Ramp";
 
     @Override
     public AudioClip getClip() {
@@ -29,6 +30,16 @@ public class LinearRamp implements AudioComponent {
             System.out.println("This class does not accept inputs.");
             System.exit(-1);
         }
+    }
+
+    @Override
+    public String getLabel() {
+        return label_;
+    }
+
+    @Override
+    public boolean hasFrequency() {
+        return false;
     }
 
     public LinearRamp(int start, int stop) {
