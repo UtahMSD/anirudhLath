@@ -10,6 +10,7 @@ table.style.alignContent = 'center';
 table.style.textAlign = 'center';
 table.style.marginLeft = 'auto';
 table.style.marginRight = 'auto';
+table.style.backgroundColor = 'white';
 table.style.padding = '10px';
 body.style.fontFamily = "'Helvetica', serif";
 
@@ -30,6 +31,7 @@ function createMultiplicationTable() {
             headerRow.appendChild(theNumber);
             headerRow.appendChild(theNumber);
         }
+        table.appendChild(headerRow);
     }
 
 
@@ -72,7 +74,7 @@ function createMultiplicationTable() {
         }
         body.appendChild(table);*/
     }
-    table.appendChild(headerRow);
+
     body.appendChild(table);
 }
 
