@@ -19,7 +19,10 @@ socket.onerror = (event) => {
 socket.onmessage = (event) => {
     console.log("WebSocket connection has received a message!");
     let chat = document.querySelector("#chatbox");
-    chat.innerHTML += event.data;
+    console.log(event.data);
+    let parsedData = JSON.parse(event.data);
+    let innerData = "<p><span id='user'>" + parsedData.user + ": " + "</span><span id='userMessage'>" + parsedData.message + "</span></p>";
+    chat.innerHTML += innerData;
 };
 
 joinButton.addEventListener("click", () => {
@@ -35,7 +38,7 @@ joinButton.addEventListener("click", () => {
 sendButton.addEventListener("click", () => {
     let userName = document.querySelector("#username");
     let message = document.querySelector("#message");
-    let innerData = "<p>" + userName.value + ": " + message.value + "</p>";
+    let innerData = userName.value + " " + message.value;
 
     socket.send(innerData);
 
