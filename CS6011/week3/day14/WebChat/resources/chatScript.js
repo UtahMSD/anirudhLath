@@ -28,7 +28,7 @@ socket.onerror = (event) => {
     console.log("WebSocket connection has an error: ", event);
 };
 
-socket.onmessage = function (event) {
+socket.onmessage = (event) => {
     console.log("WebSocket connection has received a message!");
     let chat = document.querySelector("#chatbox");
     chat.innerHTML += event.data;
