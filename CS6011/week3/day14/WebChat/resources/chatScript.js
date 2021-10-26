@@ -1,20 +1,8 @@
 "use strict";
 
-let socket = new WebSocket("ws://localhost:8080");
+let socket = new WebSocket("ws://" + location.host);
 let sendButton = document.querySelector("#sendMessageButton");
-
-sendButton.addEventListener("click", () => {
-    let userName = document.querySelector("#username");
-    let chatRoom = document.querySelector("#chatroom");
-    let message = document.querySelector("#message");
-    let innerData = "<p>" + userName.value + ": " + message.value + "</p>";
-
-    socket.send(innerData);
-
-    message.value = "";
-
-    console.log("Message Sent");
-});
+let joinButton = document.querySelector("#joinRoomButton");
 
 socket.onopen = (event) => {
     console.log("WebSocket connection is open!");
@@ -33,4 +21,26 @@ socket.onmessage = (event) => {
     let chat = document.querySelector("#chatbox");
     chat.innerHTML += event.data;
 };
+
+joinButton.addEventListener("click", () => {
+    let chatRoom = document.querySelector("#chatroom");
+    let chatRoomString = chatRoom.value;
+    let innerData = "join " + chatRoomString;
+
+    socket.send(innerData);
+
+    console.log("Joined room " + chatRoomString);
+});
+
+sendButton.addEventListener("click", () => {
+    let userName = document.querySelector("#username");
+    let message = document.querySelector("#message");
+    let innerData = "<p>" + userName.value + ": " + message.value + "</p>";
+
+    socket.send(innerData);
+
+    message.value = "";
+
+    console.log("Message Sent");
+});
 
