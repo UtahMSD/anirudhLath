@@ -3,31 +3,31 @@ let testStringsArray = ['g','hello', 'world', 'g', 'a'];
 let people = [
     { 
         'first': 'John',
-        'last': 'Appleseed',
+        'last' : 'Appleseed',
     },
     { 
         'first': 'Anirudh',
-        'last': 'Lath',
+        'last' : 'Lath',
     },
     { 
         'first': 'Deepak',
-        'last': 'Bagaria',
+        'last' : 'Bagaria',
     },
     { 
         'first': 'Heather',
-        'last': 'Row',
+        'last' : 'Row',
     },
     { 
         'first': 'Jake',
-        'last': 'Harlow',
+        'last' : 'Harlow',
     },
     { 
         'first': 'Danny',
-        'last': 'Williams',
+        'last' : 'Williams',
     },
     { 
         'first': 'Andy',
-        'last': 'Larrouse',
+        'last' : 'Larrouse',
     },
 ];
 function findMinLocation(a) {
@@ -41,8 +41,7 @@ function findMinLocation(a) {
 }
 
 function lessThan(a, b) {
-    if(a > b) { return true;}
-    return false;
+    return a < b;
 }
 
 function selectionSort(a, b) { 
