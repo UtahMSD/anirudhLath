@@ -52,6 +52,8 @@ class Fraction {
         } else if (d < 0) {
             numerator = n * -1;
             denominator = abs(d);
+        } else if (d == 0) {
+            throw new ArithmeticException("The denominator cannot be 0.");
         } else {
             numerator = n;
             denominator = d;
