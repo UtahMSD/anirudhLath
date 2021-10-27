@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4ea75d44-d0c8-45ba-b1fc-4c030dd4a629" name="Changes" comment="Added Day 6 lab, Fractions class is fully functional and bug free.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="4ea75d44-d0c8-45ba-b1fc-4c030dd4a629" name="Changes" comment="Added Day 6 lab, Fractions class is fully functional and bug free." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -116,6 +114,7 @@
       <updated>1635301056201</updated>
       <workItem from="1635301057349" duration="456000" />
       <workItem from="1635301523343" duration="4229000" />
+      <workItem from="1635307593663" duration="4000" />
     </task>
     <task id="LOCAL-00001" summary="Added tests and Arithmetic Exception.">
       <created>1635303634420</created>
