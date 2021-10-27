@@ -1,3 +1,4 @@
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -84,14 +85,16 @@ public class AudioComponentWidget extends Pane {
         // Parent
         AnchorPane.setTopAnchor(node,50.0);
         AnchorPane.setLeftAnchor(node,50.0);
-        parent_.getChildren().add(node);
+        this.getChildren().add(node);
+        parent_.getChildren().add(this);
 
 
     }
 
     private void moveWidget(MouseEvent e) {
-        AnchorPane.setTopAnchor(this, e.getSceneY());
-        AnchorPane.setLeftAnchor(this, e.getSceneX());
+        Bounds bound = parent_.getBoundsInParent();
+        AnchorPane.setTopAnchor(this, e.getSceneY() - bound.getMinY());
+        AnchorPane.setLeftAnchor(this, e.getSceneX() - bound.getMinX());
     }
 
     private void close() {
