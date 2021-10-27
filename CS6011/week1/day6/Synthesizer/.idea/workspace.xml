@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="79da2e19-cdf1-4122-834b-b66df3199e0d" name="Changes" comment="Unfortunately, I have lost a lot of changes I made I will have to redo a whole chunk of this assignment." />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../.." />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="ProjectId" id="1zAAHc3qOXEc0tIwJ3mtfDJmSG5" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File" value="JAVA" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.4085487" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RunManager" selected="Application.MAIN (1)">
+    <configuration name="MAIN (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="MAIN" />
+      <module name="Synthesizer.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MAIN" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="MAIN" />
+      <module name="Synthesizer" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Player" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="MAIN" />
+      <module name="Synthesizer" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SynthGUI (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="SynthGUI" />
+      <module name="Synthesizer.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SynthGUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="corretto-16" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="MAIN" />
+      <module name="Synthesizer.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.MAIN" />
+      <item itemvalue="Application.Player" />
+      <item itemvalue="Application.MAIN (1)" />
+      <item itemvalue="Application.SynthGUI" />
+      <item itemvalue="Application.SynthGUI (1)" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.SynthGUI (1)" />
+        <item itemvalue="Application.SynthGUI" />
+        <item itemvalue="Application.MAIN (1)" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="79da2e19-cdf1-4122-834b-b66df3199e0d" name="Changes" comment="" />
+      <created>1633580433349</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1633580433349</updated>
+      <workItem from="1633580435649" duration="42682000" />
+      <workItem from="1634030806946" duration="4471000" />
+      <workItem from="1634111301350" duration="15103000" />
+      <workItem from="1634175408649" duration="289000" />
+      <workItem from="1634585837873" duration="2704000" />
+      <workItem from="1634593924708" duration="2760000" />
+      <workItem from="1634597535399" duration="14815000" />
+      <workItem from="1634853093651" duration="2040000" />
+      <workItem from="1635292171546" duration="1649000" />
+      <workItem from="1635336635003" duration="122000" />
+    </task>
+    <task id="LOCAL-00001" summary="Part 5 Mixers completed!">
+      <created>1633586102431</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1633586102431</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Improved class structure by adding a main class for execution and separating each class from main(). Also added SquareWave and WhiteNoise classes.">
+      <created>1633590521591</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1633590521591</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Significantly improved performance.">
+      <created>1633597312536</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1633597312536</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Added GUI and fixed a bug in the mixer that was causing the amplitude to decrease. Now the amplitude stays at the given levels and adds the other frequencies.">
+      <created>1633627069231</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1633627069231</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Cleaned up the extra commented out code.">
+      <created>1633627561768</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1633627561768</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Fixed a bug where the 'Delete Sine Wave' button was hidden behind the 'Play/Replay' button. Also, fixed the label positions for each button to the right row and increase the height of the GUI window.">
+      <created>1634032004347</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1634032004347</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Fixed a bug where the 'Delete Sine Wave' button was hidden behind the 'Play/Replay' button. Also, fixed the label positions for each button to the right row and increase the height of the GUI window.">
+      <created>1634032768133</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1634032768133</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Added node graphics">
+      <created>1634593499714</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1634593499714</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Unfortunately, I have lost a lot of changes I made I will have to redo a whole chunk of this assignment.">
+      <created>1635293691827</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1635293691827</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Part 5 Mixers completed!" />
+    <MESSAGE value="Improved class structure by adding a main class for execution and separating each class from main(). Also added SquareWave and WhiteNoise classes." />
+    <MESSAGE value="Significantly improved performance." />
+    <MESSAGE value="Added GUI and fixed a bug in the mixer that was causing the amplitude to decrease. Now the amplitude stays at the given levels and adds the other frequencies." />
+    <MESSAGE value="Cleaned up the extra commented out code." />
+    <MESSAGE value="Fixed a bug where the 'Delete Sine Wave' button was hidden behind the 'Play/Replay' button. Also, fixed the label positions for each button to the right row and increase the height of the GUI window." />
+    <MESSAGE value="Added node graphics" />
+    <MESSAGE value="Unfortunately, I have lost a lot of changes I made I will have to redo a whole chunk of this assignment." />
+    <option name="LAST_COMMIT_MESSAGE" value="Unfortunately, I have lost a lot of changes I made I will have to redo a whole chunk of this assignment." />
+  </component>
+</project>
