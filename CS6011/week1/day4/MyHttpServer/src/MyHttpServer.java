@@ -97,7 +97,7 @@ public class MyHttpServer {
             responseDetails = new HashMap<>();
             contentType = Files.probeContentType(Path.of(filePath));
             System.out.println(contentType);
-            responseDetails.put("ContentType:", contentType);
+            responseDetails.put("Content-Type:", contentType);
 
             // Check if the filepath is specified and if not, respond with the default webpage, i.e. 'index.html', otherwise continue.
             if (filePath.equals("")) {
@@ -163,5 +163,36 @@ public class MyHttpServer {
         }
     }
 
+    /*static String generateResponseKey(String REQUESTED_WEBSOCKET_KEY) throws NoSuchAlgorithmException {
+        final String MAGIC_KEY = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
+        String requestKey = REQUESTED_WEBSOCKET_KEY + MAGIC_KEY;
+        MessageDigest shaEncoder = MessageDigest.getInstance("SHA-1");
+
+        byte[] encoded = shaEncoder.digest( requestKey.getBytes());
+        final String RESPONSE_KEY = Base64.getEncoder().encodeToString(encoded);
+
+        return RESPONSE_KEY;
+    }
+
+    public static void main(String[] args) throws NoSuchAlgorithmException {
+        String data = s.useDelimiter("\\r\\n\\r\\n").next();
+        Matcher get = Pattern.compile("^GET").matcher(data);
+        String REQUESTED_WEBSOCKET_KEY = "";
+
+
+
+        Map<String, String> requestedDetails = new HashMap<>();
+        Map<String, String> responseDetails = new HashMap<>();
+
+        if (requestedDetails.containsKey("Sec-WebSocket-Key")) {
+            REQUESTED_WEBSOCKET_KEY =  requestedDetails.get("Sec-WebSocket-Key");
+        }
+
+        responseDetails.put("Sec-WebSocket-Accept", generateResponseKey(REQUESTED_WEBSOCKET_KEY));
+
+
+
+
+    }*/
 
 }
