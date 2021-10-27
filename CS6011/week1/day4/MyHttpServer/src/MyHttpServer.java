@@ -100,7 +100,7 @@ public class MyHttpServer {
             System.out.println(contentType);
             responseDetails.put("ContentType:", contentType);
 
-            // Check if the filepath is specified and if not, respond with the default webpage, i.e. 'index.html', otherise continue.
+            // Check if the filepath is specified and if not, respond with the default webpage, i.e. 'index.html', otherwise continue.
             if (filePath.equals("")) {
                 response = new File("index.html");
             }
