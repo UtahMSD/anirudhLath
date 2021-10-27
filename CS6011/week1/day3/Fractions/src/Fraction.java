@@ -1,6 +1,6 @@
 import static java.lang.Math.abs;
 
-class Fraction {
+class Fraction implements Comparable<Fraction> {
     /// Variables
     private long numerator; // The numerator
     private long denominator; // The denominator
@@ -143,5 +143,15 @@ class Fraction {
         Fraction fraction1 = new Fraction(1,1);
         Fraction fraction2 = new Fraction();
         System.out.println("Basic CPP migration has been passed! The code compiles without any errors.");
+    }
+
+    @Override
+    public int compareTo(Fraction o) {
+        if (this.toDouble() > o.toDouble()) {
+            return 1;
+        } else if (this.toDouble() < o.toDouble()) {
+            return -1;
+        }
+        return 0;
     }
 }

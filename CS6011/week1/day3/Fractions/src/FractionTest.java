@@ -1,4 +1,9 @@
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,6 +17,7 @@ class FractionTest {
     Fraction fraction6 = new Fraction(24,61);
 
     ArrayList<Fraction> fractions = new ArrayList<>();
+    ArrayList<Fraction> sortedFractions = new ArrayList<>();
 
 
     @org.junit.jupiter.api.Test
@@ -67,6 +73,39 @@ class FractionTest {
 
     @org.junit.jupiter.api.Test
     void main() {
-        assertEquals(new ArithmeticException("The denominator cannot be 0."), new Fraction(2,0));
+        try {
+            assertEquals("The denominator cannot be 0.", new Fraction(2,0));
+            Assertions.fail("Should have thrown an exception");
+        } catch (Exception e) {
+            String expectedMessage = "The denominator cannot be 0.";
+            assertEquals(expectedMessage, e.getMessage());
+        }
+
+        fractions.add(fraction1);
+        fractions.add(fraction2);
+        fractions.add(fraction3);
+        fractions.add(fraction4);
+        fractions.add(fraction5);
+        fractions.add(fraction6);
+
+        sortedFractions.add(fraction4);
+        sortedFractions.add(fraction5);
+        sortedFractions.add(fraction1);
+        sortedFractions.add(fraction3);
+        sortedFractions.add(fraction6);
+        sortedFractions.add(fraction2);
+
+        Collections.sort(fractions);
+
+        assertEquals(sortedFractions, fractions);
+
+
+    }
+
+    @Test
+    void compareTo() {
+        assertEquals(1, fraction2.compareTo(fraction4));
+        assertEquals(0, fraction2.compareTo(fraction2));
+        assertEquals(-1, fraction5.compareTo(fraction3));
     }
 }
