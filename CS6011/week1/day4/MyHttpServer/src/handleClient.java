@@ -13,6 +13,7 @@ public class handleClient implements Runnable {
     // Basic server variables.
     //static ServerSocket server_socket;
     final Socket s;
+    final public static String CRLF = "\r\n";
 
     // Input variables for handling the HTTPRequest
     InputStream input;
@@ -57,8 +58,8 @@ public class handleClient implements Runnable {
         filePath = filePath.substring(1); // Removes the '/' char for the filepath.
 
         // Prints out the HTTP Request in the console to make debugging easier.
-        System.out.println("REQUEST -----------------------------------------------------------------------------------------------------------------------------------------------" + "\r\n");
-        System.out.println(method + " " + filePath + " " + protocol + "\r\n");
+        System.out.println("REQUEST -----------------------------------------------------------------------------------------------------------------------------------------------" + CRLF);
+        System.out.println(method + " " + filePath + " " + protocol + CRLF);
 
         // Create a map of all the details
         requestDetails = new HashMap<>();
@@ -91,13 +92,14 @@ public class handleClient implements Runnable {
 
     private void HTTPResponse() throws IOException, NoSuchAlgorithmException {
 
-        System.out.println("RESPONSE ----------------------------------------------------------------------------------------------------------------------------------------------" + "\r\n");
+        System.out.println("RESPONSE ----------------------------------------------------------------------------------------------------------------------------------------------" + CRLF);
 
         // Assign values to the necessary variables to handle the HTTP Response.
         output = s.getOutputStream();
         response = new File(filePath);
         responder = new PrintWriter(output);
         responseDetails = new HashMap<>();
+
 
         if (!isRequestingWebsocketConnection()) {
             // Check if the filepath is specified and if not, respond with the default webpage, i.e. 'index.html', otherwise continue.
@@ -116,6 +118,7 @@ public class handleClient implements Runnable {
             // Get Content Type
             contentType = Files.probeContentType(Path.of(filePath));
             responseDetails.put("Content-Type", contentType);
+            responseDetails.put("Content-Length",("" + (int) response.length()));
         }
 
         // Check if the client is requesting websockets upgrade
@@ -124,27 +127,38 @@ public class handleClient implements Runnable {
         }
 
         // Start writing to the output stream
-        responder.write(protocol + " " + responseStatusCode + "\r\n"); // Respond with the header.
-        System.out.println(protocol + " " + responseStatusCode + "\r\n");
+        responder.write(protocol + " " + responseStatusCode + CRLF); // Respond with the header.
+        System.out.print(protocol + " " + responseStatusCode + CRLF);
 
         // Print all the response headers and descriptions
         for (Map.Entry<String, String> entry : responseDetails.entrySet()) {
-            responder.println(entry.getKey() + ": " + entry.getValue() + "\r\n");
-            System.out.println(entry.getKey() + ": " + entry.getValue());
+            responder.print(entry.getKey() + ": " + entry.getValue() + CRLF);
+            System.out.print(entry.getKey() + ": " + entry.getValue() + CRLF);
         }
-        System.out.println("\r\n");
+        responder.print(CRLF);
+
+        //System.out.print(CRLF);
         responder.flush();
 
+        // Respond with bytes to a bufferedOutputStream.
         if (!isRequestingWebsocketConnection()) {
-            // Respond with bytes to a bufferedOutputStream.
             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(output);
             byte[] responseByteData = new byte[(int) response.length()];
             FileInputStream fileInputStream = new FileInputStream(response);
             fileInputStream.read(responseByteData);
+
+            System.out.println(responseByteData);
             for (byte responseByteDatum : responseByteData) {
                 bufferedOutputStream.write(responseByteDatum);
             }
             bufferedOutputStream.flush();
+        } else {
+            WebSocketConnection webSocketConnection = new WebSocketConnection(this);
+            System.out.println("WEBSOCKET DATA ---------------------------------------------------------- START ----->");
+            webSocketConnection.decodeData();
+            System.out.println("WEBSOCKET DATA ---------------------------------------------------------- END   ----->");
+
+
         }
 
         responder.write("\r\n\r\n");
