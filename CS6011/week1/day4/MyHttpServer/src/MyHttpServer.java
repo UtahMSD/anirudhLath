@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.io.*;
+import java.util.Set;
 
 public class MyHttpServer {
 
@@ -16,7 +17,7 @@ public class MyHttpServer {
 
         while (true) {
             Socket client = server.accept(); // Check if a connection is requested
-            System.out.println("New client connected" + client.getInetAddress().getHostAddress()); // Console output client connection data.
+            //System.out.println("New client connected" + client.getInetAddress().getHostAddress()); // Console output client connection data.
 
             handleClient clientConnection = new handleClient(client); // Create a client socket connection object that will handle everything in the server such as parsing the request and send the response.
 
@@ -75,20 +76,37 @@ public class MyHttpServer {
             filePath = filePath.substring(1); // Removes the '/' char for the filepath.
 
             // Prints out the HTTP Request in the console to make debugging easier.
-            System.out.println(method + " " + filePath + " " + protocol);
+            System.out.println("REQUEST -----------------------------------------------------------------------------------------------------------------------------------------------" + "\r\n");
+            System.out.println(method + " " + filePath + " " + protocol + "\r\n");
 
             // Create a map of all the details
             requestDetails = new HashMap<>();
-            for (int i = 0; i < 7; i++) { // Only read the first seven lines based Safari's HTTP Header Request.
-                header = scanner.next();
-                desc = scanner.nextLine();
+            String line = scanner.nextLine();
+            line = scanner.nextLine();
+
+            while (!line.equals("")) {
+
+//                if (line.equals("")) {
+//                    break;
+//                }
+                String[] wordArray = line.split(": ");
+                header = wordArray[0];
+                desc = wordArray[1];
                 requestDetails.put(header, desc);
-                System.out.println(header + " " + desc);
+                System.out.println(header + ": " + desc);
+                //System.out.println(protocol + "\n");
+
+                line = scanner.nextLine();
             }
-            System.out.println(protocol + "\n");
+
+            System.out.println("\n");
+
+
         }
 
         private void HTTPResponse() throws IOException {
+
+            System.out.println("RESPONSE ----------------------------------------------------------------------------------------------------------------------------------------------" + "\r\n");
 
             // Assign values to the necessary variables to handle the HTTP Response.
             output = s.getOutputStream();
@@ -96,8 +114,7 @@ public class MyHttpServer {
             responder = new PrintWriter(output);
             responseDetails = new HashMap<>();
             contentType = Files.probeContentType(Path.of(filePath));
-            System.out.println(contentType);
-            responseDetails.put("Content-Type:", contentType);
+            responseDetails.put("Content-Type", contentType);
 
             // Check if the filepath is specified and if not, respond with the default webpage, i.e. 'index.html', otherwise continue.
             if (filePath.equals("")) {
@@ -114,9 +131,14 @@ public class MyHttpServer {
 
             // Start writing to the output stream
             responder.write(protocol + " " + responseStatusCode + "\r\n"); // Respond with the header.
+            System.out.println(protocol + " " + responseStatusCode + "\r\n");
+
+            // Print all the response headers and descriptions
             for (Map.Entry<String, String> entry : responseDetails.entrySet()) {
                 responder.println(entry.getKey() + " " + entry.getValue() + "\n");
+                System.out.println(entry.getKey() + ": " + entry.getValue());
             }
+            System.out.println("\r\n");
             responder.flush();
 
             // Respond with bytes to a bufferedOutputStream.
@@ -138,8 +160,8 @@ public class MyHttpServer {
 
         @Override
         public void run() {
-            System.out.println("Request handled by thread #" + Thread.currentThread().getId());
-            //System.out.println("Server handled a request on thread " + Thread.currentThread().getId());
+            //System.out.println("Request handled by thread #" + Thread.currentThread().getId());
+            System.out.println("Server handled a request on thread " + Thread.currentThread().getId());
             try { // Try the logic but if it fails move on to catch and handle the exceptions.
                 this.HTTPRequest();
                 this.HTTPResponse();

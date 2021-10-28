@@ -1,53 +1,31 @@
 h1 {
-    font: bold;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    color: #000B4F;
+    font-family: 'Arial Black', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     text-align: center;
-    margin-top: 100px;
 }
 
-h2 {
-    font: bold;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    color: indigo;
-    text-align: center;
-    margin-top: 30px;
+#chatbox {
+    border: 3px dashed black;
+    background-color: lightblue;
+    padding: 30px;
+    margin: 20px auto;
+    height: 600px;
+    width: 40%;
 }
 
-p {
-    font-style: normal;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    text-align: justify;
-    margin-top: 10px;
-    margin-left: 30%;
-    margin-right: 30%;
-}
-h3 {
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    text-align: left;
-    margin-top: 30px;
-    margin-bottom: 0%;
-    margin-left: 30%;
-    margin-right: 30%;
-}
-h4 {
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    text-align: left;
-    margin-top: 0%;
-    margin-left: 30%;
-    margin-right: 30%;
-}
-
-
-ul {
-    font-style: italic;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    text-align: justify;
-    margin-top: 10px;
-    margin-left: 30%;
-    margin-right: 30%;
+#message {
+    width: 500px;
 }
 
 body {
-    background-color: #d5e1df;
+    background-color: antiquewhite;
+}
+
+#user {
+    font-family: 'Arial', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
+}
+
+#userMessage {
+    font-family: 'Arial', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: normal;
 }
