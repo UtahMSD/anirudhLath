@@ -1,91 +1,37 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15">
-    <title>Test Page by Anirudh Lath</title>
     <link rel="stylesheet" href="stylesheet.css">
+    <meta charset="UTF-8">
+    <title>Web Chat Client</title>
 </head>
-
 <body>
-<img src="images/test-image.jpg" alt="Test Image">
-<h1>Curriculum Vitae</h1>
-<h2>Summary Statement</h2>
-<P>The quality that makes me unique is grasping concepts and gaining a solid understanding of any new topic,
-    environment, or situation. My method of thinking is very chronological and yet quite creative. I can pay acute attention
-    to details which allows me to systematically plan and understand complex topics and apply my problem-solving skills
-    in an innovative fashion. Experienced and exposed in creating many projects of different genres, such as the arts and
-    the sciences, allows me to think out-of-the-box to solve any given problem. I have a sophisticated technical skillset
-    due to my lifetime experience of distributed computing that has allowed me to gain a better understanding of
-    technology and the importance of its reliability!</P>
-<h2>Work Experience</h2>
-<h3>Software Test Engineer at Collins Aerospace</h3>
-<h4>May 2021 - August 2021</h4>
-<ul>
-    <li>Tested 3 flight simulation software products created by Collins, i.e., EP-1, EP-8100, EP-80.</li>
-    <li>Automated testing and produce optimized test plans for 30+ nightly builds.</li>
-    <li>Discovered and created potential solutions for 5+ critical bugs in their software package</li>
-    <li>Optimized testing scenario and accuracy by improving testing environment through hardware enhancements and
-        creating value towards testing discipline.</li>
-</ul>
-<h3>Co-Founder at Synthbiotic Studios</h3>
-<h4>August 2020 - Present</h4>
-<ul>
-    <li>Developed and conceptualized a video game, Synthbiotic Dungeons.</li>
-    <li>Directed the art of the game, and gameplay concepts.</li>
-    <li>Collaborated with 14 fellow team members of art, design and programming origin.</li>
-    <li>Set up the source control architecture for the project with the use of Azure DevOps and Git.</li>
-    <li>Designed 20+ assets and 10+ materials.</li>
-    <li>Implementing advanced features such as ray tracing.</li>
-    <li>Implemented and designed the game UI.</li>
-</ul>
+<h1>Web Chat Client</h1>
+<table style="text-align: center; child-align: auto; margin-left: auto; margin-right: auto">
+    <tr>
+        <th>Enter Username:</th>
+        <td><input id="username"></td>
+        <td></td>
+        <th>Chat Room:</th>
+        <td><input id="chatroom"></td>
+        <td>
+            <button id="joinRoomButton">Join</button>
+        </td>
+    </tr>
+</table>
+<div id="chatbox">
 
-<h2>Education</h2>
-
-<h3>Master of Software Development</h3>
-<h4>August 2021 - December 2022 | Univeristy of Utah</h4>
-<p>The Master of Software Development (MSD) is a comprehensive and rigorous 16-month program producing capable
-    coders, big data analysts and computer security experts.</p>
-<h3>Bachelor of Fine Arts in Film and Media Arts EAE Emphases</h3>
-<h4>August 2017 - May 2021 | Univeristy of Utah</h4>
-<p>The Bachelor of Fine Arts in Film and Media Arts with Entertainment Arts and Engineering (EAE) Emphases is ranked
-    the #1 undergraduate program for pursuing a career in video game art and design</p>
-
-<h2>Skills</h2>
-<h3>Hard Skills</h3>
-<ul>
-    <li>C/C++</li>
-    <li>HTML</li>
-    <li>CSS</li>
-    <li>Python</li>
-    <li>Java</li>
-    <li>Swift</li>
-    <li>Cocoa</li>
-    <li>Xcode</li>
-    <li>CLion</li>
-    <li>Distributed Computing</li>
-    <li>Linux</li>
-    <li>Microsoft Windows</li>
-    <li>Unreal Engine</li>
-    <li>Unity 3D</li>
-    <li>Houdini</li>
-    <li>Adobe Creative Suite</li>
-    <li>Microsoft Office</li>
-</ul>
-<h3>Soft Skills</h3>
-<ul>
-    <li>Creative thinking</li>
-    <li>Technical</li>
-    <li>Reliability</li>
-    <li>Critical Thinking</li>
-    <li>Innovative</li>
-    <li>Ambitious</li>
-</ul>
-
-
-
-<hr>
-<address></address>
-<!-- hhmts start -->Last modified: Mon Sep 27 21:43:33 MDT 2021 <!-- hhmts end -->
-</body> </html>
-
-
+</div>
+<table style="text-align: center; child-align: auto; margin-left: auto; margin-right: auto">
+    <tr>
+        <th>Enter Message:</th>
+        <td><input id="message"></td>
+        <td>
+            <button id="sendMessageButton">Send</button>
+        </td>
+    </tr>
+</table>
+<img src="images/test-image.jpg" height="200" width="200">
+<script type="text/javascript" src="chatScript.js"></script>
+</body>
+</html>
