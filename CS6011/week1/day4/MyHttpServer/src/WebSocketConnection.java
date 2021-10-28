@@ -12,7 +12,7 @@ public class WebSocketConnection {
     }
 
     public void decodeData() throws IOException {
-        byte[] resolverBytes = inputStream.readNBytes(10);
+        byte[] resolverBytes = inputStream.readNBytes(2);
         int opcode = resolverBytes[0] & 0x0F;
         boolean isMasked = (resolverBytes[1] & 0x80) != 0;
         int lenGuess = resolverBytes[1] & 0x7F;
@@ -26,19 +26,19 @@ public class WebSocketConnection {
             }
         }
 
-        byte[] MASK = inputStream.readNBytes(4);
-        byte[] ENCODED = inputStream.readNBytes(lenGuess);
-        //byte[] DECODED = new byte[lenGuess];
-
         String DECODED = "";
-        for (var i = 0; i < ENCODED.length; i++) {
-            DECODED[i] = ENCODED[i] ^ MASK[i % 4];
-        }
+        if (isMasked) {
+            byte[] MASK = inputStream.readNBytes(4);
+            byte[] ENCODED = inputStream.readNBytes(lenGuess);
+            DECODED = "";
 
+            for (int i = 0; i < ENCODED.length; i++) {
+                DECODED += (char) (ENCODED[i] ^ MASK[i % 4]);
+            }
+        }
         System.out.println("OPCODE: " + opcode + " | Is Masked? " + isMasked + " | Guess Length? " + lenGuess );
         System.out.println("DECODED: ");
-        System.out.println( decoded_message );
-
+        System.out.println( DECODED );
 
     }
 }

@@ -153,10 +153,12 @@ public class handleClient implements Runnable {
             }
             bufferedOutputStream.flush();
         } else {
-            WebSocketConnection webSocketConnection = new WebSocketConnection(this);
-            System.out.println("WEBSOCKET DATA ---------------------------------------------------------- START ----->");
-            webSocketConnection.decodeData();
-            System.out.println("WEBSOCKET DATA ---------------------------------------------------------- END   ----->");
+            while (true) {
+                WebSocketConnection webSocketConnection = new WebSocketConnection(this);
+                System.out.println("WEBSOCKET DATA ---------------------------------------------------------- START ----->");
+                webSocketConnection.decodeData();
+                System.out.println("WEBSOCKET DATA ---------------------------------------------------------- END   ----->");
+            }
 
 
         }
