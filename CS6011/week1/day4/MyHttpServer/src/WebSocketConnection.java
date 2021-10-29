@@ -1,14 +1,18 @@
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class WebSocketConnection {
     Socket webSocket;
+    handleClient handleClients;
     DataInputStream inputStream;
     String message;
     String JSONFormat = "";
 
     public WebSocketConnection(handleClient client) {
         webSocket = client.s;
+        handleClients = client;
         inputStream = new DataInputStream(client.input);
     }
 
@@ -44,7 +48,7 @@ public class WebSocketConnection {
 
     }
 
-    public void handleResponse(handleClient client) throws IOException {
+    public void handleResponse() throws IOException {
         String[] wordArray = message.split(" ");
         if (wordArray[0].equals("join")) {
             clientRoom newRelative = new clientRoom(this, wordArray[1]);
@@ -58,7 +62,17 @@ public class WebSocketConnection {
 
             JSONFormat = "{ " + '"' + "user" + '"' + ": " + '"' + user + '"' + ", " + '"' + "message" + '"' + ": " + '"' + userMessage + '"' + " }";
             System.out.println(JSONFormat);
-            sendMessage(client);
+
+            /*for (Map.Entry<String, ArrayList<WebSocketConnection>> entry : clientRoom.clientRoomCollection.entrySet()) {
+                for (WebSocketConnection clients : entry.getValue()) {
+                    clients.sendMessage(clients.handleClients);
+                    System.out.println(clientRoom.clientRoomCollection);
+                }
+            }*/
+
+            for (WebSocketConnection clients : clientRoom.allClients_) {
+                sendMessage(clients.handleClients);
+            }
         }
     }
 
