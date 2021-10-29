@@ -118,7 +118,7 @@ public class handleClient implements Runnable {
             // Get Content Type
             contentType = Files.probeContentType(Path.of(filePath));
             responseDetails.put("Content-Type", contentType);
-            responseDetails.put("Content-Length",("" + (int) response.length()));
+            responseDetails.put("Content-Length", ("" + (int) response.length()));
         }
 
         // Check if the client is requesting websockets upgrade
@@ -157,7 +157,8 @@ public class handleClient implements Runnable {
                 WebSocketConnection webSocketConnection = new WebSocketConnection(this);
                 System.out.println("WEBSOCKET DATA ---------------------------------------------------------- START ----->");
                 webSocketConnection.decodeData();
-                webSocketConnection.handleResponse();
+                webSocketConnection.handleResponse(this);
+//                webSocketConnection.sendMessage(this);
                 System.out.println("WEBSOCKET DATA ---------------------------------------------------------- END   ----->");
 
 
