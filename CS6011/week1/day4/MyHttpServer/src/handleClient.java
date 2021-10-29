@@ -157,7 +157,10 @@ public class handleClient implements Runnable {
                 WebSocketConnection webSocketConnection = new WebSocketConnection(this);
                 System.out.println("WEBSOCKET DATA ---------------------------------------------------------- START ----->");
                 webSocketConnection.decodeData();
+                webSocketConnection.handleResponse();
                 System.out.println("WEBSOCKET DATA ---------------------------------------------------------- END   ----->");
+
+
             }
 
 
