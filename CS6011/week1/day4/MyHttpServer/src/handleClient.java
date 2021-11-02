@@ -10,10 +10,11 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class handleClient implements Runnable {
-    // Basic server variables.
-    //static ServerSocket server_socket;
+
     final Socket s;
     final public static String CRLF = "\r\n";
+
+    String clientRoom = "";
 
     // Input variables for handling the HTTPRequest
     InputStream input;

@@ -3,25 +3,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class clientRoom {
-    static ArrayList<String> rooms_;
-    static ArrayList<WebSocketConnection> roomClients_ = new ArrayList<>();
-    static ArrayList<WebSocketConnection> allClients_ = new ArrayList<>();
-    static Map<String, ArrayList<WebSocketConnection>> clientRoomCollection = new HashMap<>();
+    String roomName = "";
+    ArrayList<handleClient> roomClients_ = new ArrayList<>();
 
-    public clientRoom(WebSocketConnection client, String room) {
-        allClients_.add(client);
-        for (Map.Entry<String, ArrayList<WebSocketConnection>> entry : clientRoomCollection.entrySet()) {
-            if (entry.getKey() == room) {
-                for (WebSocketConnection checkClient : entry.getValue()) {
-                    if (client != checkClient) {
-                        entry.getValue().add(client);
-                        System.out.println("fired");
-                    }
-                }
+    public clientRoom(String room) {
+        roomName = room;
+    }
+
+    public void addClient(handleClient client) {
+        boolean clientExists = false;
+
+        for (handleClient element : roomClients_) {
+            if (element == client) {
+                clientExists = true;
             }
         }
-        clientRoomCollection.put(room, roomClients_);
-        System.out.println(clientRoomCollection);
-        System.out.println(allClients_);
+        if (!clientExists) {
+            roomClients_.add(client);
+            client.clientRoom = roomName;
+        } else {
+            System.out.println("This client already exists in room " + roomName);
+        }
     }
 }

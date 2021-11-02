@@ -5,14 +5,15 @@ import java.util.Map;
 
 public class WebSocketConnection {
     Socket webSocket;
-    handleClient handleClients;
+    handleClient currentClient;
     DataInputStream inputStream;
     String message;
     String JSONFormat = "";
+    static ArrayList<clientRoom> rooms = new ArrayList<>();
 
     public WebSocketConnection(handleClient client) {
         webSocket = client.s;
-        handleClients = client;
+        currentClient = client;
         inputStream = new DataInputStream(client.input);
     }
 
@@ -51,8 +52,32 @@ public class WebSocketConnection {
     public void handleResponse() throws IOException {
         String[] wordArray = message.split(" ");
         if (wordArray[0].equals("join")) {
-            clientRoom newRelative = new clientRoom(this, wordArray[1]);
+            boolean roomExists = false;
+            for (clientRoom room : rooms) {
+                if (room.roomName.equals(wordArray[1])) {
+                    roomExists = true;
+                }
+            }
+
+            if (!roomExists) {
+                System.out.println("Room does not exist, adding room...");
+                clientRoom newRoom = new clientRoom(wordArray[1]);
+                newRoom.addClient(currentClient);
+                rooms.add(newRoom);
+                currentClient.clientRoom = wordArray[1];
+                System.out.println(rooms);
+            } else {
+                System.out.println("Room exists, trying to add client...");
+                for (clientRoom room : rooms) {
+                    if (room.roomName.equals(wordArray[1])) {
+                        room.addClient(currentClient);
+                        currentClient.clientRoom = wordArray[1];
+                    }
+                }
+            }
+
         } else {
+            System.out.println("Message Algorithm triggered...");
             String user = wordArray[0];
             String userMessage = "";
             for (int i = 1; i < wordArray.length; i++) {
@@ -63,15 +88,17 @@ public class WebSocketConnection {
             JSONFormat = "{ " + '"' + "user" + '"' + ": " + '"' + user + '"' + ", " + '"' + "message" + '"' + ": " + '"' + userMessage + '"' + " }";
             System.out.println(JSONFormat);
 
-            /*for (Map.Entry<String, ArrayList<WebSocketConnection>> entry : clientRoom.clientRoomCollection.entrySet()) {
-                for (WebSocketConnection clients : entry.getValue()) {
-                    clients.sendMessage(clients.handleClients);
-                    System.out.println(clientRoom.clientRoomCollection);
-                }
-            }*/
 
-            for (WebSocketConnection clients : clientRoom.allClients_) {
-                sendMessage(clients.handleClients);
+            for (clientRoom room : rooms) {
+                System.out.println("Found room");
+                if (room.roomName.equals(currentClient.clientRoom)) {
+                    System.out.println("Room exists " + wordArray[1]);
+                    System.out.println(room.roomClients_);
+                    for (handleClient client : room.roomClients_) {
+                        System.out.println("sending message to " + client);
+                        sendMessage(client);
+                    }
+                }
             }
         }
     }
@@ -86,10 +113,7 @@ public class WebSocketConnection {
                 reservedByteLength = 4;
             } else if (length == 127) {
                 reservedByteLength = 10;
-
             }
-        } else {
-
         }
         byte[] reservedBytes = new byte[reservedByteLength];
         reservedBytes[0] = (byte) 0x81;
@@ -101,7 +125,6 @@ public class WebSocketConnection {
             outputStream.write(responseByteDatum);
         }
 
-        //outputStream.write(JSONFormat.getBytes());
         outputStream.flush();
     }
 }
