@@ -2,4 +2,11 @@
     <string name="app_name">Android Chat Client</string>
     <string name="roomName">Room Name</string>
     <string name="roomNamePT">Enter a room...</string>
+    <string name="join_button">Join Chat</string>
+    <string name="user_name">User Name</string>
+    <string name="username_field">Enter a username...</string>
+    <string name="send_button">Send</string>
+    <string name="message_input_field">Enter a message...</string>
+    <string name="room_name_TV">Room Name</string>
+    <string name="mainActivity_label">Join Room</string>
 </resources>
