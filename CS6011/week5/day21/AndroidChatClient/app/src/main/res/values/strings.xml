@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Android Chat Client</string>
+    <string name="roomName">Room Name</string>
+    <string name="roomNamePT">Enter a room...</string>
+</resources>
