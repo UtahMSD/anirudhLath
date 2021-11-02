@@ -90,9 +90,9 @@ public class WebSocketConnection {
 
 
             for (clientRoom room : rooms) {
-                System.out.println("Found room");
+
                 if (room.roomName.equals(currentClient.clientRoom)) {
-                    System.out.println("Room exists " + wordArray[1]);
+                    System.out.println("Found room");
                     System.out.println(room.roomClients_);
                     for (handleClient client : room.roomClients_) {
                         System.out.println("sending message to " + client);
