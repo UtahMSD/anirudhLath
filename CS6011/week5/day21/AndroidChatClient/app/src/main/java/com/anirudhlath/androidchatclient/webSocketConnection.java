@@ -35,6 +35,7 @@ public class webSocketConnection{
 
     public void handleTextMessage(String message) {
         clientMessageObject object = gson_.fromJson(message, clientMessageObject.class);
+        ChatActivity.messages.add(object.user + ": " + object.message);
         clientMessageObjects_.add(object);
         Log.d("app.#WSC", "handleTextMessage: " + object);
     }
@@ -60,7 +61,16 @@ public class webSocketConnection{
             public void onTextMessage(WebSocket websocket, String text) throws Exception {
                 Log.d("app.#WSC", "onTextMessage: Received a text message.");
                 handleTextMessage(text);
-                //super.onTextMessage(websocket, text);
+
+                ChatActivity.lv_.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("app.#WSC", "run: RAN UPDATE");
+                        Log.d("app.#WSC", "run: " + ChatActivity.messages);
+                        ChatActivity.adapter_.notifyDataSetChanged();
+                        ChatActivity.lv_.smoothScrollToPosition(ChatActivity.adapter_.getCount());
+                    }
+                });
             }
 
             @Override

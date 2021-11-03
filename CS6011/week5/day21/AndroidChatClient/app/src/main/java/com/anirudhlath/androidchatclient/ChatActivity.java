@@ -14,6 +14,11 @@ import java.util.ArrayList;
 
 public class ChatActivity extends AppCompatActivity {
 
+    static ArrayList<String> messages = new ArrayList<>();
+    static ListView lv_;
+    static ArrayAdapter adapter_;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,12 +30,13 @@ public class ChatActivity extends AppCompatActivity {
     public void sendbutton(View view) {
         EditText chatMessageField = findViewById(R.id.chatMessageTE);
         String currentMessage = chatMessageField.getText().toString();
-        ListView chatView = findViewById(R.id.chatViewLV);
+        lv_ = findViewById(R.id.chatViewLV);
         String currentUser = MainActivity.userName;
         String composedElement = currentUser + " " + currentMessage;
         webSocketConnection.ws_.sendText(composedElement);
         Log.d("app.#ChatActivity", "sendbutton: A message has been sent to the server!");
-//        ArrayAdapter<String> messagesArrayAdapter = new ArrayAdapter<String>(this, chatView);
+        adapter_ = new ArrayAdapter(this, android.R.layout.simple_list_item_1, messages);
+        lv_.setAdapter(adapter_);
     }
 
 }
