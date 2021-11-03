@@ -1,0 +1,14 @@
+
+N	java:S106"9Replace this use of System.out or System.err by a logger.(ô¤„å
+S	java:S106"9Replace this use of System.out or System.err by a logger.(îòßîÿÿÿÿÿ
+S	java:S106"9Replace this use of System.out or System.err by a logger.(îòßîÿÿÿÿÿ
+S	java:S106"9Replace this use of System.out or System.err by a logger.(Óú»Èÿÿÿÿÿ
+N	java:S106 "9Replace this use of System.out or System.err by a logger.(»·»¬
+Q	java:S1258"<This block of commented-out lines of code should be removed.(Üð˜Ï
+C
+java:S1604("(Make this anonymous inner class a lambda(×Œë–ùÿÿÿÿ
+g	java:S101"MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(Ž›ºËüÿÿÿÿ
+0
+java:S1220""Move this file to a named package.
+Y
+java:S1226/">Introduce a new variable instead of reusing the parameter "t".(Ô–²–øÿÿÿÿ
