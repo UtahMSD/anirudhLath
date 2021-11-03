@@ -17,6 +17,7 @@ public class ChatActivity extends AppCompatActivity {
     static ArrayList<String> messages = new ArrayList<>();
     static ListView lv_;
     static ArrayAdapter adapter_;
+    EditText chatMessageField;
 
 
     @Override
@@ -24,11 +25,12 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTitle(MainActivity.roomName);
         setContentView(R.layout.activity_chat);
+        chatMessageField = findViewById(R.id.chatMessageTE);
+        chatMessageField.setOnClickListener(e -> chatMessageField.setText(""));
 
     }
 
     public void sendbutton(View view) {
-        EditText chatMessageField = findViewById(R.id.chatMessageTE);
         String currentMessage = chatMessageField.getText().toString();
         lv_ = findViewById(R.id.chatViewLV);
         String currentUser = MainActivity.userName;

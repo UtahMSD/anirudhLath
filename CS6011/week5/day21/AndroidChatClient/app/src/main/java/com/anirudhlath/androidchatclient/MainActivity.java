@@ -19,18 +19,27 @@ public class MainActivity extends AppCompatActivity {
 
     static String roomName = "";
     static String userName = "";
+    EditText room;
+    EditText user;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        room = findViewById(R.id.roomNameTE);
+        user = findViewById(R.id.userNameTE);
+        room.setOnClickListener(e -> {
+            room.setText("");
+        });
+        user.setOnClickListener(e -> {
+            user.setText("");
+        });
+
     }
 
     public void joinRoom(View view) throws IOException {
         Intent intent = new Intent(this, ChatActivity.class);
-        EditText room = findViewById(R.id.roomNameTE);
-        EditText user = findViewById(R.id.userNameTE);
         userName = user.getText().toString();
         roomName = room.getText().toString();
         String composedElement = "join " + roomName;

@@ -35,6 +35,8 @@
         android:id="@+id/chatViewLV"
         android:layout_width="381dp"
         android:layout_height="586dp"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll"
         app:layout_constraintBottom_toTopOf="@+id/chatMessageTE"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
