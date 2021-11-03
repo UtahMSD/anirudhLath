@@ -4,8 +4,6 @@ public class helloThreads {
         answer = 0;
         final int maxValue = 100;
         final int numThreads = 5;
-        int threadNumber = (int) Thread.currentThread().getId();
-        Thread [] threads = new Thread[numThreads];
         for(int j = 0; j < numThreads; j++) {
             final int finalI = j;
             Thread t = new Thread(() -> {
