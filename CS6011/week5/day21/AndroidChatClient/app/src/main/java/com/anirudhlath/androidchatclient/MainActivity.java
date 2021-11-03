@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         String composedElement = "join " + roomName;
         Log.d("app.#MainActivity", "joinRoom: A user, " + userName + " has tried to join the room, " + roomName + ".");
         webSocketConnection wsc = new webSocketConnection();
-        webSocketConnection.ws_.sendText(composedElement);
+        webSocketConnection.joinRoomString = composedElement;
         Log.d("app.#MainAcitivity", "joinRoom: SERVER RESPONSE: " + composedElement);
         startActivity(intent);
     }

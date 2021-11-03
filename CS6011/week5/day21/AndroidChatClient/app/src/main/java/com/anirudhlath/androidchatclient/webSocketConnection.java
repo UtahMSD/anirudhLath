@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketAdapter;
+import com.neovisionaries.ws.client.WebSocketException;
 import com.neovisionaries.ws.client.WebSocketFactory;
 import com.neovisionaries.ws.client.WebSocketFrame;
 
@@ -19,12 +20,13 @@ public class webSocketConnection{
     static WebSocket ws_;
     static WebSocketFactory wsFactory_;
     static ArrayList<clientMessageObject> clientMessageObjects_ = new ArrayList<>();
+    static String joinRoomString = "";
     GsonBuilder builder_ = new GsonBuilder();
     Gson gson_ = builder_.create();
 
     public webSocketConnection() throws IOException {
         wsFactory_ = new WebSocketFactory();
-        ws_ = new WebSocketFactory().createSocket("ws://10.0.2.2/index.html", 5000);
+        ws_ = new WebSocketFactory().createSocket("ws://10.0.2.2:8080/index", 5000);
         builder_.setPrettyPrinting();
         ws_.connectAsynchronously();
         initiateListeners();
@@ -42,7 +44,16 @@ public class webSocketConnection{
             @Override
             public void onConnected(WebSocket websocket, Map<String, List<String>> headers) throws Exception {
                 Log.d("app.#WSC", "onConnected: The web socket connection was successful!");
+                ws_.sendText(joinRoomString);
                 //super.onConnected(websocket, headers);
+            }
+
+            @Override
+            public void onConnectError(WebSocket websocket, WebSocketException exception) throws Exception {
+                Log.d("app.#WSC", "onConnectError: Error connecting to the server.");
+                Log.d("app.#WSC", "onConnectError: " + exception.getMessage());
+                exception.printStackTrace();
+                super.onConnectError(websocket, exception);
             }
 
             @Override
