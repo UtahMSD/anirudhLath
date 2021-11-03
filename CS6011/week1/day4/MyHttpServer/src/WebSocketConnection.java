@@ -1,7 +1,6 @@
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class WebSocketConnection {
     Socket webSocket;
@@ -51,6 +50,9 @@ public class WebSocketConnection {
 
     public void handleResponse() throws IOException {
         String[] wordArray = message.split(" ");
+        String firstWord = wordArray[0];
+        char firstLetter = firstWord.charAt(0);
+
         if (wordArray[0].equals("join")) {
             boolean roomExists = false;
             for (clientRoom room : rooms) {
@@ -76,7 +78,7 @@ public class WebSocketConnection {
                 }
             }
 
-        } else {
+        } else if (Character.isLetter(firstLetter)){
             System.out.println("Message Algorithm triggered...");
             String user = wordArray[0];
             String userMessage = "";
