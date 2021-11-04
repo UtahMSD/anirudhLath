@@ -4,7 +4,7 @@ The Day folders are arranged into different week. Unfortunately, I named the fir
 Hope you like my code!
 
 
-
+```
 Lines of code as of 11/4/2021
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
@@ -30,7 +30,7 @@ ProGuard                         1              3             18              0
 -------------------------------------------------------------------------------
 SUM:                           423           4552           1468          31401
 -------------------------------------------------------------------------------
-
+```
 
 
 Portfolio: https://www.anirudhlath.com/
