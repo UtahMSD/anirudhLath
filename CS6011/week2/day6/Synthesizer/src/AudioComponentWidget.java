@@ -22,8 +22,12 @@ public class AudioComponentWidget extends Pane {
     private AnchorPane parent_;
     private AudioComponent audioComponent_;
     ArrayList<Line> lines_ = new ArrayList<>();
+    static ArrayList<AudioComponentWidget> widgets_ = new ArrayList<>();
     Circle outputCircle;
+    Circle inputCircle;
     Line line = new Line();
+    Line inputLine = new Line();
+    boolean isConnected = false;
 
 
     public AudioComponentWidget(AnchorPane parent, AudioComponent audioComponent) {
@@ -42,7 +46,7 @@ public class AudioComponentWidget extends Pane {
 
         // Left Column
         if (audioComponent_.hasInput()) {
-            Circle inputCircle = new Circle(5);
+            inputCircle = new Circle(5);
             inputCircle.setFill(Color.BLUE);
             leftColumn.setAlignment(Pos.CENTER_LEFT);
             leftColumn.setSpacing(5);
@@ -87,14 +91,62 @@ public class AudioComponentWidget extends Pane {
         // Node
         nodeText.setOnMouseDragged(e -> moveWidget(e));
         outputCircle.setOnMouseDragged(e -> drawLine(e));
+        outputCircle.setOnMouseReleased(e -> finalizeLine(e));
 
 
         // Parent
         AnchorPane.setTopAnchor(node, 50.0);
         AnchorPane.setLeftAnchor(node, 50.0);
         this.getChildren().add(node);
-        parent_.getChildren().add(line);
+        parent.getChildren().add(line);
+        line.setVisible(false);
         parent_.getChildren().add(this);
+        widgets_.add(this);
+
+
+    }
+
+    private void finalizeLine(MouseEvent e) {
+
+        Bounds speakerBounds = SynthGUI.speaker_.localToScene(SynthGUI.speaker_.getBoundsInLocal());
+        Bounds bounds = parent_.getBoundsInParent();
+        System.out.println("Mouse Released");
+        System.out.println(widgets_);
+
+
+
+        double speakerDistance = Math.sqrt(Math.pow(e.getSceneX() - speakerBounds.getCenterX(), 2) + Math.pow(e.getSceneY() - speakerBounds.getCenterY(), 2));
+        if (speakerDistance < 20.0) {
+            line.setEndX(e.getSceneX() - bounds.getMinX());
+            line.setEndY(e.getSceneY() - bounds.getMinY());
+            isConnected = true;
+        } else {
+            for (AudioComponentWidget widget: widgets_) {
+                if (widget != this) {
+                    System.out.println("hit");
+                    Bounds inputCircleBounds = widget.inputCircle.localToScene(widget.inputCircle.getBoundsInLocal());
+                    double distance = Math.sqrt(Math.pow(e.getSceneX() - inputCircleBounds.getCenterX(), 2) + Math.pow(e.getSceneY() - inputCircleBounds.getCenterY(), 2));
+                    System.out.println(distance);
+                    if (distance < 5.0) {
+                        System.out.println("distance is less than 5");
+                        line.setEndX(e.getSceneX() - bounds.getMinX());
+                        line.setEndY(e.getSceneY() - bounds.getMinY());
+                        widget.inputLine = line;
+                        isConnected = true;
+                    } else {
+                        isConnected = false;
+                    }
+                }
+            }
+        }
+
+        if (isConnected) {
+            System.out.println("connected");
+            line.setVisible(true);
+        } else {
+            System.out.println("not connected");
+            line.setVisible(false);
+        }
 
 
     }
@@ -103,19 +155,13 @@ public class AudioComponentWidget extends Pane {
         Bounds outputCircleBounds = outputCircle.localToScene(outputCircle.getBoundsInLocal());
         Bounds speakerBounds = SynthGUI.speaker_.localToScene(SynthGUI.speaker_.getBoundsInLocal());
         Bounds bounds = parent_.getBoundsInParent();
-
+        line.setVisible(true);
         line.setFill(Color.BLACK);
         line.setStartX(outputCircleBounds.getMinX() - bounds.getMinX());
         line.setStartY(outputCircleBounds.getMinY() - bounds.getMinY());
-        double speakerDistance = Math.sqrt(Math.pow(e.getSceneX() - speakerBounds.getCenterX(), 2) + Math.pow(e.getSceneY() - speakerBounds.getCenterY(), 2));
-        if (speakerDistance < 20.0) {
-            line.setEndX(e.getSceneX() - bounds.getMinX());
-            line.setEndY(e.getSceneY() - bounds.getMinY());
-        } else {
-            for (Node node)
-            double distance = Math.sqrt(Math.pow(e.getSceneX() - speakerBounds.getCenterX(), 2) + Math.pow(e.getSceneY() - speakerBounds.getCenterY(), 2));
+        line.setEndX(e.getSceneX() - bounds.getMinX());
+        line.setEndY(e.getSceneY() - bounds.getMinY());
 
-        }
 
 
 
@@ -128,11 +174,18 @@ public class AudioComponentWidget extends Pane {
         AnchorPane.setLeftAnchor(this, e.getSceneX() - bound.getMinX());
         line.setStartX(outputCirleBounds.getMinX() - bound.getMinX());
         line.setStartY(outputCirleBounds.getMinY() - bound.getMinY());
+        if (inputCircle != null) {
+            Bounds inputCirleBounds = inputCircle.localToScene(inputCircle.getBoundsInLocal());
+            inputLine.setEndX(inputCirleBounds.getMinX() - bound.getMinX());
+            inputLine.setEndY(inputCirleBounds.getMinY() - bound.getMinY());
+
+        }
     }
 
     private void close() {
         System.out.println(this);
         parent_.getChildren().remove(this);
+        parent_.getChildren().remove(line);
 
     }
 

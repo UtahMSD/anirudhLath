@@ -112,8 +112,6 @@ public class SynthGUI extends Application {
         createWhiteNoise.setOnAction(e -> createWhiteNoiseNode());
         createVolumeFilter.setOnAction(e -> createVolumeNode());
 
-        primaryStage.setResizable(false);
-
 
 
 
