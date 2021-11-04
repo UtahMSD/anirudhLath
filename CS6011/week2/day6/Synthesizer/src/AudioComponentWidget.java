@@ -1,6 +1,7 @@
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
@@ -10,13 +11,19 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+
+import java.util.ArrayList;
 
 public class AudioComponentWidget extends Pane {
 
     HBox node;
     private AnchorPane parent_;
     private AudioComponent audioComponent_;
+    ArrayList<Line> lines_ = new ArrayList<>();
+    Circle outputCircle;
+    Line line = new Line();
 
 
     public AudioComponentWidget(AnchorPane parent, AudioComponent audioComponent) {
@@ -65,7 +72,7 @@ public class AudioComponentWidget extends Pane {
         // Right Column
         Button deleteNodeButton = new Button("x");
         deleteNodeButton.setMaxSize(Double.MIN_VALUE, Double.MIN_VALUE);
-        Circle outputCircle = new Circle(5);
+        outputCircle = new Circle(5);
         outputCircle.setFill(Color.GREEN);
         rightColumn.setAlignment(Pos.CENTER_RIGHT);
         rightColumn.setSpacing(5);
@@ -78,23 +85,49 @@ public class AudioComponentWidget extends Pane {
         deleteNodeButton.setOnAction(e -> close());
 
         // Node
-        this.setOnMouseDragged( e -> moveWidget(e));
-        System.out.println(this);
+        nodeText.setOnMouseDragged(e -> moveWidget(e));
+        outputCircle.setOnMouseDragged(e -> drawLine(e));
 
 
         // Parent
-        AnchorPane.setTopAnchor(node,50.0);
-        AnchorPane.setLeftAnchor(node,50.0);
+        AnchorPane.setTopAnchor(node, 50.0);
+        AnchorPane.setLeftAnchor(node, 50.0);
         this.getChildren().add(node);
+        parent_.getChildren().add(line);
         parent_.getChildren().add(this);
+
+
+    }
+
+    private void drawLine(MouseEvent e) {
+        Bounds outputCircleBounds = outputCircle.localToScene(outputCircle.getBoundsInLocal());
+        Bounds speakerBounds = SynthGUI.speaker_.localToScene(SynthGUI.speaker_.getBoundsInLocal());
+        Bounds bounds = parent_.getBoundsInParent();
+
+        line.setFill(Color.BLACK);
+        line.setStartX(outputCircleBounds.getMinX() - bounds.getMinX());
+        line.setStartY(outputCircleBounds.getMinY() - bounds.getMinY());
+        double speakerDistance = Math.sqrt(Math.pow(e.getSceneX() - speakerBounds.getCenterX(), 2) + Math.pow(e.getSceneY() - speakerBounds.getCenterY(), 2));
+        if (speakerDistance < 20.0) {
+            line.setEndX(e.getSceneX() - bounds.getMinX());
+            line.setEndY(e.getSceneY() - bounds.getMinY());
+        } else {
+            for (Node node)
+            double distance = Math.sqrt(Math.pow(e.getSceneX() - speakerBounds.getCenterX(), 2) + Math.pow(e.getSceneY() - speakerBounds.getCenterY(), 2));
+
+        }
+
 
 
     }
 
     private void moveWidget(MouseEvent e) {
         Bounds bound = parent_.getBoundsInParent();
+        Bounds outputCirleBounds = outputCircle.localToScene(outputCircle.getBoundsInLocal());
         AnchorPane.setTopAnchor(this, e.getSceneY() - bound.getMinY());
         AnchorPane.setLeftAnchor(this, e.getSceneX() - bound.getMinX());
+        line.setStartX(outputCirleBounds.getMinX() - bound.getMinX());
+        line.setStartY(outputCirleBounds.getMinY() - bound.getMinY());
     }
 
     private void close() {

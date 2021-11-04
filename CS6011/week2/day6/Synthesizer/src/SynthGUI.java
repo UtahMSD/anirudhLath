@@ -1,16 +1,13 @@
 // Import Libraries
 import javafx.application.Application;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javax.sound.sampled.LineUnavailableException;
 import java.util.ArrayList;
@@ -34,6 +31,7 @@ public class SynthGUI extends Application {
     VBox rightSide = new VBox();
     HBox topSide = new HBox();
     HBox bottomSide = new HBox();
+    static Circle speaker_;
 
     // LineUnavailableException
     public SynthGUI() throws LineUnavailableException {
@@ -70,6 +68,12 @@ public class SynthGUI extends Application {
 
         // Center Side - Canvas
         parent.setStyle("-fx-background-color: lightgreen;");
+        Bounds bound = parent.getBoundsInLocal();
+        speaker_ = new Circle(20);
+        AnchorPane.setTopAnchor(speaker_, 20.0);
+        AnchorPane.setRightAnchor(speaker_, 20.0);
+
+        parent.getChildren().add(speaker_);
         parent.setPadding(new Insets(5,5,5,5));
         grandParent.setCenter(parent);
 
@@ -107,6 +111,8 @@ public class SynthGUI extends Application {
         createSquareWave.setOnAction(e -> createSquareWaveNode());
         createWhiteNoise.setOnAction(e -> createWhiteNoiseNode());
         createVolumeFilter.setOnAction(e -> createVolumeNode());
+
+        primaryStage.setResizable(false);
 
 
 
