@@ -2,6 +2,9 @@ HELLO, WORLD!
 
 The Day folders are arranged into different week. Unfortunately, I named the first week 00 so it can be a bit confusing, but they can be found inside the week folders.
 Hope you like my code!
+
+
+
 Lines of code as of 11/4/2021
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
@@ -27,6 +30,9 @@ ProGuard                         1              3             18              0
 -------------------------------------------------------------------------------
 SUM:                           423           4552           1468          31401
 -------------------------------------------------------------------------------
+
+
+
 Portfolio: https://www.anirudhlath.com/
 Email: anirudhlath@gmail.com
 Name: Anirudh Lath, also known as, Rudy.
