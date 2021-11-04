@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class Player {
     public static Clip c;
+    public static ArrayList<AudioComponent> clips_ = new ArrayList<>();
     public static ArrayList<AudioComponent> sounds;
     public static ArrayList<AudioComponent> filters;
     private static AudioComponent mixer;
@@ -27,20 +28,15 @@ public class Player {
 
     public static void update() {
         mixer = new mixer();
-        for (AudioComponent sound : sounds) {
-            if (filters.size() > 0) {
-                for (AudioComponent filter : filters) {
-                    filter.connectInput(sound);
-                    mixer.connectInput(filter);
-                }
-            } else {
-                mixer.connectInput(sound);
-            }
+        for (AudioComponent sound : clips_) {
+            mixer.connectInput(sound);
         }
         clip = mixer.getClip();
     }
 
     public static void play(int loop) throws LineUnavailableException {
+        System.out.println(clips_);
+        update();
         c.open(format, clip.getData(), 0, clip.getData().length);
         System.out.println("Playing...");
         c.start();
