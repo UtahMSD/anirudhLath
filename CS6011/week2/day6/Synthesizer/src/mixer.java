@@ -60,4 +60,9 @@ public class mixer implements AudioComponent {
     public boolean hasFrequency() {
         return false;
     }
+
+    @Override
+    public boolean hasVolume() {
+        return false;
+    }
 }

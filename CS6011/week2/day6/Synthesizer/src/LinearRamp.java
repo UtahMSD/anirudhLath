@@ -42,6 +42,11 @@ public class LinearRamp implements AudioComponent {
         return false;
     }
 
+    @Override
+    public boolean hasVolume() {
+        return false;
+    }
+
     public LinearRamp(int start, int stop) {
         start_ = (float) start;
         stop_ = (float) stop;

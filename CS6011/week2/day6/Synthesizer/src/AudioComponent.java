@@ -11,4 +11,6 @@ public interface AudioComponent {
 
     boolean hasFrequency(); // does the audio component take frequency
 
+    boolean hasVolume();
+
 }

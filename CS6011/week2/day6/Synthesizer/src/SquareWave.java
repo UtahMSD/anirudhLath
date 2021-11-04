@@ -48,6 +48,11 @@ public class SquareWave implements AudioComponent {
         return true;
     }
 
+    @Override
+    public boolean hasVolume() {
+        return false;
+    }
+
     public SquareWave(int freq) {
         frequency = freq;
     }

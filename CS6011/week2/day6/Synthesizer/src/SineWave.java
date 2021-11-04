@@ -45,6 +45,11 @@ public class SineWave implements AudioComponent {
         return true;
     }
 
+    @Override
+    public boolean hasVolume() {
+        return false;
+    }
+
     public SineWave(int f) {
         frequency = f;
     }

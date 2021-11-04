@@ -124,7 +124,7 @@ public class SynthGUI extends Application {
     }
 
     private void createVolumeNode() {
-        volume Volume = new volume(1);
+        volume Volume = new volume(0);
         AudioComponentWidget node = new AudioComponentWidget(parent, Volume);
 
     }
@@ -135,11 +135,11 @@ public class SynthGUI extends Application {
     }
 
     private void createSquareWaveNode() {
-        AudioComponentWidget node = new AudioComponentWidget(parent, new SquareWave(250));
+        AudioComponentWidget node = new AudioComponentWidget(parent, new SquareWave(0));
     }
 
     private void createSineWaveNode() {
-        AudioComponent sineWave = new SineWave(440);
+        AudioComponent sineWave = new SineWave(0);
         AudioComponentWidget node = new AudioComponentWidget(parent, sineWave);
         System.out.println(node);
     }

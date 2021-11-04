@@ -42,4 +42,9 @@ public class WhiteNoise implements AudioComponent{
         return false;
     }
 
+    @Override
+    public boolean hasVolume() {
+        return false;
+    }
+
 }

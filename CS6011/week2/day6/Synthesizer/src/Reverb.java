@@ -50,6 +50,11 @@ public class Reverb implements AudioComponent{
         return false;
     }
 
+    @Override
+    public boolean hasVolume() {
+        return false;
+    }
+
     public Reverb(double s, int d) {
         delay = d;
         scale = Math.max(0, Math.min(1, s));

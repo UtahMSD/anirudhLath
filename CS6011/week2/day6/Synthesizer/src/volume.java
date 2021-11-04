@@ -42,6 +42,10 @@ public class volume implements AudioComponent {
         return false;
     }
 
+    public boolean hasVolume() {
+        return true;
+    }
+
     public volume(double amp) {
         volume = Math.max(0, Math.min(1, amp));
     }

@@ -43,6 +43,11 @@ public class HighPassFilter implements AudioComponent{
         return false;
     }
 
+    @Override
+    public boolean hasVolume() {
+        return false;
+    }
+
     public HighPassFilter(int cutoff) {
         frequency = cutoff;
     }
