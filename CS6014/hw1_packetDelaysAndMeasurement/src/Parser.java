@@ -9,6 +9,9 @@ public class Parser {
     public static void main(String[] args) throws IOException {
         Parser traceroute = new Parser("tracert.txt");
         Parser tracerouteAfter = new Parser("tracert2.txt");
+        Parser ping = new Parser("ping.txt");
+
+        ping.parsePing("pingResults.txt");
         traceroute.parseTrace("traceResults.csv");
         tracerouteAfter.parseTrace("traceResultsAfter.csv");
     }
@@ -52,6 +55,31 @@ public class Parser {
             }
             writer.write(ipAddress + ',' + totalRtt/rttCount + '\n');
         }
+        writer.close();
+    }
+
+    public void parsePing(String filename) throws IOException {
+        writer = new FileWriter(new File(filename), false);
+        int count = 0;
+        float totalTime = 0.0f;
+        float min = 0.0f;
+        while(scanner.hasNextLine()) {
+            String[] temp = scanner.nextLine().split(" ");
+            System.out.println(Arrays.deepToString(temp));
+            if(temp.length == 8) {
+                totalTime += Float.parseFloat(temp[6].substring(5));
+                count++;
+            }
+            if(temp.length == 5) {
+                if(temp[0].equals("round-trip")) {
+                    String[] arr = temp[3].split("/");
+                    min = Float.parseFloat(arr[0]);
+                }
+            }
+        }
+        writer.write("Minimum Delay: " + min + '\n');
+        writer.write("Total packets: " + count + '\n');
+        writer.write("Average Queuing Delay: " + (totalTime - (min * count)) / count + '\n');
         writer.close();
     }
 }
