@@ -1,0 +1,3 @@
+Minimum Delay: 29.599
+Total packets: 200
+Average Queuing Delay: 15.219656
