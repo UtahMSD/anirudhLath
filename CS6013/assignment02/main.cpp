@@ -1,12 +1,11 @@
 #include <iostream>
 
 extern "C" {
-    void sayHello();
+	void _sayHello();
+	int myPuts(const char* s, int len);
 }
 
-extern puts;
-
 int main() {
-    sayHello();
+    _sayHello();
     return 0;
 }

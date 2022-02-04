@@ -1,12 +1,33 @@
+extern puts
 section .text  ; this says that we're about to write code (as opposed to data)
 
-global sayHello ; this says that "sayHello" is a symbol that the linker needs to know about
+global _sayHello ; this says that "sayHello" is a symbol that the linker needs to know about
 
-sayHello:           ;and here we go...
+myPuts:
+	mov	rax, 1
+	mov	rdi, 1
+	mov	rsi, helloString
+	mov 	rdx, 6
 
-  ;;code goes here
+	syscall
 
-  ret                 ; just return
+	ret
+
+
+sayHello:
+	mov	rdi, helloString
+	call	puts
+	ret
+
+_sayHello:      ;and here we go...
+     mov    rax, 1         ; system call for write
+     mov    rdi, 1         ; file handle 1 is stdout
+     mov    rsi, helloString      ; address of string to output
+     mov    rdx, 5         ; number of bytes
+     syscall              ; invoke operating system to do the      mov    rax, 60         ; system call for exit
+     xor    rdi, rdi        ; exit code 0
+     syscall              ; invoke operating system to exit
+
 
 section .rodata  ; this is the read only data (hello is a constant)
 
