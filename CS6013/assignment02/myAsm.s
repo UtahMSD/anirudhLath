@@ -2,7 +2,8 @@ extern puts
 section .text  ; this says that we're about to write code (as opposed to data)
 
 global _sayHello ; this says that "sayHello" is a symbol that the linker needs to know about
-
+global myPuts
+global myGTOD
 myPuts:
 	mov	rax, 1
 	mov	rdi, 1
@@ -28,6 +29,7 @@ _sayHello:      ;and here we go...
      xor    rdi, rdi        ; exit code 0
      syscall              ; invoke operating system to exit
 
+myGTOD:
 
 section .rodata  ; this is the read only data (hello is a constant)
 
