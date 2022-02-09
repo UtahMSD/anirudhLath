@@ -2,51 +2,37 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DNSQuestion {
-    ArrayList<String> labels;
+    String[] LABELS;
     int QTYPE;
     int QCLASS;
 
-    public DNSQuestion(DataInputStream stream) throws IOException {
-        labels = new ArrayList<>();
+    public DNSQuestion(DataInputStream stream, DNSMessage message) throws IOException {
 
         // Data extracted based on rfc1035
-
-        // Extract the labels
-        int firstOctet = stream.readByte();
-        if(firstOctet != 0) {
-            int charCount = firstOctet;
-            StringBuilder label = new StringBuilder();
-            for(int i = 0; i <= charCount; i++) {
-                if (i != charCount) {
-                    char c = (char) stream.readUnsignedByte();
-                    label.append(c);
-                } else {
-                    labels.add(label.toString());
-                    label = new StringBuilder();
-                    charCount = stream.readUnsignedByte();
-                    i = -1; // Offset -1 was necessary I am not exactly sure why
-
-                    if(charCount == 0) {
-                        break;
-                    }
-                }
-            }
-        }
-
+        LABELS = message.readDomainName(stream);
         QTYPE = stream.readUnsignedShort();
         QCLASS = stream.readUnsignedShort();
 
         if (DNSServer.debug > 0) {
             System.out.println("<--- DECODED QUESTION DATA --->");
-            System.out.println("LABELS:         " + labels.toString());
+            System.out.println("LABELS:         " + Arrays.deepToString(LABELS));
             System.out.println("QTYPE:          " + QTYPE);
             System.out.println("QCLASS:         " + QCLASS);
 
         }
     }
-    public static DNSQuestion decodeQuestion(ByteArrayInputStream inputStream) throws IOException {
-        return new DNSQuestion(new DataInputStream(inputStream));
+    public static DNSQuestion decodeQuestion(ByteArrayInputStream inputStream, DNSMessage message) throws IOException {
+        return new DNSQuestion(new DataInputStream(inputStream), message);
     }
+
+    // TODO: void writeBytes(ByteArrayOutputStream, HashMap<String,Integer> domainNameLocations). Write the question bytes which will be sent to the client. The hash map is used for us to compress the message, see the DNSMessage class below.
+
+    // TODO: toString()
+
+    // TODO: equals()
+
+    // TODO: hashCode()
 }

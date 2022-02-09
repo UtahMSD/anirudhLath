@@ -2,8 +2,6 @@ import java.io.*;
 import java.net.*;
 
 public class DNSServer {
-    ByteArrayInputStream inputStream;
-    ByteArrayOutputStream outputStream;
     DatagramPacket receivePacket;
     DatagramPacket sendPacket;
     static DatagramSocket server_socket = null;
@@ -37,13 +35,15 @@ public class DNSServer {
             // Receive
             server.receivePacket = new DatagramPacket(receiveData, receiveData.length);
             server_socket.receive(server.receivePacket);
-            //server.inputStream = new ByteArrayInputStream(server.receivePacket.getData(), server.receivePacket.getOffset(), server.receivePacket.getLength());
 
             // Parse Packet
             DNSMessage message = DNSMessage.decodeMessage(receiveData);
-            /*DNSHeader header = DNSHeader.decodeHeader(server.inputStream);
-            DNSQuestion question = DNSQuestion.decodeQuestion(server.inputStream);
-            DNSRecord record = DNSRecord.decodeRecord(server.inputStream);*/
+            // TODO: Check Cache
+                // TODO: If not in Cache, forward request to Google DNS Server
+                    // TODO: Store Google response in personal Cache, only one answer
+                // TODO: Else respond with the answer in Cache
+                    // TODO: If there is an additional answer through DiG, send that record back in the response packet
+            // TODO: If the host is nonexistent, the program should be able to respond correctly, which is?
 
         }
     }
