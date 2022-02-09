@@ -37,12 +37,13 @@ public class DNSServer {
             // Receive
             server.receivePacket = new DatagramPacket(receiveData, receiveData.length);
             server_socket.receive(server.receivePacket);
-            server.inputStream = new ByteArrayInputStream(server.receivePacket.getData(), server.receivePacket.getOffset(), server.receivePacket.getLength());
+            //server.inputStream = new ByteArrayInputStream(server.receivePacket.getData(), server.receivePacket.getOffset(), server.receivePacket.getLength());
 
             // Parse Packet
-            DNSHeader header = DNSHeader.decodeHeader(server.inputStream);
+            DNSMessage message = DNSMessage.decodeMessage(receiveData);
+            /*DNSHeader header = DNSHeader.decodeHeader(server.inputStream);
             DNSQuestion question = DNSQuestion.decodeQuestion(server.inputStream);
-            DNSRecord record = DNSRecord.decodeRecord(server.inputStream);
+            DNSRecord record = DNSRecord.decodeRecord(server.inputStream);*/
 
         }
     }
