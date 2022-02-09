@@ -101,6 +101,14 @@ public class DNSMessage {
     // TODO: static void writeDomainName(ByteArrayOutputStream, HashMap<String,Integer> domainLocations, String[] domainPieces) -- If this is the first time we've seen this domain name in the packet, write it using the DNS encoding (each segment of the domain prefixed with its length, 0 at the end), and add it to the hash map. Otherwise, write a back pointer to where the domain has been seen previously.
 
     // TODO: String octetsToString(String[] octets) -- join the pieces of a domain name with dots ([ "utah", "edu"] -> "utah.edu" )
+    String octetsToString(String[] octets) {
+        StringBuilder builder = new StringBuilder();
+        for(int i = 0; i < octets.length; i++) {
+            builder.append(octets[i]);
+            builder.append('.');
+        }
+        return builder.toString();
+    }
 
     // TODO: String toString()
 

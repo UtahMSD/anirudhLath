@@ -9,7 +9,7 @@ public class DNSRecord {
     int CLASS;
     int TTL;
     int RDLENGTH;
-    String[] RDATA;
+    byte[] RDATA; // TODO: Byte[]
 
     public DNSRecord(DataInputStream stream, DNSMessage message) throws IOException {
 
@@ -19,7 +19,7 @@ public class DNSRecord {
         CLASS = stream.readUnsignedShort();
         TTL = stream.readInt();
         RDLENGTH = stream.readUnsignedShort();
-        RDATA = message.readDomainName(stream);
+        RDATA = stream.readNBytes(RDLENGTH);
 
         if (DNSServer.debug > 0) {
             System.out.println("<--- DECODED RECORD DATA --->");
@@ -28,7 +28,7 @@ public class DNSRecord {
             System.out.println("CLASS:          " + CLASS);
             System.out.println("TTL:            " + TTL);
             System.out.println("RDLENGTH:       " + RDLENGTH);
-            System.out.println("RDATA:          " + Arrays.deepToString(RDATA) + "\n");
+            System.out.println("RDATA:          " + Arrays.deepToString(new byte[][]{RDATA}) + "\n");
         }
 
     }
@@ -41,7 +41,8 @@ public class DNSRecord {
 
     // TODO: String toString()
 
-    // TODO: boolean timestampValid() -- return whether the creation date + the time to live is after the current time. The Date and Calendar classes will be useful for this.
+    // TODO: boolean timestampValid() -- return whether the creation date + the time to live is after the current
+    //  time. The Date and Calendar classes will be useful for this.
 
 }
 

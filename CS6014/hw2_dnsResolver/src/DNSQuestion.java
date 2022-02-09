@@ -23,11 +23,14 @@ public class DNSQuestion {
 
         }
     }
+
     public static DNSQuestion decodeQuestion(ByteArrayInputStream inputStream, DNSMessage message) throws IOException {
         return new DNSQuestion(new DataInputStream(inputStream), message);
     }
 
-    // TODO: void writeBytes(ByteArrayOutputStream, HashMap<String,Integer> domainNameLocations). Write the question bytes which will be sent to the client. The hash map is used for us to compress the message, see the DNSMessage class below.
+    // TODO: void writeBytes(ByteArrayOutputStream, HashMap<String,Integer> domainNameLocations). Write the question
+    //  bytes which will be sent to the client. The hash map is used for us to compress the message, see the
+    //  DNSMessage class below.
 
     // TODO: toString()
 
