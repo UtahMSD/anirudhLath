@@ -27,9 +27,7 @@ public class DNSQuestion {
         return new DNSQuestion(new DataInputStream(inputStream), message);
     }
 
-    // TODO: void writeBytes(ByteArrayOutputStream, HashMap<String,Integer> domainNameLocations). Write the question
-    //  bytes which will be sent to the client. The hash map is used for us to compress the message, see the
-    //  DNSMessage class below.
+
     void writeBytes(ByteArrayOutputStream stream) throws IOException {
         if (DNSServer.debug > 0) {
             System.out.println("<--- DECODED QUESTION DATA --->");
@@ -41,7 +39,7 @@ public class DNSQuestion {
         DataOutputStream out = new DataOutputStream(stream);
         for (int j = 0; j < LABELS.length; j++) {
             out.writeByte(LABELS[j].toCharArray().length);
-            for(char c : LABELS[j].toCharArray()) {
+            for (char c : LABELS[j].toCharArray()) {
                 out.writeByte(c);
             }
         }

@@ -52,14 +52,14 @@ public class DNSHeader {
         ID = stream.readUnsignedShort();
 
         FLAGS = stream.readUnsignedShort();
-        QR      = FLAGS & 0b1000000000000000;
-        OPCODE  = FLAGS & 0b0111100000000000;
-        AA      = FLAGS & 0b0000010000000000;
-        TC      = FLAGS & 0b0000001000000000;
-        RD      = FLAGS & 0b0000000100000000;
-        RA      = FLAGS & 0b0000000010000000;
-        Z       = FLAGS & 0b0000000001110000;
-        RCODE   = FLAGS & 0b0000000000001111;
+        QR = FLAGS & 0b1000000000000000;
+        OPCODE = FLAGS & 0b0111100000000000;
+        AA = FLAGS & 0b0000010000000000;
+        TC = FLAGS & 0b0000001000000000;
+        RD = FLAGS & 0b0000000100000000;
+        RA = FLAGS & 0b0000000010000000;
+        Z = FLAGS & 0b0000000001110000;
+        RCODE = FLAGS & 0b0000000000001111;
 
         QDCOUNT = stream.readUnsignedShort();
         ANCOUNT = stream.readUnsignedShort();
@@ -83,11 +83,12 @@ public class DNSHeader {
             System.out.println("ARCOUNT:    " + ARCOUNT + "\n");
         }
     }
+
     public static DNSHeader decodeHeader(ByteArrayInputStream inputStream) throws IOException {
         return new DNSHeader(new DataInputStream(inputStream));
     }
 
-    // TODO: static DNSHeader buildResponseHeader(DNSMessage request, DNSMessage response) -- This will create the header for the response. It will copy some fields from the request
+
     static DNSHeader buildResponseHeader(DNSMessage request, DNSMessage response) {
         DNSHeader result = new DNSHeader(request.header.ID, 0b1000000000000000, request.header.OPCODE,
                 request.header.AA,

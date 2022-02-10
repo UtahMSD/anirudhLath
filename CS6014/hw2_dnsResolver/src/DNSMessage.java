@@ -11,8 +11,6 @@ public class DNSMessage {
     DNSRecord[] authorityRecords;
     DNSRecord[] additionalRecords;
 
-    // TODO: How to check if the header is compressed?
-
     public DNSMessage(ByteArrayInputStream stream) throws IOException {
         if (DNSServer.debug > 0) {
             System.out.println("REQUEST STARTED -------------------------------------------------------------------->");
@@ -133,12 +131,10 @@ public class DNSMessage {
                 receiveData.length)));
     }
 
-    // TODO: static DNSMessage buildResponse(DNSMessage request, DNSRecord[] answers) --build a response based on the request and the answers you intend to send back.
     static DNSMessage buildResponse(DNSMessage request, DNSRecord[] answers) throws IOException {
         return new DNSMessage(request, answers);
     }
 
-    // TODO: byte[] toBytes() -- get the bytes to put in a packet and send back
     byte[] toBytes() throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -169,30 +165,37 @@ public class DNSMessage {
     }
 
 
-    // TODO: static void writeDomainName(ByteArrayOutputStream, HashMap<String,Integer> domainLocations, String[] domainPieces) -- If this is the first time we've seen this domain name in the packet, write it using the DNS encoding (each segment of the domain prefixed with its length, 0 at the end), and add it to the hash map. Otherwise, write a back pointer to where the domain has been seen previously.
-
     void writeDomainName(ByteArrayOutputStream stream) throws IOException {
         DataOutputStream out = new DataOutputStream(stream);
-        for(int i = 0; i < questions.length; i++) {
+        for (int i = 0; i < questions.length; i++) {
             for (int j = 0; j < questions[i].LABELS.length; j++) {
                 out.writeByte(questions[i].LABELS.length);
-                for(char c : questions[i].LABELS[j].toCharArray()) {
+                for (char c : questions[i].LABELS[j].toCharArray()) {
                     out.writeInt(c);
                 }
             }
         }
     }
 
-    // TODO: String octetsToString(String[] octets) -- join the pieces of a domain name with dots ([ "utah", "edu"] -> "utah.edu" )
     String octetsToString(String[] octets) {
         StringBuilder builder = new StringBuilder();
-        for(int i = 0; i < octets.length; i++) {
+        for (int i = 0; i < octets.length; i++) {
             builder.append(octets[i]);
             builder.append('.');
         }
         return builder.toString();
     }
 
-    // TODO: String toString()
+    @Override
+    public String toString() {
+        return "DNSMessage{" +
+                "header=" + header +
+                ", questions=" + Arrays.toString(questions) +
+                ", answers=" + Arrays.toString(answers) +
+                ", authorityRecords=" + Arrays.toString(authorityRecords) +
+                ", additionalRecords=" + Arrays.toString(additionalRecords) +
+                '}';
+    }
+
 
 }

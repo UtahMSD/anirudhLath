@@ -23,9 +23,9 @@ public class DNSRecord {
             System.out.println(temp & 0b0011111111111111);
         }
         int offset = 0;
-        if((temp & 0b1100000000000000) == 49152) {
+        if ((temp & 0b1100000000000000) == 49152) {
             offset = temp & 0b0011111111111111;
-            if(DNSServer.debug > 0) {
+            if (DNSServer.debug > 0) {
                 System.out.println("<--- COMPRESSION FOUND --->");
                 System.out.println("OFFSET:         " + offset);
             }
@@ -55,12 +55,11 @@ public class DNSRecord {
         DNSMessage.backupData = stream.readAllBytes(); // Had to backup bytes because Java is the stupidest language.
 
     }
-/**/
+
     public static DNSRecord decodeRecord(ByteArrayInputStream inputStream, DNSMessage message) throws IOException {
         return new DNSRecord(new DataInputStream(inputStream), message);
     }
 
-    // TODO: writeBytes(ByteArrayOutputStream, HashMap<String, Integer>)
     void writeBytes(ByteArrayOutputStream stream) throws IOException {
         if (DNSServer.debug > 0) {
             System.out.println("<--- DECODED RECORD DATA --->");
@@ -75,7 +74,7 @@ public class DNSRecord {
         DataOutputStream out = new DataOutputStream(stream);
         for (int j = 0; j < NAME.length; j++) {
             out.writeByte(NAME[j].toCharArray().length);
-            for(char c : NAME[j].toCharArray()) {
+            for (char c : NAME[j].toCharArray()) {
                 out.writeByte(c);
             }
         }
@@ -99,10 +98,6 @@ public class DNSRecord {
                 ", RDATA=" + Arrays.toString(RDATA) +
                 '}';
     }
-
-
-    // TODO: boolean timestampValid() -- return whether the creation date + the time to live is after the current
-    //  time. The Date and Calendar classes will be useful for this.
 
 }
 
