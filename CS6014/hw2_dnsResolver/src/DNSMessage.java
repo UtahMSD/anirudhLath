@@ -1,11 +1,10 @@
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class DNSMessage {
     static byte[] receiveData;
+    static byte[] backupData;
     DNSHeader header;
     DNSQuestion[] questions;
     DNSRecord[] answers;
@@ -16,7 +15,7 @@ public class DNSMessage {
 
     public DNSMessage(ByteArrayInputStream stream) throws IOException {
         if (DNSServer.debug > 0) {
-            System.out.println("MESSAGE STARTED -------------------------------------------------------------------->");
+            System.out.println("REQUEST STARTED -------------------------------------------------------------------->");
         }
 
         // Header Section
@@ -31,19 +30,34 @@ public class DNSMessage {
         // Answer Section
         answers = new DNSRecord[header.ANCOUNT];
         for (int i = 0; i < header.ANCOUNT; i++) {
-            answers[i] = DNSRecord.decodeRecord(stream, this);
+            try {
+                answers[i] = DNSRecord.decodeRecord(stream, this);
+            } catch (EOFException e) {
+                stream = new ByteArrayInputStream(backupData);
+                additionalRecords[i] = DNSRecord.decodeRecord(stream, this);
+            }
         }
 
         // Authority Section
         authorityRecords = new DNSRecord[header.NSCOUNT];
         for (int i = 0; i < header.NSCOUNT; i++) {
-            authorityRecords[i] = DNSRecord.decodeRecord(stream, this);
+            try {
+                authorityRecords[i] = DNSRecord.decodeRecord(stream, this);
+            } catch (EOFException e) {
+                stream = new ByteArrayInputStream(backupData);
+                additionalRecords[i] = DNSRecord.decodeRecord(stream, this);
+            }
         }
 
         // Additional Section
         additionalRecords = new DNSRecord[header.ARCOUNT];
         for (int i = 0; i < header.ARCOUNT; i++) {
-            additionalRecords[i] = DNSRecord.decodeRecord(stream, this);
+            try {
+                additionalRecords[i] = DNSRecord.decodeRecord(stream, this);
+            } catch (EOFException e) {
+                stream = new ByteArrayInputStream(backupData);
+                additionalRecords[i] = DNSRecord.decodeRecord(stream, this);
+            }
         }
 
         if (DNSServer.debug > 0) {
@@ -56,8 +70,19 @@ public class DNSMessage {
         }
 
         if (DNSServer.debug > 0) {
-            System.out.println("MESSAGE ENDED ---------------------------------------------------------------------->" + "\n");
+            System.out.println("REQUEST ENDED " +
+                    "---------------------------------------------------------------------->" + "\n");
         }
+    }
+
+    public DNSMessage(DNSMessage request, DNSRecord[] answers) {
+        if (DNSServer.debug > 0) {
+            System.out.println("RESPONSE STARTED " +
+                    "-------------------------------------------------------------------->");
+        }
+        // Header
+        this.header = DNSHeader.buildResponseHeader(request, this);
+
     }
 
     public static DNSMessage decodeMessage(byte[] receiveData) throws IOException {
@@ -91,12 +116,27 @@ public class DNSMessage {
     }
 
     String[] readDomainName(int firstByte) throws IOException {
-        return readDomainName(new DataInputStream(new ByteArrayInputStream(receiveData, firstByte, receiveData.length)));
+        return readDomainName(new DataInputStream(new ByteArrayInputStream(receiveData, firstByte,
+                receiveData.length)));
     }
 
     // TODO: static DNSMessage buildResponse(DNSMessage request, DNSRecord[] answers) --build a response based on the request and the answers you intend to send back.
+    static DNSMessage buildResponse(DNSMessage request, DNSRecord[] answers) throws IOException {
+        return new DNSMessage(request, answers);
+    }
 
     // TODO: byte[] toBytes() -- get the bytes to put in a packet and send back
+    byte[] toBytes() throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        header.writeBytes(out);
+        out.close();
+        if (DNSServer.debug > 0) {
+            System.out.println("RESPONSE ENDED " +
+                    "---------------------------------------------------------------------->" + "\n");
+        }
+        return out.toByteArray();
+    }
+
 
     // TODO: static void writeDomainName(ByteArrayOutputStream, HashMap<String,Integer> domainLocations, String[] domainPieces) -- If this is the first time we've seen this domain name in the packet, write it using the DNS encoding (each segment of the domain prefixed with its length, 0 at the end), and add it to the hash map. Otherwise, write a back pointer to where the domain has been seen previously.
 

@@ -2,6 +2,7 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class DNSQuestion {
     String[] LABELS;
@@ -32,9 +33,28 @@ public class DNSQuestion {
     //  bytes which will be sent to the client. The hash map is used for us to compress the message, see the
     //  DNSMessage class below.
 
-    // TODO: toString()
+    @Override
+    public String toString() {
+        return "DNSQuestion{" +
+                "LABELS=" + Arrays.toString(LABELS) +
+                ", QTYPE=" + QTYPE +
+                ", QCLASS=" + QCLASS +
+                '}';
+    }
 
-    // TODO: equals()
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DNSQuestion that = (DNSQuestion) o;
+        return QTYPE == that.QTYPE && QCLASS == that.QCLASS && Arrays.equals(LABELS, that.LABELS);
+    }
 
-    // TODO: hashCode()
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(QTYPE, QCLASS);
+        result = 31 * result + Arrays.hashCode(LABELS);
+        return result;
+    }
+
 }

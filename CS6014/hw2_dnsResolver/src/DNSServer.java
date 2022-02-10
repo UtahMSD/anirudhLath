@@ -33,7 +33,7 @@ public class DNSServer {
 
         byte[] receiveData = new byte[1024];
         byte[] googleData = new byte[1024];
-        byte[] sendData = new byte[1024];
+        byte[] sendData;
 
         while(true) { // Start listening for requests
             DNSServer server = new DNSServer();
@@ -51,8 +51,15 @@ public class DNSServer {
 
             // TODO: Check Cache
             if(DNSCache.isCached(message)) {
-                message.answers = new DNSRecord[1];
-                message.answers[0] = DNSCache.fetchRecord(message);
+                DNSRecord[] answers = new DNSRecord[1];
+                answers[0] = DNSCache.fetchRecord(message);
+                DNSMessage response = DNSMessage.buildResponse(message, answers);
+                sendData = response.toBytes();
+
+                server.sendPacket = new DatagramPacket(sendData, sendData.length, server.clientAddress,
+                        server.clientPort);
+                server_socket.send(server.sendPacket);
+
                 // TODO: Respond and also don't forget the AA of type 41 for DiG
             } else {
                 InetAddress googleDNS = InetAddress.getByName("8.8.8.8");
@@ -62,8 +69,8 @@ public class DNSServer {
                 if(debug > 0) {
                     System.out.println("Sending packet to Google!");
                 }
-                server.sendPacket = new DatagramPacket(receiveData, receiveData.length, googleDNS,
-                        53);
+                server.sendPacket = new DatagramPacket(receiveData, server.receivePacket.getLength(), googleDNS,
+                        53); // It is important to send conformed byte length of the packet instead of the array length.
                 googleSocket.send(server.sendPacket);
                 if(debug > 0) {
                     System.out.println("Done, sent the packet to Google!\n");
@@ -76,7 +83,7 @@ public class DNSServer {
                 server.googlePacket = new DatagramPacket(googleData, googleData.length);
                 googleSocket.receive(server.googlePacket);
                 if(debug > 0) {
-                    System.out.println("Received answer from Google!");
+                    System.out.println("Received answer from Google!\n");
                 }
 
                 DNSMessage googleMessage = DNSMessage.decodeMessage(googleData);
@@ -85,7 +92,7 @@ public class DNSServer {
                 DNSCache.insertRecord(message, googleMessage);
 
                 // Respond back
-                server.sendPacket = new DatagramPacket(googleData, googleData.length, server.clientAddress,
+                server.sendPacket = new DatagramPacket(googleData, server.sendPacket.getLength(), server.clientAddress,
                         server.clientPort);
                 server_socket.send(server.sendPacket);
 
