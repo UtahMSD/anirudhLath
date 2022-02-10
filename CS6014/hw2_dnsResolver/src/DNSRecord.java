@@ -12,7 +12,7 @@ public class DNSRecord {
 
     public DNSRecord(DataInputStream stream, DNSMessage message) throws IOException {
 
-        // Data extracted based on rfc1035
+        /*// Data extracted based on rfc1035
         byte[] buf = stream.readAllBytes();
         stream = new DataInputStream(new ByteArrayInputStream(buf));
         DataInputStream bufstream = new DataInputStream(new ByteArrayInputStream(buf));
@@ -33,8 +33,8 @@ public class DNSRecord {
             DNSRecord.padding = stream.readShort(); // I had to add padding for some reason
         } else {
             NAME = message.readDomainName(stream);
-        }
-
+        }*/
+        NAME = message.readDomainName(stream);
         TYPE = stream.readUnsignedShort();
         CLASS = stream.readUnsignedShort();
         TTL = stream.readInt();
@@ -68,7 +68,13 @@ public class DNSRecord {
             System.out.println("CLASS:          " + CLASS);
             System.out.println("TTL:            " + TTL);
             System.out.println("RDLENGTH:       " + RDLENGTH);
-            System.out.println("RDATA:          " + Arrays.deepToString(new byte[][]{RDATA}) + "\n");
+            System.out.println("RDATA:          " + Arrays.deepToString(new byte[][]{RDATA}));
+            System.out.println("NAME[] length:  " + NAME.length);
+            System.out.println();
+        }
+
+        if (DNSServer.debug == 1) {
+            System.out.println("Writing record bytes...");
         }
 
         DataOutputStream out = new DataOutputStream(stream);
@@ -79,12 +85,15 @@ public class DNSRecord {
             }
         }
         out.writeByte(0);
-        out.writeShort(DNSRecord.padding);
         out.writeShort(TYPE);
         out.writeShort(CLASS);
-        out.writeShort(TTL);
+        out.writeInt(TTL);
         out.writeShort(RDLENGTH);
         out.write(RDATA, 0, RDATA.length);
+
+        if (DNSServer.debug == 1) {
+            System.out.println("Finished writing record bytes!\n");
+        }
     }
 
     @Override

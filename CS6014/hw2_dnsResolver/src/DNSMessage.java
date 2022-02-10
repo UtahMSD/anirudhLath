@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class DNSMessage {
     static byte[] receiveData;
@@ -85,14 +86,7 @@ public class DNSMessage {
         this.authorityRecords = request.authorityRecords;
         this.additionalRecords = request.additionalRecords;
 
-        if (DNSServer.debug > 0) {
-            System.out.println("<--- MESSAGE STATISTICS --->");
-            System.out.println("HEADER:         " + header.toString());
-            System.out.println("QUESTIONS:      " + Arrays.stream(questions).toList().toString());
-            System.out.println("ANSWERS:        " + Arrays.stream(answers).toList().toString());
-            System.out.println("AUTHORITY:      " + Arrays.stream(authorityRecords).toList().toString());
-            System.out.println("ADDITIONAL:     " + Arrays.stream(additionalRecords).toList().toString() + "\n");
-        }
+
 
     }
 
@@ -102,23 +96,44 @@ public class DNSMessage {
     }
 
     String[] readDomainName(DataInputStream stream) throws IOException {
-        ArrayList<String> labels = new ArrayList<>();
-        int firstOctet = stream.readByte();
-        if (firstOctet != 0) {
-            int charCount = firstOctet;
-            StringBuilder label = new StringBuilder();
-            for (int i = 0; i <= charCount; i++) {
-                if (i != charCount) {
-                    char c = (char) stream.readUnsignedByte();
-                    label.append(c);
-                } else {
-                    labels.add(label.toString());
-                    label = new StringBuilder();
-                    charCount = stream.readUnsignedByte();
-                    i = -1; // Offset -1 was necessary I am not exactly sure why
+        List<String> labels = new ArrayList<>();
 
-                    if (charCount == 0) {
-                        break;
+        byte[] temp = new byte[2];
+        temp[0] = stream.readByte();
+        int firstOctet = temp[0];
+
+        int offset;
+
+        if ((firstOctet & 0b11000000) == 192) {
+            temp[1] = stream.readByte();
+            DataInputStream tempStream = new DataInputStream(new ByteArrayInputStream(temp));
+            int pointer = tempStream.readShort();
+            tempStream.close();
+
+            offset = pointer & 0b0011111111111111;
+
+            if (DNSServer.debug > 0) {
+                System.out.println("<--- COMPRESSION FOUND --->");
+                System.out.println("OFFSET:         " + offset);
+            }
+            labels = Arrays.stream(readDomainName(offset)).toList();
+        } else {
+            if (firstOctet != 0) {
+                int charCount = firstOctet;
+                StringBuilder label = new StringBuilder();
+                for (int i = 0; i <= charCount; i++) {
+                    if (i != charCount) {
+                        char c = (char) stream.readUnsignedByte();
+                        label.append(c);
+                    } else {
+                        labels.add(label.toString());
+                        label = new StringBuilder();
+                        charCount = stream.readUnsignedByte();
+                        i = -1; // Offset -1 was necessary I am not exactly sure why
+
+                        if (charCount == 0) {
+                            break;
+                        }
                     }
                 }
             }
@@ -156,6 +171,15 @@ public class DNSMessage {
             additionalRecords[i].writeBytes(out);
         }
         out.close();
+
+        if (DNSServer.debug > 0) {
+            System.out.println("<--- MESSAGE STATISTICS --->");
+            System.out.println("HEADER:         " + header.toString());
+            System.out.println("QUESTIONS:      " + Arrays.stream(questions).toList().toString());
+            System.out.println("ANSWERS:        " + Arrays.stream(answers).toList().toString());
+            System.out.println("AUTHORITY:      " + Arrays.stream(authorityRecords).toList().toString());
+            System.out.println("ADDITIONAL:     " + Arrays.stream(additionalRecords).toList().toString() + "\n");
+        }
 
         if (DNSServer.debug > 0) {
             System.out.println("RESPONSE ENDED " +

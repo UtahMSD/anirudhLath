@@ -45,12 +45,12 @@ public class DNSServer {
             server.clientPort = server.receivePacket.getPort();
 
             // Parse Packet
-            DNSMessage message = DNSMessage.decodeMessage(receiveData);
+            DNSMessage request = DNSMessage.decodeMessage(receiveData);
 
-            if (DNSCache.isCached(message)) {
+            if (DNSCache.isCached(request)) {
                 DNSRecord[] answers = new DNSRecord[1];
-                answers[0] = DNSCache.fetchRecord(message);
-                DNSMessage response = DNSMessage.buildResponse(message, answers);
+                answers[0] = DNSCache.fetchRecord(request);
+                DNSMessage response = DNSMessage.buildResponse(request, answers);
                 sendData = response.toBytes();
 
                 server.sendPacket = new DatagramPacket(sendData, sendData.length, server.clientAddress,
@@ -85,7 +85,7 @@ public class DNSServer {
                 DNSMessage googleMessage = DNSMessage.decodeMessage(googleData);
 
                 // Put data in cache
-                DNSCache.insertRecord(message, googleMessage);
+                DNSCache.insertRecord(request, googleMessage);
 
                 // Respond back
                 server.sendPacket = new DatagramPacket(googleData, server.sendPacket.getLength(), server.clientAddress,
