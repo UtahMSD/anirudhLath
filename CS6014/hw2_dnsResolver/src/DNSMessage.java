@@ -82,6 +82,19 @@ public class DNSMessage {
         }
         // Header
         this.header = DNSHeader.buildResponseHeader(request, this);
+        this.questions = request.questions;
+        this.answers = answers;
+        this.authorityRecords = request.authorityRecords;
+        this.additionalRecords = request.additionalRecords;
+
+        if (DNSServer.debug > 0) {
+            System.out.println("<--- MESSAGE STATISTICS --->");
+            System.out.println("HEADER:         " + header.toString());
+            System.out.println("QUESTIONS:      " + Arrays.stream(questions).toList().toString());
+            System.out.println("ANSWERS:        " + Arrays.stream(answers).toList().toString());
+            System.out.println("AUTHORITY:      " + Arrays.stream(authorityRecords).toList().toString());
+            System.out.println("ADDITIONAL:     " + Arrays.stream(additionalRecords).toList().toString() + "\n");
+        }
 
     }
 
@@ -128,8 +141,26 @@ public class DNSMessage {
     // TODO: byte[] toBytes() -- get the bytes to put in a packet and send back
     byte[] toBytes() throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
+
         header.writeBytes(out);
+
+        for (int i = 0; i < questions.length; i++) {
+            questions[i].writeBytes(out);
+        }
+
+        for (int i = 0; i < answers.length; i++) {
+            answers[i].writeBytes(out);
+        }
+
+        for (int i = 0; i < authorityRecords.length; i++) {
+            authorityRecords[i].writeBytes(out);
+        }
+
+        for (int i = 0; i < additionalRecords.length; i++) {
+            additionalRecords[i].writeBytes(out);
+        }
         out.close();
+
         if (DNSServer.debug > 0) {
             System.out.println("RESPONSE ENDED " +
                     "---------------------------------------------------------------------->" + "\n");
@@ -139,6 +170,18 @@ public class DNSMessage {
 
 
     // TODO: static void writeDomainName(ByteArrayOutputStream, HashMap<String,Integer> domainLocations, String[] domainPieces) -- If this is the first time we've seen this domain name in the packet, write it using the DNS encoding (each segment of the domain prefixed with its length, 0 at the end), and add it to the hash map. Otherwise, write a back pointer to where the domain has been seen previously.
+
+    void writeDomainName(ByteArrayOutputStream stream) throws IOException {
+        DataOutputStream out = new DataOutputStream(stream);
+        for(int i = 0; i < questions.length; i++) {
+            for (int j = 0; j < questions[i].LABELS.length; j++) {
+                out.writeByte(questions[i].LABELS.length);
+                for(char c : questions[i].LABELS[j].toCharArray()) {
+                    out.writeInt(c);
+                }
+            }
+        }
+    }
 
     // TODO: String octetsToString(String[] octets) -- join the pieces of a domain name with dots ([ "utah", "edu"] -> "utah.edu" )
     String octetsToString(String[] octets) {

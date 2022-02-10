@@ -1,10 +1,8 @@
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.PushbackInputStream;
+import java.io.*;
 import java.util.Arrays;
 
 public class DNSRecord {
+    static int padding;
     String[] NAME;
     int TYPE;
     int CLASS;
@@ -32,7 +30,7 @@ public class DNSRecord {
                 System.out.println("OFFSET:         " + offset);
             }
             NAME = message.readDomainName(offset);
-            stream.readUnsignedShort(); // I had to add padding for some reason
+            DNSRecord.padding = stream.readShort(); // I had to add padding for some reason
         } else {
             NAME = message.readDomainName(stream);
         }
@@ -57,12 +55,38 @@ public class DNSRecord {
         DNSMessage.backupData = stream.readAllBytes(); // Had to backup bytes because Java is the stupidest language.
 
     }
-
+/**/
     public static DNSRecord decodeRecord(ByteArrayInputStream inputStream, DNSMessage message) throws IOException {
         return new DNSRecord(new DataInputStream(inputStream), message);
     }
 
     // TODO: writeBytes(ByteArrayOutputStream, HashMap<String, Integer>)
+    void writeBytes(ByteArrayOutputStream stream) throws IOException {
+        if (DNSServer.debug > 0) {
+            System.out.println("<--- DECODED RECORD DATA --->");
+            System.out.println("NAME:           " + Arrays.deepToString(NAME));
+            System.out.println("TYPE:           " + TYPE);
+            System.out.println("CLASS:          " + CLASS);
+            System.out.println("TTL:            " + TTL);
+            System.out.println("RDLENGTH:       " + RDLENGTH);
+            System.out.println("RDATA:          " + Arrays.deepToString(new byte[][]{RDATA}) + "\n");
+        }
+
+        DataOutputStream out = new DataOutputStream(stream);
+        for (int j = 0; j < NAME.length; j++) {
+            out.writeByte(NAME[j].toCharArray().length);
+            for(char c : NAME[j].toCharArray()) {
+                out.writeByte(c);
+            }
+        }
+        out.writeByte(0);
+        out.writeShort(DNSRecord.padding);
+        out.writeShort(TYPE);
+        out.writeShort(CLASS);
+        out.writeShort(TTL);
+        out.writeShort(RDLENGTH);
+        out.write(RDATA, 0, RDATA.length);
+    }
 
     @Override
     public String toString() {

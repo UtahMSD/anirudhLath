@@ -121,7 +121,6 @@ public class DNSHeader {
 
     }
 
-    // TODO: void writeBytes(OutputStream) --encode the header to bytes to be sent back to the client. The OutputStream interface has methods to write a single byte or an array of bytes.
     void writeBytes(ByteArrayOutputStream stream) throws IOException {
         if (DNSServer.debug == 1) {
             System.out.println("Writing header bytes...");
