@@ -1,5 +1,8 @@
 import java.io.*;
+import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
 
 public class DNSRecord {
     static int padding;
@@ -9,6 +12,7 @@ public class DNSRecord {
     int TTL;
     int RDLENGTH;
     byte[] RDATA; // TODO: Byte[]
+    Timestamp timestamp;
 
     public DNSRecord(DataInputStream stream, DNSMessage message) throws IOException {
 
@@ -40,6 +44,7 @@ public class DNSRecord {
         TTL = stream.readInt();
         RDLENGTH = stream.readUnsignedShort();
         RDATA = stream.readNBytes(RDLENGTH);
+        timestamp = new Timestamp(System.currentTimeMillis());
 
         if (DNSServer.debug > 0) {
             System.out.println("<--- DECODED RECORD DATA --->");
@@ -60,7 +65,7 @@ public class DNSRecord {
         return new DNSRecord(new DataInputStream(inputStream), message);
     }
 
-    void writeBytes(ByteArrayOutputStream stream) throws IOException {
+    void writeBytes(ByteArrayOutputStream stream, HashMap<String, Integer> domainNameLocations) throws IOException {
         if (DNSServer.debug > 0) {
             System.out.println("<--- DECODED RECORD DATA --->");
             System.out.println("NAME:           " + Arrays.deepToString(NAME));
@@ -78,13 +83,8 @@ public class DNSRecord {
         }
 
         DataOutputStream out = new DataOutputStream(stream);
-        for (int j = 0; j < NAME.length; j++) {
-            out.writeByte(NAME[j].toCharArray().length);
-            for (char c : NAME[j].toCharArray()) {
-                out.writeByte(c);
-            }
-        }
-        out.writeByte(0);
+
+        DNSMessage.writeDomainName(stream, domainNameLocations, NAME);
         out.writeShort(TYPE);
         out.writeShort(CLASS);
         out.writeInt(TTL);
@@ -94,6 +94,22 @@ public class DNSRecord {
         if (DNSServer.debug == 1) {
             System.out.println("Finished writing record bytes!\n");
         }
+    }
+
+    boolean timestampValid() {
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timestamp.getTime());
+        calendar.add(Calendar.SECOND, TTL);
+
+        Timestamp timestampAfterTTL = new Timestamp(calendar.getTime().getTime());
+
+        if(currentTime.compareTo(timestampAfterTTL) > 0) {
+            return true;
+        }
+        return false;
     }
 
     @Override

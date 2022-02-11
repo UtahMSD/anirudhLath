@@ -11,7 +11,7 @@ public class DNSServer {
     InetAddress clientAddress;
     int clientPort;
 
-    static int debug = 1;
+    static int debug = 5;
 
     public static void main(String[] args) throws IOException {
 
@@ -48,14 +48,7 @@ public class DNSServer {
             DNSMessage request = DNSMessage.decodeMessage(receiveData);
 
             if (DNSCache.isCached(request)) {
-                DNSRecord[] answers = new DNSRecord[1];
-                answers[0] = DNSCache.fetchRecord(request);
-                DNSMessage response = DNSMessage.buildResponse(request, answers);
-                sendData = response.toBytes();
-
-                server.sendPacket = new DatagramPacket(sendData, sendData.length, server.clientAddress,
-                        server.clientPort);
-                server_socket.send(server.sendPacket);
+                respond(server, request);
 
             } else {
                 InetAddress googleDNS = InetAddress.getByName("8.8.8.8");
@@ -88,13 +81,23 @@ public class DNSServer {
                 DNSCache.insertRecord(request, googleMessage);
 
                 // Respond back
-                server.sendPacket = new DatagramPacket(googleData, server.sendPacket.getLength(), server.clientAddress,
-                        server.clientPort);
-                server_socket.send(server.sendPacket);
+                respond(server, request);
 
             }
 
 
         }
+    }
+
+    private static void respond(DNSServer server, DNSMessage request) throws IOException {
+        byte[] sendData;
+        DNSRecord[] answers = new DNSRecord[1];
+        answers[0] = DNSCache.fetchRecord(request);
+        DNSMessage response = DNSMessage.buildResponse(request, answers);
+        sendData = response.toBytes();
+
+        server.sendPacket = new DatagramPacket(sendData, sendData.length, server.clientAddress,
+                server.clientPort);
+        server_socket.send(server.sendPacket);
     }
 }

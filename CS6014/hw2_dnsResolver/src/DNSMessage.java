@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class DNSMessage {
@@ -11,6 +12,7 @@ public class DNSMessage {
     DNSRecord[] answers;
     DNSRecord[] authorityRecords;
     DNSRecord[] additionalRecords;
+    HashMap<String,Integer> domainNameLocations = new HashMap<>();
 
     public DNSMessage(ByteArrayInputStream stream) throws IOException {
         if (DNSServer.debug > 0) {
@@ -79,11 +81,16 @@ public class DNSMessage {
             System.out.println("RESPONSE STARTED " +
                     "-------------------------------------------------------------------->");
         }
-        // Header
         this.header = DNSHeader.buildResponseHeader(request, this);
         this.questions = request.questions;
-        this.answers = answers;
-        this.authorityRecords = request.authorityRecords;
+        if (this.header.ANCOUNT > 0) {
+            this.answers = answers;
+            this.authorityRecords = request.authorityRecords;
+        } else {
+            this.authorityRecords = answers;
+            this.answers = request.answers;
+        }
+
         this.additionalRecords = request.additionalRecords;
 
 
@@ -156,19 +163,19 @@ public class DNSMessage {
         header.writeBytes(out);
 
         for (int i = 0; i < questions.length; i++) {
-            questions[i].writeBytes(out);
+            questions[i].writeBytes(out, this.domainNameLocations);
         }
 
         for (int i = 0; i < answers.length; i++) {
-            answers[i].writeBytes(out);
+            answers[i].writeBytes(out, this.domainNameLocations);
         }
 
         for (int i = 0; i < authorityRecords.length; i++) {
-            authorityRecords[i].writeBytes(out);
+            authorityRecords[i].writeBytes(out, this.domainNameLocations);
         }
 
         for (int i = 0; i < additionalRecords.length; i++) {
-            additionalRecords[i].writeBytes(out);
+            additionalRecords[i].writeBytes(out, this.domainNameLocations);
         }
         out.close();
 
@@ -188,20 +195,27 @@ public class DNSMessage {
         return out.toByteArray();
     }
 
-
-    void writeDomainName(ByteArrayOutputStream stream) throws IOException {
+    static void writeDomainName(ByteArrayOutputStream stream, HashMap<String,Integer> domainNameLocations,
+                          String[] domainPieces) throws IOException {
         DataOutputStream out = new DataOutputStream(stream);
-        for (int i = 0; i < questions.length; i++) {
-            for (int j = 0; j < questions[i].LABELS.length; j++) {
-                out.writeByte(questions[i].LABELS.length);
-                for (char c : questions[i].LABELS[j].toCharArray()) {
-                    out.writeInt(c);
+        String temp = octetsToString(domainPieces);
+        if(domainNameLocations.containsKey(temp)) {
+            int offset = domainNameLocations.get(temp);
+            short tempByte = (short) offset;
+            tempByte |= 0b1100000000000000;
+        } else {
+            for (int j = 0; j < domainPieces.length; j++) {
+                out.writeByte(domainPieces[j].toCharArray().length);
+                for (char c : domainPieces[j].toCharArray()) {
+                    out.writeByte(c);
                 }
             }
+            out.writeByte(0);
         }
+
     }
 
-    String octetsToString(String[] octets) {
+    static String octetsToString(String[] octets) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < octets.length; i++) {
             builder.append(octets[i]);

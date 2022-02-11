@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -40,6 +41,7 @@ public class DNSQuestion {
             System.out.println("LABELS:         " + Arrays.deepToString(LABELS));
             System.out.println("QTYPE:          " + QTYPE);
             System.out.println("QCLASS:         " + QCLASS);
+            System.out.println();
 
         } // DEBUG
     }
@@ -63,7 +65,7 @@ public class DNSQuestion {
      * @param stream the stream
      * @throws IOException the io exception
      */
-    void writeBytes(ByteArrayOutputStream stream) throws IOException {
+    void writeBytes(ByteArrayOutputStream stream, HashMap<String,Integer> domainNameLocations) throws IOException {
         if (DNSServer.debug > 0) {
             System.out.println("<--- DECODED QUESTION DATA --->");
             System.out.println("LABELS:         " + Arrays.deepToString(LABELS));
@@ -76,16 +78,19 @@ public class DNSQuestion {
             System.out.println("Writing question bytes...");
         }
 
-        DataOutputStream out = new DataOutputStream(stream);
 
-        // Write bytes in format (label length byte followed by the chars in that label)
+
+        /*// Write bytes in format (label length byte followed by the chars in that label)
         for (int j = 0; j < LABELS.length; j++) {
             out.writeByte(LABELS[j].toCharArray().length);
             for (char c : LABELS[j].toCharArray()) {
                 out.writeByte(c);
             }
-        }
-        out.writeByte(0); // LABEL section terminator
+        }*/
+//        out.writeByte(0); // LABEL section terminator
+
+        DNSMessage.writeDomainName(stream, domainNameLocations, LABELS );
+        DataOutputStream out = new DataOutputStream(stream);
         out.writeShort(QTYPE);
         out.writeShort(QCLASS);
 
