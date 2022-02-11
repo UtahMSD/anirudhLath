@@ -100,13 +100,21 @@ public class DNSRecord {
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
 
 
+
+
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timestamp.getTime());
         calendar.add(Calendar.SECOND, TTL);
 
         Timestamp timestampAfterTTL = new Timestamp(calendar.getTime().getTime());
 
-        if(currentTime.compareTo(timestampAfterTTL) > 0) {
+        if(DNSServer.debug > 4) {
+            System.out.println("CURRENT TIME:       " + currentTime);
+            System.out.println("TIMESTAMP RECORDED: " + timestamp);
+            System.out.println("TIMESTAMP REQUIRED: " + timestampAfterTTL);
+        }
+
+        if(currentTime.compareTo(timestampAfterTTL) < 0) {
             return true;
         }
         return false;
