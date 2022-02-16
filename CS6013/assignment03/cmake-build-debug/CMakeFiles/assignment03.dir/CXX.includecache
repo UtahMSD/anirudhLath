@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/anirudhlath/code/src/github.com/MSD/anirudhLath/CS6013/assignment03/main.cpp
+iostream
+-
+unistd.h
+-
+shelpers.hpp
+/Users/anirudhlath/code/src/github.com/MSD/anirudhLath/CS6013/assignment03/shelpers.hpp
+
+/Users/anirudhlath/code/src/github.com/MSD/anirudhLath/CS6013/assignment03/shelpers.hpp
+string
+-
+iostream
+-
+unistd.h
+-
+sys/types.h
+-
+sys/stat.h
+-
+fcntl.h
+-
+vector
+-
+
