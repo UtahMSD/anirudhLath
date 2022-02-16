@@ -185,8 +185,34 @@ vector<Command> getCommands( const vector<string> & tokens )
             // Note, that only the FIRST command can take input redirection
             // (all others get input from a pipe)
             // Only the LAST command can have output redirection!
-         
-            assert( false );
+
+            const char *filename = tokens[j+1].c_str();
+
+             if (filename != NULL) {
+                 if (tokens[j] == ">") {
+                     int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU | S_IRGRP | S_IROTH);
+                     if ( fd < 0) {
+                         perror("open failed.\n");
+                         break;
+                     } else {
+                         command.outputFd = fd;
+                         break;
+                     }
+                 } else if (tokens[j] == "<" ){
+                     int fd = open(filename, O_RDONLY);
+                     if (fd < 0) {
+                         perror("open failed.\n");
+                         break;
+                     } else {
+                         command.inputFd = fd;
+                         break;
+                     }
+                 }
+             }
+             else {
+                 perror("filename missing.ls");
+
+             }
          }
          else if( tokens[j] == "&" ){
             // Fill this in if you choose to do the optional "background command" part.

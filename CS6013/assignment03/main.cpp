@@ -29,6 +29,16 @@ int main() {
 
         if (child_pid == 0) {
             // Child
+            if(commands[0].inputFd != STDIN_FILENO) {
+                if (dup2(commands[0].inputFd, STDIN_FILENO) < 0) {
+                    perror("dup2 failed.\n");
+                }
+            }
+            if(commands[0].outputFd != STDOUT_FILENO) {
+                if(dup2(commands[0].outputFd, STDOUT_FILENO) < 0) {
+                    perror("dup2 failed.\n");
+                }
+            }
             execvp(commands[0].execName.c_str(), const_cast<char* const*>(commands[0].argv.data()));
             exit(0);
         }
