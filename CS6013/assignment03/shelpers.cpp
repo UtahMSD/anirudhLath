@@ -193,6 +193,7 @@ vector<Command> getCommands( const vector<string> & tokens )
                      int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU | S_IRGRP | S_IROTH);
                      if ( fd < 0) {
                          perror("open failed.\n");
+                         close(fd);
                          break;
                      } else {
                          command.outputFd = fd;
@@ -202,6 +203,7 @@ vector<Command> getCommands( const vector<string> & tokens )
                      int fd = open(filename, O_RDONLY);
                      if (fd < 0) {
                          perror("open failed.\n");
+                         close(fd);
                          break;
                      } else {
                          command.inputFd = fd;

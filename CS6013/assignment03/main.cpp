@@ -45,8 +45,6 @@ int main() {
         else if (child_pid > 0) {
             // Parent
             waitpid(child_pid, &stat_loc, WUNTRACED);
-            /*cout << "DEBUG" << endl;
-            cout << (cout, commands[0]) << endl;*/
         }
         else {
             // Error
@@ -75,10 +73,4 @@ void initShell() {
     cout << "*=============== Created by Anirudh Lath ===============*" << endl << endl;
 }
 
-void get_input(istream &in) {
-    string input;
-    while(getline(in, input)) {
-
-    }
-}
 
