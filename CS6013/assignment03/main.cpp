@@ -1,5 +1,7 @@
 #include <iostream>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include "shelpers.hpp"
 
 void initShell();
@@ -27,14 +29,22 @@ int main() {
 
         if (child_pid == 0) {
             // Child
+            if(commands[0].inputFd != STDIN_FILENO) {
+                if (dup2(commands[0].inputFd, STDIN_FILENO) < 0) {
+                    perror("dup2 failed.\n");
+                }
+            }
+            if(commands[0].outputFd != STDOUT_FILENO) {
+                if(dup2(commands[0].outputFd, STDOUT_FILENO) < 0) {
+                    perror("dup2 failed.\n");
+                }
+            }
             execvp(commands[0].execName.c_str(), const_cast<char* const*>(commands[0].argv.data()));
             exit(0);
         }
         else if (child_pid > 0) {
             // Parent
             waitpid(child_pid, &stat_loc, WUNTRACED);
-            /*cout << "DEBUG" << endl;
-            cout << (cout, commands[0]) << endl;*/
         }
         else {
             // Error
@@ -63,10 +73,4 @@ void initShell() {
     cout << "*=============== Created by Anirudh Lath ===============*" << endl << endl;
 }
 
-void get_input(istream &in) {
-    string input;
-    while(getline(in, input)) {
-
-    }
-}
 
