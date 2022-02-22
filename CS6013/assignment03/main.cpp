@@ -9,11 +9,9 @@ void initShell();
 using namespace std;
 
 int main() {
-    pid_t child_pid;
     string input;
     vector<string> command;
     vector<Command> commands;
-    int stat_loc;
 
     initShell();
 
@@ -22,55 +20,9 @@ int main() {
         command = tokenize(input);
         commands = getCommands(command);
 
-        if(command[0] == "exit") {
-            return 0;
-        }
-        child_pid = fork();
-
-        if (child_pid == 0) {
-            // Child
-            if(commands[0].inputFd != STDIN_FILENO) {
-                if (dup2(commands[0].inputFd, STDIN_FILENO) < 0) {
-                    perror("dup2 failed.\n");
-                }
-            }
-            if(commands[0].outputFd != STDOUT_FILENO) {
-                if(dup2(commands[0].outputFd, STDOUT_FILENO) < 0) {
-                    perror("dup2 failed.\n");
-                }
-            }
-            execvp(commands[0].execName.c_str(), const_cast<char* const*>(commands[0].argv.data()));
-            exit(0);
-        }
-        else if (child_pid > 0) {
-            // Parent
-            waitpid(child_pid, &stat_loc, WUNTRACED);
-        }
-        else {
-            // Error
-            perror("Fork failed, the program will now exit.");
-            exit(1);
-        }
+        processManager(commands);
     }
-
-
-    return 0;
 }
 
-void initShell() {
-    system("clear");
-    cout << "*=======================================================*" << endl;
-    cout << " ██▓    ▒██   ██▒  ██████  ██░ ██ ▓█████  ██▓     ██▓    \n"
-            "▓██▒    ▒▒ █ █ ▒░▒██    ▒ ▓██░ ██▒▓█   ▀ ▓██▒    ▓██▒    \n"
-            "▒██░    ░░  █   ░░ ▓██▄   ▒██▀▀██░▒███   ▒██░    ▒██░    \n"
-            "▒██░     ░ █ █ ▒   ▒   ██▒░▓█ ░██ ▒▓█  ▄ ▒██░    ▒██░    \n"
-            "░██████▒▒██▒ ▒██▒▒██████▒▒░▓█▒░██▓░▒████▒░██████▒░██████▒\n"
-            "░ ▒░▓  ░▒▒ ░ ░▓ ░▒ ▒▓▒ ▒ ░ ▒ ░░▒░▒░░ ▒░ ░░ ▒░▓  ░░ ▒░▓  ░\n"
-            "░ ░ ▒  ░░░   ░▒ ░░ ░▒  ░ ░ ▒ ░▒░ ░ ░ ░  ░░ ░ ▒  ░░ ░ ▒  ░\n"
-            "  ░ ░    ░    ░  ░  ░  ░   ░  ░░ ░   ░     ░ ░     ░ ░   \n"
-            "    ░  ░ ░    ░        ░   ░  ░  ░   ░  ░    ░  ░    ░  ░\n"
-            "                                                         " << endl;
-    cout << "*=============== Created by Anirudh Lath ===============*" << endl << endl;
-}
 
 

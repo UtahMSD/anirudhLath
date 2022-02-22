@@ -164,9 +164,12 @@ vector<Command> getCommands( const vector<string> & tokens )
       }
 
       Command & command = commands[ cmdNumber ]; // Get reference to current Command struct.
-      command.execName = token;
+      command.execName = "lxshell";
+       if (token.size() > 0) {
+           command.execName = token;
+       }
 
-      // Must _copy_ the token's string (otherwise, if token goes out of scope (anywhere)
+       // Must _copy_ the token's string (otherwise, if token goes out of scope (anywhere)
       // this pointer would become bad...) Note, this fixes a security hole in this code
       // that had been here for quite a while.
 
@@ -191,28 +194,33 @@ vector<Command> getCommands( const vector<string> & tokens )
              if (filename != NULL) {
                  if (tokens[j] == ">") {
                      int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU | S_IRGRP | S_IROTH);
-                     if ( fd < 0) {
-                         perror("open failed.\n");
+//                     cout << "output '>' " << cmdNumber << filename << commands.size() - 1 << endl;
+                     if ( fd < 0 || cmdNumber != commands.size() - 1) {
+                         perror(filename);
                          close(fd);
                          break;
                      } else {
                          command.outputFd = fd;
-                         break;
+                         command.argv.push_back(nullptr);
+
                      }
-                 } else if (tokens[j] == "<" ){
+                 } else if (tokens[j] == "<"){
                      int fd = open(filename, O_RDONLY);
-                     if (fd < 0) {
-                         perror("open failed.\n");
+//                     cout << "input '<' " << cmdNumber << filename << first << endl;
+                     if (fd < 0 || cmdNumber != 0) {
+                         perror(filename);
+
                          close(fd);
                          break;
                      } else {
                          command.inputFd = fd;
-                         break;
+
+
                      }
                  }
              }
              else {
-                 perror("filename missing.ls");
+                 perror("I/O redirection error.");
 
              }
          }
@@ -227,12 +235,15 @@ vector<Command> getCommands( const vector<string> & tokens )
       }
 
       if( !error ) {
-
          if( cmdNumber > 0 ){
-            // There are multiple commands.  Open a pipe and
-            // connect the ends to the fd's for the commands!
-
-            assert( false );
+            int fds[2];
+            int rc = pipe(fds);
+            if(rc < 0) {
+                perror("Pipe creation failed.");
+            } else {
+                commands[cmdNumber - 1].outputFd = fds[1];
+                commands[cmdNumber].inputFd = fds[0];
+            }
          }
 
          // Exec wants argv to have a nullptr at the end!
@@ -248,6 +259,7 @@ vector<Command> getCommands( const vector<string> & tokens )
    } // end for( cmdNumber = 0 to commands.size )
 
    if( error ){
+       perror("lxshell");
 
       // Close any file descriptors you opened in this function and return the appropriate data!
 
@@ -265,7 +277,102 @@ vector<Command> getCommands( const vector<string> & tokens )
 } // end getCommands()
 
 void get_input(std::string & input) {
-//    std::cout << "lxshell$ ";
     std::cout << "\033[1;31mlxshell$ \033[0m";
     getline(std::cin, input);
+}
+
+void customCommands(Command c) {
+    string command = c.execName;
+    if (command == "exit") {
+        exit(0);
+    }
+}
+
+int processManager(vector<Command> commands) {
+    vector<pid_t> pids;
+    int stat_loc;
+
+    for (int i = 0; i < commands.size(); i++) {
+        Command c = commands[i];
+        customCommands(c);
+
+
+        pid_t pid = fork();
+
+        pids.push_back(pid);
+
+
+
+        if (pid == 0) {
+            // Child
+            if (c.inputFd != STDIN_FILENO) {
+                if (dup2(c.inputFd, STDIN_FILENO) < 0) {
+                    perror("dup2 input failed.\n");
+                }
+            }
+            if (c.outputFd != STDOUT_FILENO) {
+                if (dup2(c.outputFd, STDOUT_FILENO) < 0) {
+                    perror("dup2 output failed.\n");
+                }
+            }
+
+            for (Command c : commands) {
+                if (c.inputFd != STDIN_FILENO) {
+                    close(c.inputFd);
+                }
+
+                if (c.outputFd != STDOUT_FILENO) {
+                    close(c.outputFd);
+                }
+            }
+
+
+
+            if(execvp(c.execName.c_str(), const_cast<char *const *>(c.argv.data())) < 0) {
+                perror("Execution failed.");
+                exit(1);
+            }
+            exit(0);
+        } else if (pid < 0) {
+            // Error
+            perror("Fork failed, the program will now exit.");
+        }
+    }
+
+    for (Command c : commands) {
+        if (c.inputFd != STDIN_FILENO) {
+            close(c.inputFd);
+        }
+
+        if (c.outputFd != STDOUT_FILENO) {
+            close(c.outputFd);
+        }
+    }
+
+    for (pid_t p : pids) { // Wait for children to finish executing
+        waitpid(p, &stat_loc, WUNTRACED);
+        if(stat_loc < 0) {
+            perror("Error occured while waiting for children processes.");
+        }
+    }
+
+    return 0;
+}
+
+
+
+void initShell() {
+    system("clear");
+    cout << "*=======================================================*" << endl;
+    cout << " ██▓    ▒██   ██▒  ██████  ██░ ██ ▓█████  ██▓     ██▓    \n"
+            "▓██▒    ▒▒ █ █ ▒░▒██    ▒ ▓██░ ██▒▓█   ▀ ▓██▒    ▓██▒    \n"
+            "▒██░    ░░  █   ░░ ▓██▄   ▒██▀▀██░▒███   ▒██░    ▒██░    \n"
+            "▒██░     ░ █ █ ▒   ▒   ██▒░▓█ ░██ ▒▓█  ▄ ▒██░    ▒██░    \n"
+            "░██████▒▒██▒ ▒██▒▒██████▒▒░▓█▒░██▓░▒████▒░██████▒░██████▒\n"
+            "░ ▒░▓  ░▒▒ ░ ░▓ ░▒ ▒▓▒ ▒ ░ ▒ ░░▒░▒░░ ▒░ ░░ ▒░▓  ░░ ▒░▓  ░\n"
+            "░ ░ ▒  ░░░   ░▒ ░░ ░▒  ░ ░ ▒ ░▒░ ░ ░ ░  ░░ ░ ▒  ░░ ░ ▒  ░\n"
+            "  ░ ░    ░    ░  ░  ░  ░   ░  ░░ ░   ░     ░ ░     ░ ░   \n"
+            "    ░  ░ ░    ░        ░   ░  ░  ░   ░  ░    ░  ░    ░  ░\n"
+            "                                                         " << endl;
+    cout << "*=============== Created by Anirudh Lath ===============*" << endl << endl;
 }
