@@ -299,13 +299,13 @@ int processManager(vector<Command> commands) {
             if (c.inputFd != STDIN_FILENO) {
                 if (dup2(c.inputFd, STDIN_FILENO) < 0) {
                     perror("dup2 input failed");
-                    continue;
+                    exit(1);
                 }
             }
             if (c.outputFd != STDOUT_FILENO) {
                 if (dup2(c.outputFd, STDOUT_FILENO) < 0) {
                     perror("dup2 output failed");
-                    continue;
+                    exit(1);
                 }
             }
 
@@ -329,6 +329,7 @@ int processManager(vector<Command> commands) {
         } else if (pid < 0) {
             // Error
             perror("Fork failed");
+            exit(1);
         }
     }
 
@@ -346,6 +347,7 @@ int processManager(vector<Command> commands) {
         waitpid(p, &stat_loc, WUNTRACED);
         if(stat_loc < 0) {
             perror("Error occured while waiting for children processes");
+            exit(1);
         }
     }
 
