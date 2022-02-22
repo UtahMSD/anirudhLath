@@ -183,45 +183,28 @@ vector<Command> getCommands( const vector<string> & tokens )
       for( int j = first + 1; j < last; ++j ) {
 
          if( tokens[j] == ">" || tokens[j] == "<" ) {
-            // Handle I/O redirection tokens
-            //
-            // Note, that only the FIRST command can take input redirection
-            // (all others get input from a pipe)
-            // Only the LAST command can have output redirection!
+            string filename = tokens[j+1];
+            int fd = -1;
 
-            const char *filename = tokens[j+1].c_str();
-
-             if (filename != NULL) {
-                 if (tokens[j] == ">") {
-                     int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU | S_IRGRP | S_IROTH);
-//                     cout << "output '>' " << cmdNumber << filename << commands.size() - 1 << endl;
-                     if ( fd < 0 || cmdNumber != commands.size() - 1) {
-                         perror(filename);
-                         close(fd);
-                         break;
-                     } else {
-                         command.outputFd = fd;
-                         command.argv.push_back(nullptr);
-
-                     }
-                 } else if (tokens[j] == "<"){
-                     int fd = open(filename, O_RDONLY);
-//                     cout << "input '<' " << cmdNumber << filename << first << endl;
-                     if (fd < 0 || cmdNumber != 0) {
-                         perror(filename);
-
-                         close(fd);
-                         break;
-                     } else {
-                         command.inputFd = fd;
-
-
-                     }
+             if (tokens[j] == ">") {
+                 if (cmdNumber != commands.size() - 1) {
+                     perror("Invalid syntax");
+                     break;
                  }
+                 fd = open(filename.c_str(), O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU | S_IRGRP | S_IROTH);
+                 command.outputFd = fd;
+                 command.argv.push_back(nullptr);
+             } else if (tokens[j] == "<") {
+                 if (cmdNumber != commands.size() - 1) {
+                     perror("Invalid syntax");
+                     break;
+                 }
+                 fd = open(filename.c_str(), O_RDONLY);
+                 command.inputFd = fd;
              }
-             else {
-                 perror("I/O redirection error.");
-
+             if (fd < 0) {
+                 perror("I/O redirection error");
+                 continue;
              }
          }
          else if( tokens[j] == "&" ){
@@ -260,6 +243,15 @@ vector<Command> getCommands( const vector<string> & tokens )
 
    if( error ){
        perror("lxshell");
+       for (Command c : commands) {
+           if (c.inputFd != STDIN_FILENO) {
+               close(c.inputFd);
+           }
+
+           if (c.outputFd != STDOUT_FILENO) {
+               close(c.outputFd);
+           }
+       }
 
       // Close any file descriptors you opened in this function and return the appropriate data!
 
@@ -269,7 +261,6 @@ vector<Command> getCommands( const vector<string> & tokens )
       // yet been filled in).  (Note, it has not been filled in yet because the processing
       // has not gotten to it when the error (in a previous command) occurred.
 
-      assert(false);
    }
 
    return commands;
@@ -307,12 +298,14 @@ int processManager(vector<Command> commands) {
             // Child
             if (c.inputFd != STDIN_FILENO) {
                 if (dup2(c.inputFd, STDIN_FILENO) < 0) {
-                    perror("dup2 input failed.\n");
+                    perror("dup2 input failed");
+                    continue;
                 }
             }
             if (c.outputFd != STDOUT_FILENO) {
                 if (dup2(c.outputFd, STDOUT_FILENO) < 0) {
-                    perror("dup2 output failed.\n");
+                    perror("dup2 output failed");
+                    continue;
                 }
             }
 
@@ -327,15 +320,15 @@ int processManager(vector<Command> commands) {
             }
 
 
-
-            if(execvp(c.execName.c_str(), const_cast<char *const *>(c.argv.data())) < 0) {
-                perror("Execution failed.");
+            int sc = execvp(c.execName.c_str(), const_cast<char *const *>(c.argv.data()));
+            if(sc < 0) {
+                perror("Execution failed");
                 exit(1);
             }
             exit(0);
         } else if (pid < 0) {
             // Error
-            perror("Fork failed, the program will now exit.");
+            perror("Fork failed");
         }
     }
 
@@ -352,7 +345,7 @@ int processManager(vector<Command> commands) {
     for (pid_t p : pids) { // Wait for children to finish executing
         waitpid(p, &stat_loc, WUNTRACED);
         if(stat_loc < 0) {
-            perror("Error occured while waiting for children processes.");
+            perror("Error occured while waiting for children processes");
         }
     }
 
