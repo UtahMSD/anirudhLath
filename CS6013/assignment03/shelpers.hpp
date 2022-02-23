@@ -65,4 +65,6 @@ int processManager(std::vector<Command> commands);
 
 int customCommands(Command c);
 
+bool isEmptyString(std::string input);
+
 

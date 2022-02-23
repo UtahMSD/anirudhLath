@@ -272,6 +272,18 @@ void get_input(std::string & input) {
     getline(std::cin, input);
 }
 
+bool isEmptyString(string input) {
+    if(input.empty()) {
+        return true;
+    }
+    for(int i = 0; i < input.size(); i++) {
+        if(isalpha(input[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+
 int customCommands(Command c) {
     string command = c.execName;
     int rc = -1;

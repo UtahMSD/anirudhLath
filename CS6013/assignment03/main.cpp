@@ -17,9 +17,11 @@ int main() {
 
     while(true) {
         get_input(input);
+        bool isEmpty = isEmptyString(input);
 
 
-        if (!input.empty()) {
+
+        if (!isEmpty) {
             command = tokenize(input);
             commands = getCommands(command);
             processManager(commands);
