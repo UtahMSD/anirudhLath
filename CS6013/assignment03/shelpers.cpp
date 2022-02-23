@@ -324,6 +324,7 @@ int processManager(vector<Command> commands) {
             pids.push_back(pid);
         } else {
             backgroundPids.push_back(pid);
+            cout << "pid = " << pid << " (Use 'kill <pid>' to kill the process)" << endl;
         }
 
 
