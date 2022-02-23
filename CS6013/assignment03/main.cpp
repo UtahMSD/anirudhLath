@@ -17,10 +17,15 @@ int main() {
 
     while(true) {
         get_input(input);
-        command = tokenize(input);
-        commands = getCommands(command);
 
-        processManager(commands);
+
+        if (!input.empty()) {
+            command = tokenize(input);
+            commands = getCommands(command);
+            processManager(commands);
+        } else {
+            continue;
+        }
     }
 }
 

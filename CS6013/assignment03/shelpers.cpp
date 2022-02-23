@@ -1,6 +1,7 @@
 #include <cassert>
 #include <cstring>
 #include <algorithm>
+#include <sys/wait.h>
 #include "shelpers.hpp"
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -273,7 +274,7 @@ void get_input(std::string & input) {
 
 int customCommands(Command c) {
     string command = c.execName;
-    int rc = 0;
+    int rc = -1;
     if (command == "exit") {
         exit(0);
     }
@@ -298,9 +299,11 @@ int processManager(vector<Command> commands) {
 
     for (int i = 0; i < commands.size(); i++) {
         Command c = commands[i];
-        if(customCommands(c) > 0) {
+
+        if(customCommands(c) >= 0) {
             break;
         }
+
 
 
         pid_t pid = fork();
