@@ -63,6 +63,6 @@ void get_input(std::string & command);
 
 int processManager(std::vector<Command> commands);
 
-void customCommands(Command c);
+int customCommands(Command c);
 
 

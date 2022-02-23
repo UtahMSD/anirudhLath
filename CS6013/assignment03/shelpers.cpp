@@ -208,8 +208,7 @@ vector<Command> getCommands( const vector<string> & tokens )
              }
          }
          else if( tokens[j] == "&" ){
-            // Fill this in if you choose to do the optional "background command" part.
-            assert(false);
+            command.background = true;
          }
          else {
             // Otherwise this is a normal command line argument! Add to argv.
@@ -222,7 +221,7 @@ vector<Command> getCommands( const vector<string> & tokens )
             int fds[2];
             int rc = pipe(fds);
             if(rc < 0) {
-                perror("Pipe creation failed.");
+                perror("Pipe creation failed");
             } else {
                 commands[cmdNumber - 1].outputFd = fds[1];
                 commands[cmdNumber].inputFd = fds[0];
@@ -272,26 +271,45 @@ void get_input(std::string & input) {
     getline(std::cin, input);
 }
 
-void customCommands(Command c) {
+int customCommands(Command c) {
     string command = c.execName;
+    int rc = 0;
     if (command == "exit") {
         exit(0);
     }
+    else if (command == "cd") {
+        string dir = getenv("HOME");
+        if(c.argv.size() > 1) {
+            dir = c.argv[1];
+        }
+        rc = chdir(dir.data());
+
+        if(rc < 0) {
+            perror("cd");
+        }
+    }
+    return rc;
 }
 
 int processManager(vector<Command> commands) {
     vector<pid_t> pids;
+    vector<pid_t> backgroundPids;
     int stat_loc;
 
     for (int i = 0; i < commands.size(); i++) {
         Command c = commands[i];
-        customCommands(c);
+        if(customCommands(c) > 0) {
+            break;
+        }
 
 
         pid_t pid = fork();
 
-        pids.push_back(pid);
-
+        if (!c.background) {
+            pids.push_back(pid);
+        } else {
+            backgroundPids.push_back(pid);
+        }
 
 
         if (pid == 0) {
