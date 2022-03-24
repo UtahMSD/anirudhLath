@@ -8,19 +8,15 @@
 #include "HashTable.h"
 
 HashTable::HashTable() {
-    this->capacity = getpagesize() / sizeof(HashNode);
+    this->capacity = 20;
     this->size = 0;
-    this->table = (HashNode**) mmap(NULL, capacity * sizeof(HashNode), PROT_READ | PROT_WRITE | PROT_EXEC,
+    this->table = (HashNode *) mmap(NULL, capacity * sizeof(HashNode), PROT_READ | PROT_WRITE | PROT_EXEC,
                                     MAP_ANONYMOUS |
     MAP_PRIVATE, 0, 0);
 
     if(table == MAP_FAILED) {
         perror("mmap failed");
         exit(1);
-    }
-
-    for(int i = 0; i < capacity; i++) {
-        table[i] = NULL;
     }
 }
 
@@ -38,14 +34,15 @@ bool HashTable::insert(void *ptr, size_t memSize) {
 
     int hashIndex = hashCode(ptr);
 
-    while(table[hashIndex] != NULL) {
+    while(table[hashIndex].ptr != nullptr) {
         hashIndex++;
         hashIndex %= capacity;
     }
 
-    if(table[hashIndex] == NULL) {
+    if(table[hashIndex].ptr == nullptr) {
         size++;
-        table[hashIndex] = temp;
+        table[hashIndex].ptr = temp->ptr;
+        table[hashIndex].size = temp->size;
         return true;
     }
     return false;
@@ -58,11 +55,10 @@ int HashTable::hashCode(void *ptr) {
 
 bool HashTable::remove(void *ptr) {
     int hashIndex = hashCode(ptr);
-    while (table[hashIndex] != NULL) {
-        if(table[hashIndex]->ptr == ptr) {
-            table[hashIndex]->ptr = NULL;
-            table[hashIndex]->size = NULL;
-            table[hashIndex] = NULL;
+    while (table[hashIndex].ptr != nullptr) {
+        if(table[hashIndex].ptr == ptr) {
+            table[hashIndex].ptr = nullptr;
+            table[hashIndex].size = NULL;
             size--;
             return true;
         }
@@ -75,12 +71,12 @@ bool HashTable::remove(void *ptr) {
 size_t HashTable::search(void *ptr) {
     int hashIndex = hashCode(ptr);
     int counter = 0;
-    while (table[hashIndex] != NULL) {
+    while (table[hashIndex].ptr != nullptr) {
         if(counter++ > capacity) {
             return NULL;
         }
-        if(table[hashIndex]->ptr == ptr) {
-            return table[hashIndex]->size;
+        if(table[hashIndex].ptr == ptr) {
+            return table[hashIndex].size;
         }
         hashIndex++;
         hashIndex %= capacity;
@@ -94,31 +90,38 @@ int HashTable::length() {
 
 void HashTable::grow() {
     capacity = capacity * 2;
-    HashNode **temp = (HashNode**) mmap(NULL, capacity * sizeof(HashNode), PROT_READ | PROT_WRITE | PROT_EXEC,
+    HashNode *temp = (HashNode *) mmap(NULL, capacity * sizeof(HashNode), PROT_READ | PROT_WRITE | PROT_EXEC,
                                         MAP_ANONYMOUS |
                                         MAP_PRIVATE, 0, 0);
     this->size = 0;
     for (int i = 0; i < capacity; ++i) {
-        if(table[i] != NULL) {
+        if(table[i].ptr != nullptr) {
             HashNode *node = (HashNode*) mmap(NULL, sizeof(HashNode), PROT_READ | PROT_WRITE | PROT_EXEC,
                                               MAP_ANONYMOUS |
                                               MAP_PRIVATE, 0, 0);
-            node->ptr = table[i]->ptr;
-            node->size = table[i]->size;
+            node->ptr = table[i].ptr;
+            node->size = table[i].size;
 
             int hashIndex = hashCode(node->ptr);
 
-            while(temp[hashIndex] != NULL) {
+            while(temp[hashIndex].ptr != nullptr) {
                 hashIndex++;
                 hashIndex %= capacity;
             }
 
-            if(temp[hashIndex] == NULL) {
+            if(temp[hashIndex].ptr == nullptr) {
                 size++;
-                temp[hashIndex] = node;
+                temp[hashIndex].ptr = node->ptr;
+                temp[hashIndex].size = node->size;
             }
         }
     }
     this->table = temp;
+}
+
+HashTable::~HashTable() {
+    this->table = nullptr;
+    this->size = NULL;
+    this->capacity = NULL;
 }
 

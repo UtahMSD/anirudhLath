@@ -20,9 +20,6 @@ public:
 
 class HashTable {
 private:
-    HashNode **table;
-    size_t size;
-    size_t capacity;
 
     void grow();
     int hashCode(void *ptr);
@@ -34,6 +31,10 @@ public:
     size_t search(void *ptr);
     int length();
     ~HashTable();
+
+    size_t capacity;
+    size_t size;
+    HashNode *table;
 };
 
 #endif //ASSIGNMENT04_HASHTABLE_H
