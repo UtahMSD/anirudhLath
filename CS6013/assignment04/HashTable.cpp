@@ -73,14 +73,17 @@ size_t HashTable::search(void *ptr) {
     int counter = 0;
     while (table[hashIndex].ptr != nullptr) {
         if(counter++ > capacity) {
+            std::cout << "not found\n";
             return NULL;
         }
         if(table[hashIndex].ptr == ptr) {
+            std::cout << "found\n";
             return table[hashIndex].size;
         }
         hashIndex++;
         hashIndex %= capacity;
     }
+
     return NULL;
 }
 
@@ -121,7 +124,7 @@ void HashTable::grow() {
             }
         }
     }
-    this->table = temp;
+    std::swap(this->table, temp);
 }
 
 HashTable::~HashTable() {

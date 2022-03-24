@@ -8,6 +8,7 @@
 #include "HashTable.h"
 
 class MyMalloc {
+public:
     HashTable table;
     MyMalloc();
     void* allocate(size_t bytesToAllocate);
