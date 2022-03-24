@@ -11,18 +11,27 @@ class HashNode {
 public:
     void *ptr;
     size_t size;
+    bool flag;
 
     HashNode(void *ptr, size_t size) {
         this->ptr = ptr;
         this->size = size;
+        this->flag = false;
     }
+
+    HashNode() {
+        this->size = NULL;
+        this->ptr = nullptr;
+        this->flag = false;
+    }
+
 };
 
 class HashTable {
 private:
 
     void grow();
-    int hashCode(void *ptr);
+    uint64_t hashCode(void *ptr);
 
 public:
     HashTable();

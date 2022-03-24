@@ -1,6 +1,10 @@
 #include <iostream>
+#include "HashTable.h"
+#include "MyAlloc.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    HashTable table;
+    int *a = new int ;
+    table.insert(a , 5);
     return 0;
 }

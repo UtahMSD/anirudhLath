@@ -10,7 +10,7 @@
 HashTable::HashTable() {
     this->capacity = 20;
     this->size = 0;
-    this->table = (HashNode *) mmap(NULL, capacity * sizeof(HashNode), PROT_READ | PROT_WRITE | PROT_EXEC,
+    this->table = (HashNode *) mmap(NULL, capacity * sizeof(HashNode), PROT_READ | PROT_WRITE,
                                     MAP_ANONYMOUS |
     MAP_PRIVATE, 0, 0);
 
@@ -26,30 +26,26 @@ bool HashTable::insert(void *ptr, size_t memSize) {
         grow();
     }
 
-    HashNode *temp = (HashNode*) mmap(NULL, sizeof(HashNode), PROT_READ | PROT_WRITE | PROT_EXEC,
-                                       MAP_ANONYMOUS |
-                                       MAP_PRIVATE, 0, 0);
-    temp->ptr = ptr;
-    temp->size = size;
+    uint64_t hashIndex = hashCode(ptr);
 
-    int hashIndex = hashCode(ptr);
-
-    while(table[hashIndex].ptr != nullptr) {
+    while(!table[hashIndex].flag) {
         hashIndex++;
         hashIndex %= capacity;
+
     }
 
-    if(table[hashIndex].ptr == nullptr) {
+    if(table[hashIndex].flag) {
         size++;
-        table[hashIndex].ptr = temp->ptr;
-        table[hashIndex].size = temp->size;
+        table[hashIndex].ptr = ptr;
+        table[hashIndex].size = size;
         return true;
     }
     return false;
 }
 
-int HashTable::hashCode(void *ptr) {
-    uintptr_t temp = (uintptr_t ) ptr;
+uint64_t HashTable::hashCode(void *ptr) {
+    uint64_t temp = (uint64_t ) ptr;
+
     return temp % capacity;
 }
 
