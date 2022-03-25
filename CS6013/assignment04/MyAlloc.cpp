@@ -31,6 +31,7 @@ void MyMalloc::deallocate(void *ptr) {
         perror("de-allocation failed");
     }
     else {
+        std::cout << "dealloc successful\n";
         table.remove(ptr);
     }
 }
