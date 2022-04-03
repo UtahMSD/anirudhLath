@@ -9,9 +9,9 @@
 #include "HashTable.h"
 
 HashTable::HashTable() {
-    this->capacity = 10;
+    this->capacity = 10000; // Set to 10000 to avoid time spent growing for timing experiment.
     this->size = 0;
-    this->table = (HashNode *) mmap(NULL, capacity * sizeof(HashNode), PROT_READ | PROT_WRITE,
+    this->table = (HashNode *) mmap(nullptr, capacity * sizeof(HashNode), PROT_READ | PROT_WRITE,
                                     MAP_ANONYMOUS |
     MAP_PRIVATE, 0, 0);
 
@@ -23,11 +23,11 @@ HashTable::HashTable() {
 
 bool HashTable::insert(void *ptr, size_t memSize) {
 
-    if( size > capacity - 5) {
+    if( size > capacity / 2 ) {
         grow();
     }
 
-    uint64_t hashIndex = hashCode(ptr);
+    int hashIndex = hashCode(ptr);
 
     while(table[hashIndex].ptr != nullptr) {
         if(table[hashIndex].ptr == ptr) {
@@ -37,39 +37,59 @@ bool HashTable::insert(void *ptr, size_t memSize) {
         hashIndex %= capacity;
 
     }
+    size++;
+    table[hashIndex].ptr = ptr;
+    table[hashIndex].size = memSize;
+    return true;
 
-    if(table[hashIndex].ptr == nullptr) {
-        size++;
-        table[hashIndex].ptr = ptr;
-        table[hashIndex].size = memSize;
-        return true;
+/*    if(table[hashIndex].ptr == nullptr) {
+
     }
-    return false;
+    return false;*/
 }
 
-uint64_t HashTable::hashCode(void *ptr) {
-    uint64_t temp = (uint64_t ) ptr;
+int HashTable::hashCode(void *ptr) {
+    int result = 10;
+    int c = (size_t) ptr;
+    result = 37 * result + c;
 
-    return temp % capacity;
+    return abs(result) % capacity;
 }
 
 bool HashTable::remove(void *ptr) {
+
     int hashIndex = hashCode(ptr);
-    while (table[hashIndex].ptr != nullptr) {
-        if(table[hashIndex].ptr == ptr) {
-            table[hashIndex].ptr = nullptr;
-            table[hashIndex].size = NULL;
-            size--;
-            return true;
-        }
+    int count = 0;
+    while (table[hashIndex].ptr != ptr) {
         hashIndex++;
+        count++;
+        if( count > capacity) {
+            return false;
+        }
         hashIndex %= capacity;
     }
-    return false;
+    table[hashIndex].ptr = nullptr;
+    table[hashIndex].size = NULL;
+    size--;
+    return true;
+
 }
 
 size_t HashTable::search(void *ptr) {
+
     int hashIndex = hashCode(ptr);
+    int count = 0;
+    while (table[hashIndex].ptr != ptr) {
+        hashIndex++;
+        count++;
+        if( count > capacity) {
+            return NULL;
+        }
+        hashIndex %= capacity;
+    }
+    return table[hashIndex].size;
+
+    /*int hashIndex = hashCode(ptr);
     int counter = 0;
     while (table[hashIndex].ptr != nullptr) {
         if(counter++ > capacity) {
@@ -84,7 +104,7 @@ size_t HashTable::search(void *ptr) {
         hashIndex %= capacity;
     }
 
-    return NULL;
+    return NULL;*/
 }
 
 int HashTable::length() {
@@ -92,15 +112,22 @@ int HashTable::length() {
 }
 
 void HashTable::grow() {
-    std::cout << "Growing arr";
-    capacity = capacity * 2;
-    HashNode *temp = (HashNode *) mmap(NULL, capacity * sizeof(HashNode), PROT_READ | PROT_WRITE ,
-                                        MAP_ANONYMOUS |
-                                        MAP_PRIVATE, 0, 0);
+    int oldCapacity = this->capacity;
+    HashNode *old = this->table;
+    this->capacity = oldCapacity * 2;
+    HashNode *temp = (HashNode *) mmap(nullptr, capacity * sizeof(HashNode), PROT_READ | PROT_WRITE,
+                                       MAP_ANONYMOUS |
+                                       MAP_PRIVATE, 0, 0);
+    if(temp == MAP_FAILED) {
+        perror("mmap failed");
+        exit(1);
+    }
+    this->table = temp;
     this->size = 0;
-    for (int i = 0; i < capacity / 2; ++i) {
-        if(table[i].ptr != nullptr) {
-            HashNode *node = (HashNode*) mmap(NULL, sizeof(HashNode), PROT_READ | PROT_WRITE ,
+    for (int i = 0; i < oldCapacity; ++i) {
+        if(old[i].ptr != nullptr) {
+            insert(old[i].ptr, old[i].size);
+/*            HashNode *node = (HashNode*) mmap(NULL, sizeof(HashNode), PROT_READ | PROT_WRITE ,
                                               MAP_ANONYMOUS |
                                               MAP_PRIVATE, 0, 0);
             node->ptr = table[i].ptr;
@@ -121,10 +148,9 @@ void HashTable::grow() {
                 size++;
                 temp[hashIndex].ptr = node->ptr;
                 temp[hashIndex].size = node->size;
-            }
+            }*/
         }
     }
-    std::swap(this->table, temp);
 }
 
 HashTable::~HashTable() {

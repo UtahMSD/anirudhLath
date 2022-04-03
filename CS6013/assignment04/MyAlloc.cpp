@@ -9,7 +9,7 @@
 #include "iostream"
 
 MyMalloc::MyMalloc() : table(HashTable()) {
-    std::cout << "Initialized hashtable" << std::endl;
+//    std::cout << "Initialized hashtable" << std::endl;
 }
 
 void *MyMalloc::allocate(size_t bytesToAllocate) {
@@ -24,14 +24,12 @@ void *MyMalloc::allocate(size_t bytesToAllocate) {
 }
 
 void MyMalloc::deallocate(void *ptr) {
-    std::cout << table.search(ptr) << '\n';
     size_t len = table.search(ptr);
     int rc = munmap(ptr, len);
     if(rc != 0) {
         perror("de-allocation failed");
     }
     else {
-        std::cout << "dealloc successful\n";
         table.remove(ptr);
     }
 }
