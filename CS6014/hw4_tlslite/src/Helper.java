@@ -1,9 +1,12 @@
+import javax.crypto.Mac;
 import javax.crypto.interfaces.DHPrivateKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
@@ -36,6 +39,7 @@ public class Helper {
             "      1F612970 CEE2D7AF B81BDD76 2170481C D0069127 D5B05AA9\n" +
             "      93B4EA98 8D8FDDC1 86FFB7DC 90A6C08F 4DF435C9 34063199\n" +
             "      FFFFFFFF FFFFFFFF", 16);
+    private static final String CaCertificatePath = "./resources/certs/CAcertificate.pem";
 
     public static Certificate getCertificate(String filename) throws CertificateException, FileNotFoundException {
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
@@ -51,8 +55,8 @@ public class Helper {
         return (DHPrivateKey) keyFactory.generatePrivate(keySpec);
     }
 
-    public static BigInteger getDHPublicKey(DHPrivateKey rsaPrivateKey) {
-        return GENERATOR.modPow(rsaPrivateKey.getX(), PRIME);
+    public static BigInteger getDHPublicKey(BigInteger dhPrivateKey) {
+        return GENERATOR.modPow(dhPrivateKey, PRIME);
     }
 
     public static byte[] getSignedKey(DHPrivateKey rsaPrivateKey, BigInteger dhPublicKey) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
@@ -62,6 +66,81 @@ public class Helper {
         return signature.sign();
     }
 
-    public static byte[] hdkfExpand(byte[] prk, String server_encrypt) {
+    public static byte[] hdkfExpand(byte[] input, String tag) throws NoSuchAlgorithmException, InvalidKeyException {
+        byte[] tagArr = new byte[tag.getBytes().length + 1];
+        byte[] temp = tag.getBytes();
+        System.arraycopy(temp, 0, tagArr, 0, tagArr.length - 1);
+        tagArr[tagArr.length - 1] = 1;
+
+        final Mac HMAC = Mac.getInstance("HmacSHA256");
+        SecretKeySpec secretKeySpec = new SecretKeySpec(input, "HmacSHA256");
+        HMAC.init(secretKeySpec);
+
+        byte[] okm = HMAC.doFinal(tagArr);
+        byte[] out = new byte[16];
+        System.arraycopy(okm, 0, out, 0, out.length);
+
+        return out;
+    }
+
+    public static boolean verifyCertificate(Certificate certificate) throws FileNotFoundException, CertificateException {
+        Certificate CaCertificate = getCertificate(CaCertificatePath);
+        try {
+            certificate.verify(CaCertificate.getPublicKey());
+            return true;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (NoSuchProviderException e) {
+            e.printStackTrace();
+        } catch (SignatureException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean verifyClient(Certificate clientCert, BigInteger clientDHPublicKey,
+                                       byte[] clientSignedDHPublicKey) throws FileNotFoundException,
+            CertificateException, NoSuchAlgorithmException, InvalidKeyException, SignatureException {
+        if(!verifyCertificate(clientCert)) { // Verify client certificate with CA certificate.
+            System.out.println("Failed to verify certificate.");
+            return false;
+        }
+
+        Signature signature = Signature.getInstance("SHA256WithRSA");
+        signature.initVerify(clientCert);
+        signature.update(clientDHPublicKey.toByteArray());
+
+        return signature.verify(clientSignedDHPublicKey);
+    }
+
+    public static BigInteger getDHSharedSecret(BigInteger DHKey, BigInteger privateKey) {
+        return DHKey.modPow(privateKey, PRIME);
+    }
+
+    public static byte[] prepareMessage(byte[] message, SecretKeySpec MAC) throws NoSuchAlgorithmException,
+            InvalidKeyException {
+        Mac HMAC = Mac.getInstance("HmacSHA256");
+        HMAC.init(MAC);
+        return HMAC.doFinal(message);
+    }
+
+    public static byte[] concatenate(byte[] byteArray1, byte[] byteArray2) {
+        int n = byteArray1.length + byteArray2.length;
+        byte[] temp = new byte[n];
+        for(int i = 0; i < n; i++) {
+            if(i < byteArray1.length) {
+                temp[i] = byteArray1[i];
+            }
+            else {
+                temp[i] = byteArray2[i - byteArray1.length];
+            }
+        }
+        return temp;
     }
 }
+
+
