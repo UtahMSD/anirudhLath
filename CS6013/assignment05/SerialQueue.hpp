@@ -23,6 +23,7 @@ public:
 
    void enqueue( const T & x ) {
        if (size_ == 0) {
+           delete head_;
            head_ = new Node{x, nullptr};
            tail_ = head_;
        }
@@ -59,11 +60,15 @@ public:
 
    bool dequeue( T * ret ) {
        if (size_ > 0) {
-           head_ = head_->next;
-           size_--;
+           Node *temp = head_->next;
+           delete head_;
+           head_ = temp;
            if (head_ != nullptr) {
                *ret = head_->data;
+           } else {
+               *ret = NULL;
            }
+           size_--;
            return true;
        }
        else {
