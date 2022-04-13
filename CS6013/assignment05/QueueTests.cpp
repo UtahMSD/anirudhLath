@@ -52,6 +52,7 @@ int main(int argc, char **argv) {
 
     concurrentQueueTest3(producers, consumers, count);
     cout << "Passed test 3.\n";
+    cout << "Passed.\n";
 
     return 0;
 }
