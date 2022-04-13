@@ -7,21 +7,25 @@
 //
 // CS 6013
 //
-// Outline for SerialQueue class.  Fill in the missing data, comments, etc.
+// Outline for ConcurrentQueue
+//class.  Fill in the missing data, comments, etc.
 //
 ////////////////////////////////////////////////////////////////////////
 
+#include <iostream>
+
 template <typename T>
-class SerialQueue {
+class ConcurrentQueue{
 
 public:
-   SerialQueue() :
+   ConcurrentQueue() :
       head_( new Node{ T{}, nullptr } ), size_( 0 )
    {
       tail_ = head_;
    }
 
    void enqueue( const T & x ) {
+       std::lock_guard<std::mutex> lock(m);
        if (size_ == 0) {
            delete head_;
            head_ = new Node{x, nullptr};
@@ -43,6 +47,7 @@ public:
    }
 
    bool dequeue( T * ret ) {
+       std::lock_guard<std::mutex> lock(m);
        if (size_ > 0) {
            Node *temp = head_->next;
            delete head_;
@@ -60,8 +65,7 @@ public:
        }
    }
 
-   ~SerialQueue() {
-
+   ~ConcurrentQueue() {
       while( head_ != nullptr ) {
          Node* temp = head_->next;
          delete head_;
@@ -81,4 +85,5 @@ private:
    Node * head_;
    Node * tail_;
    int    size_;
+   std::mutex m;
 };
