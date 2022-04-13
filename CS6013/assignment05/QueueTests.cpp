@@ -1,12 +1,17 @@
 #include <iostream>
 #include <thread>
 #include <vector>
+#include <unistd.h>
 #include "ConcurrentQueue.hpp"
 #include "SerialQueue.hpp"
 
+//https://www.cs.rochester.edu/~scott/papers/1996_PODC_queues.pdf
+
 void staticTest();
 void dynamicTest();
-bool concurrentQueueTest(int producers, int consumers, int count);
+bool concurrentQueueTest1(int producers, int consumers, int count);
+bool concurrentQueueTest2(int producers, int consumers, int count);
+bool concurrentQueueTest3(int producers, int consumers, int count);
 
 using namespace std;
 
@@ -15,7 +20,7 @@ int main(int argc, char **argv) {
     staticTest();
     cout << "Passed.\n";
     cout << "Running dynamic allocation tests on SerialQueue class...\n";
-//    dynamicTest();
+    dynamicTest();
     cout << "Passed.\n";
     cout << "Attempting to run tests on ConcurrentQueue class...\n";
 
@@ -31,13 +36,22 @@ int main(int argc, char **argv) {
     int count     = stoi(argv[3]);
     cout << "Running tests on ConcurrentQueue class...\n";
 
-    if (concurrentQueueTest(producers, consumers, count)) {
-        cout << "Passed.\n";
+    if (concurrentQueueTest1(producers, consumers, count)) {
+        cout << "Passed test 1.\n";
     }
     else {
-        cout << "Failed.\n";
+        cout << "Failed test 1.\n";
     }
 
+    if (concurrentQueueTest2(producers, consumers, count)) {
+        cout << "Passed test 2.\n";
+    }
+    else {
+        cout << "Failed test 2.\n";
+    }
+
+    concurrentQueueTest3(producers, consumers, count);
+    cout << "Passed test 3.\n";
 
     return 0;
 }
@@ -65,7 +79,7 @@ void staticTest() {
     if (queue.size() != 0)
         cout << "Dequeue failed.\n";
 
-    if (*a != NULL)
+    if (*a != 7)
         cout << "Dequeue ret failed.\n";
 
     delete a;
@@ -98,39 +112,66 @@ void dynamicTest() {
     if (queue->size() != 0)
         cout << "Dequeue failed.\n";
 
-    if (*a != NULL)
+    if (**a != 4)
         cout << "Dequeue ret failed.\n";
 
     delete a;
+    delete b;
+    delete c;
+    delete d;
     delete queue;
 }
 
-void helper(ConcurrentQueue<int> queue) {
-
-}
-
-bool concurrentQueueTest(int producers, int consumers, int count) {
+bool concurrentQueueTest1(int producers, int consumers, int count) {
     vector<thread> producer, consumer;
     producer.reserve(producers);
     consumer.reserve(consumers);
-    static ConcurrentQueue<int> queue{};
+    ConcurrentQueue<int> queue{};
     mutex m;
     int *ret = new int;
     for (int i = 0; i < producers; ++i) {
         producer.push_back(thread([&,i]() {
             for (int j = 0; j < count; ++j) {
                 queue.enqueue(j);
-                lock_guard<mutex> lock(m);
-                cout << "THREAD #" << i+1 << " pushing " << j << " into the queue.\n";
             }
         }));
+    }
+    for (int i = 0; i < producers; ++i) {
+        producer[i].join();
     }
     for (int i = 0; i < consumers; ++i) {
         consumer.push_back(thread([&,i]() {
             for (int j = 0; j < count; ++j) {
                 queue.dequeue(ret);
-                lock_guard<mutex> lock(m);
-                cout << "THREAD #" << i+1 << " performing dequeue.\n";
+            }
+        }));
+    }
+    for (int i = 0; i < consumers; ++i) {
+        consumer[i].join();
+    }
+    delete ret;
+    return queue.size() == (producers - consumers) * count;
+
+}
+bool concurrentQueueTest2(int producers, int consumers, int count) {
+    vector<thread> producer, consumer;
+    producer.reserve(producers);
+    consumer.reserve(consumers);
+    ConcurrentQueue<int> queue{};
+    mutex m;
+    int *ret = new int;
+    for (int i = 0; i < producers; ++i) {
+        producer.push_back(thread([&,i]() {
+            for (int j = 0; j < count; ++j) {
+                queue.enqueue(j);
+            }
+        }));
+    }
+    sleep(5);
+    for (int i = 0; i < consumers; ++i) {
+        consumer.push_back(thread([&,i]() {
+            for (int j = 0; j < count; ++j) {
+                queue.dequeue(ret);
             }
         }));
     }
@@ -143,4 +184,34 @@ bool concurrentQueueTest(int producers, int consumers, int count) {
     delete ret;
     return queue.size() == (producers - consumers) * count;
 
+}
+bool concurrentQueueTest3(int producers, int consumers, int count) {
+    vector<thread> producer, consumer;
+    producer.reserve(producers);
+    consumer.reserve(consumers);
+    ConcurrentQueue<int> queue{};
+    mutex m;
+    int *ret = new int;
+    for (int i = 0; i < producers; ++i) {
+        producer.push_back(thread([&,i]() {
+            for (int j = 0; j < count; ++j) {
+                queue.enqueue(j);
+            }
+        }));
+    }
+    for (int i = 0; i < consumers; ++i) {
+        consumer.push_back(thread([&,i]() {
+            for (int j = 0; j < count; ++j) {
+                queue.dequeue(ret);
+            }
+        }));
+    }
+    for (int i = 0; i < producers; ++i) {
+        producer[i].join();
+    }
+    for (int i = 0; i < consumers; ++i) {
+        consumer[i].join();
+    }
+    delete ret;
+    return true;
 }

@@ -22,15 +22,8 @@ public:
    }
 
    void enqueue( const T & x ) {
-       if (size_ == 0) {
-           delete head_;
-           head_ = new Node{x, nullptr};
-           tail_ = head_;
-       }
-       else {
-           tail_->next = new Node{x, nullptr};
-           tail_ = tail_->next;
-       }
+       tail_->next = new Node{x, nullptr};
+       tail_ = tail_->next;
        size_++;
    }
    
@@ -43,21 +36,15 @@ public:
    }
 
    bool dequeue( T * ret ) {
-       if (size_ > 0) {
-           Node *temp = head_->next;
-           delete head_;
-           head_ = temp;
-           if (head_ != nullptr) {
-               *ret = head_->data;
-           } else {
-               *ret = NULL;
-           }
-           size_--;
-           return true;
-       }
-       else {
+       Node *temp = head_;
+       if(temp->next == nullptr) {
            return false;
        }
+       *ret = temp->next->data;
+       head_ = temp->next;
+       size_--;
+       delete temp;
+       return true;
    }
 
    ~SerialQueue() {
