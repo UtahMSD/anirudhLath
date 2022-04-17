@@ -64,7 +64,7 @@ void createTables(uint8_t (&substTables)[8][256]) {
     }
 }
 
-void generateKey(const string &password, uint8_t key[8]) {
+void generateKey(const string &password, uint8_t (&key)[8]) {
 
     for (int i = 0; i < password.length(); ++i) {
         key[i % 8] = key[i % 8] ^ password[i];

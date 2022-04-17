@@ -8,7 +8,7 @@
 #include <cstdint>
 #include <string>
 
-void generateKey(const std::string &password, uint8_t key[8]);
+void generateKey(const std::string &password, uint8_t (&key)[8]);
 
 void createTables(uint8_t (&substTables)[8][256]);
 
