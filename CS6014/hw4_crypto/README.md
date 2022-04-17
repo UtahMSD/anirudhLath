@@ -13,7 +13,7 @@ With a known plaintext, the attacker knows what the words and the characters pre
 Apart from that, the computers have become very powerful and can easily bruteforce an 8 bit key in a matter of seconds. But this is the case with any encryption and that's why SHA256 is being used extensively now due to it's computational demand to crack.
  
 
-## Question 2 (10 points)
+## Question 2  and Answer 2 (10 points)
 
 Assume you're sending a long message using a block cypher (like AES) with the following scheme: split the message into blocksize chunks, then encrypt each with the same key.  Basically Alice sends Bob AES(m1, k), AES(m2, k), AES(m3, k), etc.  
 
