@@ -21,6 +21,43 @@
  *
  *********************************************************************/
 
+void swap(unsigned char *a, unsigned char *b) {
+    unsigned char temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void printArray(unsigned char arr[], int c) {
+    for (int i = 0; i < c; ++i) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+void ascendingSort(unsigned char *byte, int count) {
+    for (int i = 0; i < count - 1; ++i) {
+        unsigned char idx_min = i;
+        for (int j = i + 1; j < count; ++j) {
+            if (byte[j] < byte[idx_min]) {
+                idx_min = j;
+            }
+        }
+        swap(&byte[i], &byte[idx_min]);
+    }
+}
+
+void descendingSort(unsigned char *byte, int count) {
+    for (int i = 0; i < count - 1; ++i) {
+        unsigned char idx_max = i;
+        for (int j = i + 1; j < count; ++j) {
+            if (byte[j] > byte[idx_max]) {
+                idx_max = j;
+            }
+        }
+        swap(&byte[i], &byte[idx_max]);
+    }
+}
+
+
 /*********************************************************************
  *
  * byte_sort()
@@ -39,6 +76,17 @@
 
 unsigned long byte_sort (unsigned long arg)
 {
+    unsigned char bytesArr[8];
+    for (int i = 0; i < 8; ++i) {
+        bytesArr[i] = (arg >> (i * 8)) & 0xFF;
+    }
+//    printArray(bytesArr, 8);
+    descendingSort(bytesArr, 8);
+//    printArray(bytesArr, 8);
+
+    for (int i = 0; i < 8; ++i) {
+        bytesArr[i] = (arg >> (i * 8)) & 0xFF;
+    }
   return 0;
 }
 
@@ -62,6 +110,8 @@ unsigned long nibble_sort (unsigned long arg)
 {
   return 0;
 }
+
+
 
 /*********************************************************************
  *
@@ -126,4 +176,9 @@ void free_list(struct elt* head){
 
 void draw_me (void)
 {
+}
+
+int main() {
+    byte_sort(0x0403deadbeef0201);
+
 }
