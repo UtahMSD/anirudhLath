@@ -155,12 +155,14 @@ class EncFS(Operations):
             length = 0
             if not os.path.exists(full_path):
                 return -1
+
             if path not in self.openFiles:
-                self.open(path)
-                length = len(self.openFiles[path])
-                self.release(path)
+                fd = os.open(full_path, os.O_RDONLY)
+                length = len(self.decrypt(fd, full_path, path))
+                os.close(fd)
             else:
-                length = len(self.openFiles[path])
+                if not self.openFiles[path] is None:
+                    length = len(self.openFiles[path])
             print(length)
             props['st_size'] = length
 
@@ -324,21 +326,24 @@ class EncFS(Operations):
             return -1
         else:
             fd = os.open(full_path, os.O_RDWR)
-            salt = os.read(fd, 16)
-            encData = os.read(fd, os.path.getsize(full_path))
-            kdf = PBKDF2HMAC(
-                algorithm=hashes.SHA256(),
-                length=32,
-                salt=salt,
-                iterations=100000,
-            )
-            key = base64.urlsafe_b64encode(kdf.derive(str.encode(self.password)))
-            f = Fernet(key)
-            self.openFiles[path] = f.decrypt(encData)
+            self.openFiles[path] = self.decrypt(fd, full_path, path)
             print(self.openFiles[path])
             os.close(fd)
             self.fdCount += 1
         return self.fdCount
+
+    def decrypt(self, fd, full_path, path):
+        salt = os.read(fd, 16)
+        encData = os.read(fd, os.path.getsize(full_path))
+        kdf = PBKDF2HMAC(
+            algorithm=hashes.SHA256(),
+            length=32,
+            salt=salt,
+            iterations=100000,
+        )
+        key = base64.urlsafe_b64encode(kdf.derive(str.encode(self.password)))
+        f = Fernet(key)
+        return f.decrypt(encData)
 
     @logged
     def create(self, path, mode, fi=None):
@@ -365,20 +370,25 @@ class EncFS(Operations):
         if path not in self.openFiles:
             return -1
 
-        return bytearray(self.openFiles[path][offset:offset + length])
+        return self.openFiles[path][offset:offset + length]
 
     @logged
     def write(self, path, buf, offset, fh):
         """Write to a file.
 
         """
+        length = len(bytearray(buf))
 
         if path not in self.openFiles:
             return -1
 
+        if self.openFiles[path] is None:
+            self.openFiles[path] = buf
+            return length
+
         pre = bytearray(self.openFiles[path][:offset])
         post = bytearray(self.openFiles[path][offset:])
-        length = len(bytearray(buf))
+
         if len(post) > length:
             for i in range(0, length):
                 post[i] = buf[i]
