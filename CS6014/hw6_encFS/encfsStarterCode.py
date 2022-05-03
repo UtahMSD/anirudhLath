@@ -148,7 +148,7 @@ class EncFS(Operations):
         full_path = self._full_path(path)
         st = os.lstat(full_path)
         length = 0
-        if not os.path.exists(path):
+        if not os.path.exists(full_path):
             return -1
         if path not in self.openFiles:
             self.open(path)
@@ -317,12 +317,13 @@ class EncFS(Operations):
         definition in fuse_common.h for very brief commentary.
 
         """
-        if not os.path.exists(path) or path in self.openFiles:
+        full_path = self._full_path(path)
+        if not os.path.exists(full_path) or path in self.openFiles:
             return -1
         else:
-            fd = os.open(path, os.O_RDWR)
+            fd = os.open(full_path, os.O_RDWR)
             salt = os.read(fd, 16)
-            encData = os.read(fd, os.path.getsize(path) - 16)
+            encData = os.read(fd, os.path.getsize(full_path) - 16)
             kdf = PBKDF2HMAC(
                 algorithm=hashes.SHA256(),
                 length=32,
@@ -332,16 +333,19 @@ class EncFS(Operations):
             key = base64.urlsafe_b64encode(kdf.derive(str.encode(self.password)))
             f = Fernet(key)
             self.openFiles[path] = f.decrypt(encData)
+            print(self.openFiles[path])
+            exit(1)
             os.close(fd)
             self.fdCount += 1
         return self.fdCount
 
     @logged
     def create(self, path, mode, fi=None):
-        if os.path.exists(path) or path in self.openFiles:
+        full_path = self._full_path(path)
+        if os.path.exists(full_path) or path in self.openFiles:
             return -1
         else:
-            fd = os.open(path, os.O_WRONLY | os.O_CREAT, mode)
+            fd = os.open(full_path, os.O_WRONLY | os.O_CREAT, mode)
             self.openFiles[path] = None
             os.close(fd)
             self.fdCount += 1
@@ -360,21 +364,26 @@ class EncFS(Operations):
         if path not in self.openFiles:
             return -1
 
-        return bytearray(self.openFiles[path][offset:length])
+        return bytearray(self.openFiles[path][offset:offset + length])
 
     @logged
     def write(self, path, buf, offset, fh):
         """Write to a file.
 
         """
+
         if path not in self.openFiles:
             return -1
 
         pre = bytearray(self.openFiles[path][:offset])
         post = bytearray(self.openFiles[path][offset:])
         length = len(bytearray(buf))
-        pre.append(bytearray(buf)[:])
-        pre.append(post[:])
+        if len(post) > length:
+            for i in range(0, length):
+                post[i] = buf[i]
+            pre.append(post[:])
+        else:
+            pre.append(bytearray(buf)[:])
         self.openFiles[path] = bytes(pre)
 
         return length
@@ -388,11 +397,19 @@ class EncFS(Operations):
         filesystems, because recreating a file will first truncate it.
 
         """
+
         if path not in self.openFiles:
             return -1
         data = bytearray(self.openFiles[path])
-        data.extend(length)
-        self.openFiles[path] = bytes(data)
+        dataLen = bytearray(length)
+        if len(data) < length:
+            for i in range(len(data), length):
+                data.append(0)
+            self.openFiles[path] = bytes(data)
+        elif length < len(data):
+            temp = data[:length]
+            self.openFiles[path] = bytes(temp)
+
         return length
 
     # skip
@@ -422,7 +439,8 @@ class EncFS(Operations):
         that is true.
 
         """
-        if not os.path.exists(path) or path not in self.openFiles:
+        full_path = self._full_path(path)
+        if not os.path.exists(full_path) or path not in self.openFiles:
             return -1
         else:
             salt = os.urandom(16)
@@ -436,7 +454,7 @@ class EncFS(Operations):
             key = base64.urlsafe_b64encode(kdf.derive(str.encode(self.password)))
             f = Fernet(key)
             token = f.encrypt(data)
-            fd = os.open(path, os.O_WRONLY)
+            fd = os.open(full_path, os.O_WRONLY)
             os.write(fd, salt)
             os.write(fd, data)
             os.close(fd)
