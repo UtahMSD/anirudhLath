@@ -147,21 +147,23 @@ class EncFS(Operations):
         """
         full_path = self._full_path(path)
         st = os.lstat(full_path)
-        length = 0
-        if not os.path.exists(full_path):
-            return -1
-        if path not in self.openFiles:
-            self.open(path)
-            length = len(self.openFiles[path])
-            self.release(path)
-        else:
-            length = len(self.openFiles[path])
-        print(length)
+
         props = dict((key, getattr(st, key)) for key in ('st_atime', 'st_ctime',
                                                          'st_gid', 'st_mode', 'st_mtime', 'st_nlink', 'st_size',
                                                          'st_uid'))
-        props['st_size'] = length
-        '''TODO FINISH ME TO UPDATE THE st_size fiel to the size of the unencrypted content'''
+        if not os.path.isdir(path) or not os.path.isdir(full_path):
+            length = 0
+            if not os.path.exists(full_path):
+                return -1
+            if path not in self.openFiles:
+                self.open(path)
+                length = len(self.openFiles[path])
+                self.release(path)
+            else:
+                length = len(self.openFiles[path])
+            print(length)
+            props['st_size'] = length
+
         return props
 
     @logged
@@ -323,7 +325,7 @@ class EncFS(Operations):
         else:
             fd = os.open(full_path, os.O_RDWR)
             salt = os.read(fd, 16)
-            encData = os.read(fd, os.path.getsize(full_path) - 16)
+            encData = os.read(fd, os.path.getsize(full_path))
             kdf = PBKDF2HMAC(
                 algorithm=hashes.SHA256(),
                 length=32,
@@ -334,7 +336,6 @@ class EncFS(Operations):
             f = Fernet(key)
             self.openFiles[path] = f.decrypt(encData)
             print(self.openFiles[path])
-            exit(1)
             os.close(fd)
             self.fdCount += 1
         return self.fdCount
@@ -456,7 +457,7 @@ class EncFS(Operations):
             token = f.encrypt(data)
             fd = os.open(full_path, os.O_WRONLY)
             os.write(fd, salt)
-            os.write(fd, data)
+            os.write(fd, token)
             os.close(fd)
             del self.openFiles[path]
 
