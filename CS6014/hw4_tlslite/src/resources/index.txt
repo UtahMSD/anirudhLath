@@ -1,2 +1,0 @@
-V	230407201109Z		1000	unknown	/C=US/ST=Utah/O=anirudhlath/CN=server-host
-V	230407201112Z		1001	unknown	/C=US/ST=Utah/O=anirudhlath/CN=client-host
