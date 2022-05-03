@@ -455,7 +455,7 @@ class EncFS(Operations):
             key = base64.urlsafe_b64encode(kdf.derive(str.encode(self.password)))
             f = Fernet(key)
             token = f.encrypt(data)
-            fd = os.open(full_path, os.O_WRONLY)
+            fd = os.open(full_path, os.O_WRONLY | os.O_TRUNC)
             os.write(fd, salt)
             os.write(fd, token)
             os.close(fd)
