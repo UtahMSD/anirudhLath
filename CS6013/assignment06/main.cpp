@@ -6,6 +6,7 @@
 #include <mutex>
 #include <chrono>
 #include <omp.h>
+#include <math.h>
 using namespace std;
 using namespace std::chrono;
 
@@ -79,6 +80,9 @@ auto parallel_sum_omp1(T a[], size_t N, size_t threads) {
     size_t remainder = N % threads;
     size_t numPerThread = N / threads;
 
+    omp_set_dynamic(0);
+    omp_set_num_threads(threads);
+
 
 #pragma omp parallel
     {
@@ -115,6 +119,8 @@ template<typename T>
 auto parallel_sum_omp_builtin(T a[], size_t N, size_t threads) {
     int sum = 0;
     auto start = high_resolution_clock::now();
+    omp_set_dynamic(0);
+    omp_set_num_threads(threads);
 
 #pragma omp parallel for num_threads(threads) reduction(+:sum)
     {
@@ -151,7 +157,7 @@ void graph(int N, int thread_count) {
     }
     int totalDuration = 0;
     for (int i = 0; i < 10000; ++i) {
-        totalDuration += parallel_sum_std(a, N, thread_count).duration;
+        totalDuration += parallel_sum_omp_builtin(a, N, thread_count).duration;
     }
     cout << N << ", " << thread_count << ", " << totalDuration / 10000 << endl;
 
@@ -160,20 +166,20 @@ void graph(int N, int thread_count) {
 }
 
 int main() {
-/*    for (int i = 1000; i < 10000; i += 1000) {
-        graph(i, i / 1000);
-    }*/
-/*    for (int i = 1000; i < 6000; i += 1000) {
+//    for (int i = 1000; i < 10000; i += 1000) {
+//        graph(i, i / 1000);
+//    }
+/*    for (int i = pow(2,10); i < pow(2,16); i *= 2) {
         for (int j = 1; j <= 16; ++j) {
             graph(i, j);
         }
     }*/
-    int arrSize = 1000005;
+    int arrSize = 1000000;
     int a[arrSize];//= {34,445,45,23,56,57,67,68,232,5,7,8,78,89,75,2,45,3,3};
     for (int i = 0; i < arrSize; ++i) {
         a[i] = rand() % 100;
     }
-    size_t numThreads = 10;
+    size_t numThreads = 7;
     Result<int> resultThreaded = parallel_sum_std(a, arrSize, numThreads);
     Result<int> resultThreadedOmp = parallel_sum_omp1(a, arrSize, numThreads);
     Result<int> resultThreadedOmpRed = parallel_sum_omp_builtin(a, arrSize, numThreads);

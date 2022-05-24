@@ -12,9 +12,19 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ac95cd7-4dd5-4ede-b189-1b3d4b79fa1e" name="Changes" comment="bla bla">
+    <list default="true" id="4ac95cd7-4dd5-4ede-b189-1b3d4b79fa1e" name="Changes" comment="fixed bugs">
+      <change afterPath="$PROJECT_DIR$/strong_scaling_std.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ws_builtin.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ws_omp1.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ws_std.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ss_omp1.png" beforeDir="false" afterPath="$PROJECT_DIR$/ss_omp1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ss_parallel.png" beforeDir="false" afterPath="$PROJECT_DIR$/ss_parallel.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ss_red.png" beforeDir="false" afterPath="$PROJECT_DIR$/ss_red.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/strong_scaling_omp1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/strong_scaling_omp1.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/strong_scaling_parallel.csv" beforeDir="false" afterPath="$PROJECT_DIR$/strong_scaling_parallel.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/strong_scaling_red.csv" beforeDir="false" afterPath="$PROJECT_DIR$/strong_scaling_red.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +63,9 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "cmake.loaded.for.project": "true",
+    "database.data.extractors.current.export.id": "Comma-separated (CSV)_id",
+    "database.data.extractors.current.id": "Comma-separated (CSV)_id",
+    "last_opened_file_path": "/Users/anirudhlath/code/msd/anirudhLath/CS6013/assignment06",
     "settings.editor.selected.configurable": "CMakeSettings"
   },
   "keyToStringList": {
@@ -61,6 +74,11 @@
     ]
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
@@ -82,8 +100,16 @@
       <option name="presentableId" value="Default" />
       <updated>1651580782019</updated>
       <workItem from="1651580784824" duration="41000" />
-      <workItem from="1651612373475" duration="11486000" />
+      <workItem from="1651612373475" duration="15406000" />
     </task>
+    <task id="LOCAL-00001" summary="fixed bugs">
+      <created>1651624051945</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1651624051945</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -102,6 +128,23 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="bla bla" />
-    <option name="LAST_COMMIT_MESSAGE" value="bla bla" />
+    <MESSAGE value="fixed bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed bugs" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/main.cpp</url>
+          <line>159</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/main.cpp</url>
+          <line>77</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
