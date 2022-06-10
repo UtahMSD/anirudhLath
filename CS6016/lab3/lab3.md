@@ -99,7 +99,9 @@ Write relational algebra queries for the following. You can (and should) write y
 1. Find the names of any player who has ever won a game as white. $ \Pi_{Name}(Players \bowtie_ {Players.pID = Games.wpID \wedge Games.Result = 1-0}Games)$
 1. Find the names of any player who played any games in 2018. $ \Pi_{Players.Name}(Players\bowtie_{Players.pID = Games.wpID \vee Players.pID = Games.bpID}(Events\bowtie_{Events.eID = Games.eID \wedge Events.Year = 2018}Games))$
 1. Find the names and dates of any event in which Magnus Carlsen lost a game.
+$ \Pi_{Events.Name, Year}(Events \bowtie_{Events.eID = Games.eID}(\sigma_{Name=Magnus \ Carlson}(Players \bowtie_{(pID = wpID\ \wedge \ Result=0-1)\ \vee \ (pID=bpID \ \wedge \ Result = 1-0)}Games)))$
 1. Find the names of all opponents of Magnus Carlsen. An opponent is someone who he has played a game against. Hint: Both Magnus and his opponents could play as white or black.
+$ \Pi_{Name}(\sigma_{Name\neq Magnus \ Carlson}(Players \bowtie_ {Players.pID = Games.wpID \vee Players.pID=Games.bpID}(\Pi_{wpID, bpID}(\sigma_{Name=Magnus \ Carlson}(Players \bowtie_ {pID=wpID \vee pID=bpID}Games))))$
 
 
 ## Part 3 - LMS Queries
@@ -111,10 +113,23 @@ a) Provide the relation that is the result of the following query. Your relation
 
 $ \rho(C, \pi_{sid}(\sigma_{Grd=C}(Enrolled)))$
 
+|C.sID|
+|---|
+|3|
+|4|
+
 $\pi_{Name}((\pi_{sid}(Enrolled) - C)\bowtie Students)$
+
+|Students.Name|
+|---|
+|Hermione|
+|Harry|
 
 b) Provide a simple English description of what the query is searching for. Your description should be in general terms (remember that the original LMS instance data may change).
 
+Answer:
+First, the query is selecting students who got a C grade from the Enrolled schema, then projecting sID column, and then renaming that relation to C.
+Second, the query is removing sID 3 and 4 from the enrolled schema and then isolating the sID 1 and 2 using natural join and then projecting the Name attribute.
  
 
 ### Part 3.2:
@@ -122,14 +137,33 @@ b) Provide a simple English description of what the query is searching for. Your
 a) Provide the relation that is the result of the following query. Your relation should be in the form of a table, and should include the schema.
 
 $ \rho(S1, Students) $
+|S1.sID|S1.Name|S1.DOB|
+|---|---|---|
+|1|Hermione|1980|
+|2|Harry|1979|
+|3|Ron|1980|
+|4|Malfoy|1982|
 
 $ \rho(S2, Students) $
 
+|S2.sID|S2.Name|S2.DOB|
+|---|---|---|
+|1|Hermione|1980|
+|2|Harry|1979|
+|3|Ron|1980|
+|4|Malfoy|1982|
+
 $ \pi_{S2.Name}(\sigma_{S1.Name == Ron \wedge S1.DOB == S2.DOB \wedge S2.name != Ron}(S1 \times S2))$
+
+|S2.Name|
+|---|
+|Hermione|
+
 
 
 b) Provide a simple English description of what the query is searching for. Your description should be in general terms (remember that the original LMS instance data may change).
 
+Answer: This query is searching for students who have the same DOB as Ron, excluding him.
  
 
 ### Part 3.3:
@@ -138,13 +172,19 @@ a) Provide the relation that is the result of the following query. Your relation
 
 $\pi_{Name}((\pi_{cid, sid}(Enrolled)/\pi_{sid}(Students))\bowtie Courses)$
 
+|Courses.Name|
+|---|
+
 
 b) Provide a simple English description of what the query is searching for. Your description should be in general terms (remember that the original LMS instance data may change).
 
+Answer: This query is asking for the name of courses that every student has taken. With the current dataset though, there are no courses that every student has taken.
  
 
 ## Part 4
 
 Provide a relational algebra query that uses the divide operator to find the names of all students who are taking all of the 3xxx-level classes.
+
+$ \Pi_{Name}((\Pi_{sID, cID}(Enrolled) / \Pi_{cID}(\sigma_{cID \geq 3000 \wedge cID \geq 4000}(Enrolled))) \bowtie Students $
 
 Commit your .md or .pdf file to your git repo (It's probably a good idea to include your .tex or .docx file as well, but we'll only look at the PDF).
