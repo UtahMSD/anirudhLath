@@ -185,6 +185,6 @@ Answer: This query is asking for the name of courses that every student has take
 
 Provide a relational algebra query that uses the divide operator to find the names of all students who are taking all of the 3xxx-level classes.
 
-$ \Pi_{Name}((\Pi_{sID, cID}(Enrolled) / \Pi_{cID}(\sigma_{cID \geq 3000 \wedge cID \geq 4000}(Enrolled))) \bowtie Students $
+$ \Pi_{Name}((\Pi_{sID, cID}(Enrolled) / \Pi_{cID}(\sigma_{cID \geq 3000 \wedge cID \geq 4000}(Enrolled))) \bowtie Students) $
 
 Commit your .md or .pdf file to your git repo (It's probably a good idea to include your .tex or .docx file as well, but we'll only look at the PDF).
