@@ -105,11 +105,11 @@ Consider the students table from #2 in Part 1 above. Assume that an int occupies
 
 * How many rows of the table can be placed into the first leaf node of the primary index before it will split?
 
-**4096 / (4 + 10 + 1) ~ 273 rows.**
+**4096 / (4 + 10 + 1) ~ 273 rows since leaf nodes contain the whole rows.**
 
 * What is the maximum number of keys stored in an internal node of the primary index? (Remember to ignore pointer space. Remember that internal nodes have a different structure than leaf nodes.)
 
-**4096 / (4 + 10) ~ 292 keys.**
+**4096 / (4 + 10) ~ 292 keys since internal nodes only contains the key.**
 
 * What is the maximum number of rows in the table if the primary index has a height of 1? (A tree of height 1 has 2 levels)
 
