@@ -105,23 +105,23 @@ Consider the students table from #2 in Part 1 above. Assume that an int occupies
 
 * How many rows of the table can be placed into the first leaf node of the primary index before it will split?
 
-**4096 / (4 + 10) ~ 292 rows.**
+**4096 / (4 + 10 + 1) ~ 273 rows.**
 
 * What is the maximum number of keys stored in an internal node of the primary index? (Remember to ignore pointer space. Remember that internal nodes have a different structure than leaf nodes.)
 
-**A little confused with the question, but as far as I understand, the rows itself are stored in the leaf nodes and not in the internal nodes. Internal nodes just contain pointers to the leaf nodes. So I believe the answer is there are 0 keys stored in an internal node.**
+**4096 / (4 + 10) ~ 292 keys.**
 
 * What is the maximum number of rows in the table if the primary index has a height of 1? (A tree of height 1 has 2 levels)
 
-**292 pointers in the root node multiplied by 292 nodes with 292 rows each is equal to 85,264 rows maximum**
+**A tree of height 1 will have 292 + 1 child nodes and each leaf node will have 273 rows in it. Therefore the maximum number of rows is 293 * 273 = 79,989 rows.**
 
 * What is the minimum number of rows in the table if the primary index has a height of 1? (A tree of height 1 has 2 levels)
 
-**The root node will split only when the rows have exceeded the maximum value of 292 rows and the minimum value for a split will be 293 rows. Therefore, 293 is the minimum number of rows in a height of 1.**
+**The root node will split only when the rows have exceeded the maximum value of 273 rows and the minimum value for a split will be 273 + 1 rows. Therefore, 274 is the minimum number of rows in a height of 1.**
 
 * If there is a secondary index on Grade, what is the maximum number of entries a leaf node can hold in the secondary index?
 
-**Based on my knowledge of this database, grade is just 1 byte. So I believe 4096 rows.
+**It should be 4096 / (14 bytes from primary key + 1 byte from index) = 273 entries.**
 
 ### Another table
 
