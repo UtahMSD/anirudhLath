@@ -2,7 +2,7 @@ import common;
 
 struct KDTree(size_t Dim) {
     // An x-split node and a y-split node are different types
-    alias PD = Point!Dim;
+    alias PD = PD;
     class Node( size_t splitDimension ){
         // If this is an x node, the next level is "y"
         // If this is a y node, the next level is "z", etc
@@ -43,8 +43,98 @@ struct KDTree(size_t Dim) {
         auto ret = makePriorityQueue!Dim(p);
 
         void recurse(size_t Dimension)(Node!Dimension n, AABB!Dim aabb) {
-            
+            // Check points stored
+            if( isNaN(n.splitP[0])) 
+            {
+                foreach (const ref point; n.storedPs) {
+
+                    if(distance(point, p) < distance(p, ret.front)) 
+                    {
+                        ret.popFront;
+                        ret.insert(point); 
+                    }
+
+                    else if(ret.length < k) 
+                    {
+                        ret.insert(point);
+                    }
+                }
+            }
+
+            else
+            {
+                if(distance(n.splitP, p) < distance(p, ret.front))
+                {
+                    ret.popFront;
+                    ret.insert(n.splitP);
+
+                }
+                else if (ret.length < k) 
+                {
+                    ret.insert(n.splitP);
+                }
+
+                auto leftBB = aabb;
+                auto rightBB = aabb;
+
+                leftBB.max[n.thisLevel] = n.splitP[n.thisLevel];
+                if (ret.length < k || distance(p, closest(leftBB, p)) < distance(p, ret
+                .front)) {
+                    recurse(n.left, leftBB);
+                }
+
+                rightBB.min[n.thisLevel] = n.splitP[n.thisLevel];
+                if (ret.length < k || distance(p, closest(rightBB, p)) < distance(p, ret
+                .front)) {
+                    recurse(n.right, rightBB);
+                }
+
+            }
         }
+
+        AABB!Dim rootBB;
+        foreach(const ref i; 0 .. Dim){
+            rootBB.min[i] = -1 * float.infinity;
+            rootBB.max[i] = float.infinity;
+        }
+
+        recurse!0(root, rootBB);
+        ret = ret.release;
+        return ret;
+    }
+
+    PD[] rangeQuery( PD p, float r) {
+
+        PD[] ret;
+        
+        void recurse( size_t Dimension )(Node!Dimension n) {
+
+            if (distance(n.splitP, p) < r) 
+            {
+                ret ~= n.splitP;
+            }
+
+            foreach(const ref point; n.storedPs) {
+                if (distance(point, p) < r) 
+                {
+                    ret ~= point;
+                }
+            }
+
+            if(n.left && p[n.thisLevel] - r < n.splitP[n.thisLevel]) 
+            {
+                recurse( n.left );
+            }
+
+            if(n.right && p[n.thisLevel] + r > n.splitP[n.thisLevel]) 
+            {
+                recurse(n.right);
+            }
+        }
+
+        recurse(root);
+        
+        return ret;
     }
 
 }
