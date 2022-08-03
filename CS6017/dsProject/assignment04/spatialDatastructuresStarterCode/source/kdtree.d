@@ -2,7 +2,7 @@ import common;
 
 struct KDTree(size_t Dim) {
     // An x-split node and a y-split node are different types
-    alias PD = PD;
+    alias PD = Point!Dim;
     class Node( size_t splitDimension ){
         // If this is an x node, the next level is "y"
         // If this is a y node, the next level is "z", etc
@@ -46,7 +46,7 @@ struct KDTree(size_t Dim) {
             // Check points stored
             if( isNaN(n.splitP[0])) 
             {
-                foreach (const ref point; n.storedPs) {
+                foreach (point; n.storedPs) {
 
                     if(distance(point, p) < distance(p, ret.front)) 
                     {
@@ -75,7 +75,6 @@ struct KDTree(size_t Dim) {
                 }
 
                 auto leftBB = aabb;
-                auto rightBB = aabb;
 
                 leftBB.max[n.thisLevel] = n.splitP[n.thisLevel];
                 if (ret.length < k || distance(p, closest(leftBB, p)) < distance(p, ret
@@ -83,6 +82,7 @@ struct KDTree(size_t Dim) {
                     recurse(n.left, leftBB);
                 }
 
+                auto rightBB = aabb;
                 rightBB.min[n.thisLevel] = n.splitP[n.thisLevel];
                 if (ret.length < k || distance(p, closest(rightBB, p)) < distance(p, ret
                 .front)) {
@@ -93,14 +93,14 @@ struct KDTree(size_t Dim) {
         }
 
         AABB!Dim rootBB;
-        foreach(const ref i; 0 .. Dim){
+        foreach(i; 0 .. Dim){
             rootBB.min[i] = -1 * float.infinity;
             rootBB.max[i] = float.infinity;
         }
 
         recurse!0(root, rootBB);
-        ret = ret.release;
-        return ret;
+
+        return ret.release;
     }
 
     PD[] rangeQuery( PD p, float r) {
@@ -137,4 +137,22 @@ struct KDTree(size_t Dim) {
         return ret;
     }
 
+}
+
+unittest {
+    auto kdtree = KDTree!2([Point!2([.5, .5]), Point!2([1, 1]),
+    Point!2([0.75, 0.4]), Point!2([0.4, 0.74])]);
+
+    writeln(kdtree);
+
+    writeln("kdtree rq");
+    foreach(p; kdtree.rangeQuery(Point!2([1,1]), .7)){
+        writeln(p);
+    }
+    assert(kdtree.rangeQuery(Point!2([1,1]), .7).length == 3);
+
+    writeln("kdtree knn");
+    foreach(p; kdtree.knnQuery(Point!2([1,1]), 3)){
+        writeln(p);
+    }
 }

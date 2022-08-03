@@ -7,7 +7,7 @@ struct QuadTree(size_t Dim) {
 
         // Variables
         P2[] points; // List of points if it's a leaf node
-        Node[4] children; // 4 children if it's an internal node
+        Node[] children; // 4 children if it's an internal node
         AABB2 aabb; // AABB that explains what area this node covers
         bool isLeaf; // Is node a leaf node or not
         P2 midpoint; // Midpoint of the Node or the area it covers.
@@ -165,7 +165,7 @@ struct QuadTree(size_t Dim) {
                 }
                 else
                 {
-                    foreach(const ref child; n.children) {
+                    foreach(child; n.children) {
                         if(distance(p, closest(child.aabb, p)) < distance(p, ret.front) || ret.length < k)
                         {
                             recurse(child);
@@ -174,8 +174,8 @@ struct QuadTree(size_t Dim) {
                 }
             }
             recurse(this);
-            ret = ret.release;
-            return ret;
+
+            return ret.release;
         }
     }
 
@@ -191,5 +191,24 @@ struct QuadTree(size_t Dim) {
 
     P2[] knnQuery(P2 p, int k) {
         return root.knnQuery(p, k);
+    }
+}
+
+unittest {
+    auto points = [Point!2([.5, .5]), Point!2([1, 1]),
+    Point!2([0.75, 0.4]), Point!2([0.4, 0.74])];
+    auto qt = QuadTree!2(points, boundingBox(points));
+
+    writeln(qt);
+
+    writeln("quadtree rq");
+    foreach(p; qt.rangeQuery(Point!2([1,1]), .7)){
+        writeln(p);
+    }
+    assert(qt.rangeQuery(Point!2([1,1]), .7).length == 3);
+
+    writeln("quadtree knn");
+    foreach(p; qt.knnQuery(Point!2([1,1]), 3)){
+        writeln(p);
     }
 }
