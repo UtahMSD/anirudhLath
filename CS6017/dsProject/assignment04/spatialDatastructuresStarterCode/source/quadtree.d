@@ -166,7 +166,7 @@ struct QuadTree(size_t Dim) {
                 else
                 {
                     foreach(child; n.children) {
-                        if(distance(p, closest(child.aabb, p)) < distance(p, ret.front) || ret.length < k)
+                        if(ret.length < k || distance(p, closest(child.aabb, p)) < distance(p, ret.front))
                         {
                             recurse(child);
                         }

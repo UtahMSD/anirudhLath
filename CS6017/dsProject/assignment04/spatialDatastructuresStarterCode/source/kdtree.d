@@ -63,15 +63,15 @@ struct KDTree(size_t Dim) {
 
             else
             {
-                if(distance(n.splitP, p) < distance(p, ret.front))
+                if (ret.length < k)
+                {
+                    ret.insert(n.splitP);
+                }
+                else if(distance(n.splitP, p) < distance(p, ret.front))
                 {
                     ret.popFront;
                     ret.insert(n.splitP);
 
-                }
-                else if (ret.length < k) 
-                {
-                    ret.insert(n.splitP);
                 }
 
                 auto leftBB = aabb;
