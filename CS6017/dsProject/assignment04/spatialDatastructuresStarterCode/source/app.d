@@ -15,7 +15,7 @@ void main()
     static foreach(dim; 1..8){{
         foreach(N; [100, 1000, 10000, 100000]) {
 
-            auto trainingPoints = getGaussianPoints!dim(N);
+            auto trainingPoints = getUniformPoints!dim(N);
             auto testingPoints = getUniformPoints!dim(100);
 
             auto kd = DumbKNN!dim(trainingPoints);
@@ -42,7 +42,7 @@ void main()
     static foreach(dim; 1..8){{
         foreach(N; [100, 1000, 10000, 100000]) {
 
-            auto trainingPoints = getGaussianPoints!dim(N);
+            auto trainingPoints = getUniformPoints!dim(N);
             auto testingPoints = getUniformPoints!dim(100);
 
             auto kd = BucketKNN!dim(trainingPoints, cast(int) pow(N/64, 1.0/dim));
@@ -67,7 +67,7 @@ void main()
     static foreach(dim; 2..3){{
         foreach(N; [100, 1000, 10000, 100000]) {
 
-            auto trainingPoints = getGaussianPoints!dim(N);
+            auto trainingPoints = getUniformPoints!dim(N);
             auto testingPoints = getUniformPoints!dim(100);
 
             auto quad = QuadTree!dim(trainingPoints, boundingBox(trainingPoints));
@@ -92,7 +92,7 @@ void main()
     static foreach(dim; 1..8){{
         foreach(N; [100, 1000, 10000, 100000]) {
 
-            auto trainingPoints = getGaussianPoints!dim(N);
+            auto trainingPoints = getUniformPoints!dim(N);
             auto testingPoints = getUniformPoints!dim(100);
 
             auto kd = KDTree!dim(trainingPoints);
